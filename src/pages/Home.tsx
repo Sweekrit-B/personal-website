@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Home({ onNavigate }: { onNavigate: (p: 'projects' | 'resume' | 'home') => void }) {
   const [projects, setProjects] = useState<{ title: string; year?: string }[]>([])
