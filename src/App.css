@@ -494,6 +494,122 @@ body {
   color: var(--text);
 }
 
+.rover-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rover-subtitle {
+  margin: 0;
+  max-width: 74ch;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.rover-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rover-step {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.rover-step-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+}
+
+.rover-step-number {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  box-shadow: var(--shadow-lg);
+}
+
+.rover-step-path {
+  flex: 1;
+  width: 2px;
+  min-height: 18px;
+  margin-top: 10px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--line) 0,
+    var(--line) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.rover-step-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 94%, transparent), color-mix(in srgb, var(--surface-2) 92%, transparent));
+  padding: 20px 22px 20px;
+  box-shadow: var(--shadow-lg);
+}
+
+.rover-step-kicker {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--text-subtle);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.rover-step-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.rover-step-summary {
+  margin: 12px 0 0;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.rover-step-points {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  color: var(--text);
+}
+
+.rover-step-points li {
+  line-height: 1.5;
+}
+
 .resume-section {
   margin-top: 22px;
 }
@@ -800,6 +916,7 @@ body {
 [data-theme='light'] .profile-name,
 [data-theme='light'] .block-heading,
 [data-theme='light'] .section-title,
+[data-theme='light'] .rover-step-title,
 [data-theme='light'] .recent-project-title,
 [data-theme='light'] .item-title,
 [data-theme='light'] .resume-section h3,
@@ -809,6 +926,9 @@ body {
 }
 
 [data-theme='light'] .profile-intro p,
+[data-theme='light'] .rover-subtitle,
+[data-theme='light'] .rover-step-summary,
+[data-theme='light'] .rover-step-points li,
 [data-theme='light'] .recent-project-year,
 [data-theme='light'] .item-year,
 [data-theme='light'] .social-row a,
@@ -865,9 +985,16 @@ body {
 
 [data-theme='light'] .projects .list,
 [data-theme='light'] .resume .list,
+[data-theme='light'] .rover-step-card,
 [data-theme='light'] .projects .list-item,
 [data-theme='light'] .resume .list-item {
   border-color: #e6e9ee;
+}
+
+[data-theme='light'] .rover-step-number,
+[data-theme='light'] .rover-step-kicker {
+  background: #fbfbfc;
+  border-color: #d9dde4;
 }
 
 [data-theme='light'] .item-dropdown {
