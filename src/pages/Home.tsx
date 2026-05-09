@@ -16,7 +16,7 @@ export default function Home({ onNavigate }: { onNavigate: (p: 'projects' | 'res
     <section className="home home-reference">
       <div className="home-container">
         <div className="hero-profile">
-          <h1 className="profile-name">Sweekrit Bhatnagar</h1>
+          <h1 className="profile-name">Sweekrit Bhatnagar!</h1>
           <p className="profile-intro">
             I am a data science student at UCSD committed to leveraging data
             driven insights and delivering full stack AI-integrated software
