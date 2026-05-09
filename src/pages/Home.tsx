@@ -4,7 +4,7 @@ export default function Home({ onNavigate }: { onNavigate: (p: 'projects' | 'res
   const [projects, setProjects] = useState<{ title: string; year?: string }[]>([])
 
   useEffect(() => {
-    fetch('/lib/project.json')
+    fetch(`${import.meta.env.BASE_URL}lib/project.json`)
       .then((r) => r.json())
       .then((data: { title: string; year?: string }[]) => {
         setProjects(Array.isArray(data) ? data.slice(0, 3) : [])

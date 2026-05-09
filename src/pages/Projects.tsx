@@ -38,7 +38,7 @@ export default function Projects() {
   }
 
   useEffect(() => {
-    fetch('/lib/project.json')
+    fetch(`${import.meta.env.BASE_URL}lib/project.json`)
       .then((r) => r.json())
       .then((data) => setItems(data))
       .catch(() => setItems([]))

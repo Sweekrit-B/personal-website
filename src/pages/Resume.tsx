@@ -20,7 +20,7 @@ export default function Resume() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   useEffect(() => {
-    fetch('/lib/resume.json')
+    fetch(`${import.meta.env.BASE_URL}lib/resume.json`)
       .then((r) => r.json())
       .then((data) => setResume(data))
       .catch(() => setResume(null))
