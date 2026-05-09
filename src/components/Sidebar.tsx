@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
@@ -56,15 +55,27 @@ export default function Sidebar() {
         </div>
 
         <nav className="sidebar-nav">
-          <NavLink to="/" end className={({isActive}) => isActive ? 'active' : ''}>
+          <button
+            className="nav-button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Scroll to home"
+          >
             <span className="nav-label">Home</span>
-          </NavLink>
-          <NavLink to="/projects" className={({isActive}) => isActive ? 'active' : ''}>
+          </button>
+          <button
+            className="nav-button"
+            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            aria-label="Scroll to projects"
+          >
             <span className="nav-label">Projects</span>
-          </NavLink>
-          <NavLink to="/resume" className={({isActive}) => isActive ? 'active' : ''}>
+          </button>
+          <button
+            className="nav-button"
+            onClick={() => document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            aria-label="Scroll to resume"
+          >
             <span className="nav-label">Resume</span>
-          </NavLink>
+          </button>
         </nav>
 
         <div className="sidebar-footer">© {new Date().getFullYear()}</div>

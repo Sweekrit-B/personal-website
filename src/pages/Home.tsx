@@ -1,61 +1,68 @@
-import { useEffect, useState } from 'react'
+import { useState, useRef } from 'react'
+import Card3D from '../components/Card3D'
+import Projects from './Projects'
+import Resume from './Resume'
 
-export default function Home({ onNavigate }: { onNavigate: (p: 'projects' | 'resume' | 'home') => void }) {
-  const [projects, setProjects] = useState<{ title: string; year?: string }[]>([])
-
-  useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}lib/project.json`)
-      .then((r) => r.json())
-      .then((data: { title: string; year?: string }[]) => {
-        setProjects(Array.isArray(data) ? data.slice(0, 3) : [])
-      })
-      .catch(() => setProjects([]))
-  }, [])
+export default function Home({ onNavigate: _onNavigate }: { onNavigate: (p: 'projects' | 'resume' | 'home') => void }) {
+  const [selectedCardName, setSelectedCardName] = useState('lucario')
+  const projectsRef = useRef<HTMLDivElement>(null)
+  const resumeRef = useRef<HTMLDivElement>(null)
+  const pokemonNames = ['lucario', 'espeon', 'flareon', 'glaceon', 'jolteon', 'leafeon', 'sylveon', 'umbreon', 'vaporeon']
 
   return (
+    <div className="everything-wrapper">
     <section className="home home-reference">
       <div className="home-container">
         <div className="hero-profile">
-          <h1 className="profile-name">Sweekrit Bhatnagar!</h1>
-          <p className="profile-intro">
-            I am a data science student at UCSD committed to leveraging data
-            driven insights and delivering full stack AI-integrated software
-            solutions. I have experience spanning healthcare, analytics,
-            computational research, and software engineering. I learn fast,
-            collaborate effectively, and apply innovative solutions to real
-            problems.
-          </p>
-
-          <div className="social-row" aria-label="Social links">
-            <a href="https://www.linkedin.com/in/sweekrit-bhatnagar/" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="https://github.com/Sweekrit-B/" target="_blank" rel="noreferrer">GitHub</a>
+          <div className="profile-name-row">
+            <h1 className="profile-name">Sweekrit Bhatnagar</h1>
           </div>
-        </div>
 
-        <div className="home-block">
-          <div className="block-heading-row">
-            <h2 className="block-heading">Recent Projects</h2>
-            <button className="block-action" type="button" onClick={() => onNavigate('projects')}>
-              View all
-            </button>
+          <div className="hero-content">
+            <div className="profile-intro">
+              <p>
+                I am a data science student at UCSD committed to leveraging data
+                driven insights and delivering full stack AI-integrated software
+                solutions. I have experience spanning healthcare, analytics,
+                computational research, and software engineering. I learn fast,
+                collaborate effectively, and apply innovative solutions to real
+                problems.
+              </p>
+              <div className="social-row" aria-label="Social links">
+                <a href="https://www.linkedin.com/in/sweekrit-bhatnagar/" target="_blank" rel="noreferrer">LinkedIn</a>
+                <a href="https://github.com/Sweekrit-B/" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="mailto:sweekritbh@gmail.com" target="_blank" rel="noreferrer">Email</a>
+                <a href="https://www.instagram.com/sweekritbhatnagar/" target="_blank" rel="noreferrer">Instagram</a>
+              </div>
+
+              <div className="evolution-row" aria-label="Pokemon selectors">
+                {pokemonNames.map((name) => (
+                  <button
+                    key={name}
+                    type="button"
+                    className={`evolution-chip${selectedCardName === name ? ' active' : ''}`}
+                    onClick={() => setSelectedCardName(name)}
+                    aria-label={`Show ${name} card`}
+                    aria-pressed={selectedCardName === name}
+                  >
+                    <img src={`${import.meta.env.BASE_URL}gifs/${name}.gif`} alt={name} />
+                  </button>
+                ))}
+              </div>
+            </div>
+            <Card3D cardImageName={selectedCardName} />
           </div>
-          <ul className="recent-projects-list">
-            {projects.map((project) => (
-              <li key={project.title}>
-                <button className="recent-project-row" type="button" onClick={() => onNavigate('projects')}>
-                  <span className="recent-project-title">{project.title}</span>
-                  <span className="recent-project-year">{project.year ?? ''}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="home-actions">
-          <button onClick={() => onNavigate('projects')}>See projects</button>
-          <button onClick={() => onNavigate('resume')}>See resume</button>
         </div>
       </div>
     </section>
+
+    <div id="projects" ref={projectsRef} className="section-wrapper">
+      <Projects />
+    </div>
+
+    <div id="resume" ref={resumeRef} className="section-wrapper">
+      <Resume />
+    </div>
+    </div>
   )
 }
