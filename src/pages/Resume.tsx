@@ -16,6 +16,20 @@ type Resume = {
   technicalSkills?: any[]
 }
 
+const LOGOS: Record<string, string[]> = {
+  'Adobe':                 ['adobe.png'],
+  'Yonder Dynamics':       ['yonder-dynamics.png'],
+  'UC San Diego Health':   ['ucsd.png'],
+  'Brain Corp':            ['braincorp.png'],
+  'Doe (YC S25)':          ['doe.png', 'yc.png'],
+  'Lion Street Financial': ['lion-street.png'],
+  'Voicebotics AI':        ['voicebotics.png'],
+  'Out of the Blue AI':    ['outoftheblue.png'],
+  'F3 Global':             ['f3-global.png'],
+  'SD County IT':          ['sdcounty.png'],
+  'The Kaizen Academy':    ['kaizenacademy.png'],
+}
+
 export default function Resume() {
   const [resume, setResume] = useState<Resume | null>(null)
   const [openIndex, setOpenIndex] = useState<number | null>(null)
@@ -57,6 +71,18 @@ export default function Resume() {
                   }}
                 >
                   <div className="item-left">
+                    {LOGOS[e.company]
+                      ? LOGOS[e.company].map(file => (
+                          <img
+                            key={file}
+                            src={`${import.meta.env.BASE_URL}company-logos/${file}`}
+                            alt=""
+                            className="company-logo"
+                            onError={ev => { (ev.target as HTMLImageElement).style.display = 'none' }}
+                          />
+                        ))
+                      : <div className="company-logo company-logo-fallback">{e.company[0]}</div>
+                    }
                     <div className="item-title">{e.role} — {e.company}</div>
                   </div>
                   <div className="item-right">{e.end ? `${e.start} - ${e.end}` : e.start}</div>
