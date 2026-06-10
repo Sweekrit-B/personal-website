@@ -18,18 +18,14 @@
   },
   "experience": [
     {
-      "role": "Contract Full-Stack Software Engineer",
-      "company": "F3 Global",
-      "location": "Dover, DE",
-      "start": "January 2026",
-      "startDate": "2026-01",
+      "role": "Software Engineering Intern",
+      "company": "Adobe",
+      "location": "",
+      "start": "June 2026",
+      "startDate": "2026-06",
       "end": "Present",
       "endDate": null,
-      "bullets": [
-        "Increased client acquisition for a 501(c)(3) small business microfinancing nonprofit by building and deploying key frontend pages (client stories, About Us, privacy policy) for a redesigned homepage with React.",
-        "Enabled content management by developing Express/MongoDB APIs to create, edit, and delete newsletter articles.",
-        "Drove user engagement by integrating a contact system with backend routing and custom email workflows."
-      ]
+      "bullets": []
     },
     {
       "role": "Autonomous Systems Software Engineer",
@@ -59,6 +55,30 @@
         "Extracted regional signals from 12+ high-resolution videos with motion correction by tuning a CNN/TensorFlow model.",
         "Achieved 79.08% accuracy on 807 features from 100+ patients by building L1-regularized logistic regression and tree-based models with k-fold cross-validation and GridSearchCV hyperparameter tuning.",
         "Identified disease-associated taxa across 800+ bacteria through differential abundance analysis using DESeq2."
+      ]
+    },
+    {
+      "role": "Software Engineering Consultant",
+      "company": "SD County IT",
+      "location": "",
+      "start": "April 2026",
+      "startDate": "2026-04",
+      "end": "June 2026",
+      "endDate": "2026-06",
+      "bullets": []
+    },
+    {
+      "role": "Contract Full-Stack Software Engineer",
+      "company": "F3 Global",
+      "location": "Dover, DE",
+      "start": "January 2026",
+      "startDate": "2026-01",
+      "end": "April 2026",
+      "endDate": "2026-04",
+      "bullets": [
+        "Increased client acquisition for a 501(c)(3) small business microfinancing nonprofit by building and deploying key frontend pages (client stories, About Us, privacy policy) for a redesigned homepage with React.",
+        "Enabled content management by developing Express/MongoDB APIs to create, edit, and delete newsletter articles.",
+        "Drove user engagement by integrating a contact system with backend routing and custom email workflows."
       ]
     },
     {
