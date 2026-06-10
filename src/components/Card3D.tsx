@@ -77,7 +77,7 @@ export default function Card3D({ cardImageName = 'lucario' }: { cardImageName?: 
     }
 
     // ── event listeners ──────────────────────────────────────
-    const onMouseDown  = (e: MouseEvent)  => dragStart(e.clientX, e.timeStamp)
+    const onMouseDown  = (e: MouseEvent)  => { e.preventDefault(); dragStart(e.clientX, e.timeStamp) }
     const onMouseMove  = (e: MouseEvent)  => dragMove(e.clientX, e.timeStamp)
     const onTouchStart = (e: TouchEvent)  => dragStart(e.touches[0].clientX, e.timeStamp)
     const onTouchMove  = (e: TouchEvent)  => { e.preventDefault(); dragMove(e.touches[0].clientX, e.timeStamp) }
@@ -110,6 +110,7 @@ export default function Card3D({ cardImageName = 'lucario' }: { cardImageName?: 
           transform: `rotateY(${-rotY}deg)`,
           transition: 'none',          // RAF provides smooth updates; CSS transition adds lag
           cursor: dragging ? 'grabbing' : 'grab',
+          userSelect: 'none',
         }}
         aria-hidden
       >
