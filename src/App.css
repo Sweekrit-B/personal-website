@@ -610,6 +610,559 @@ body {
   line-height: 1.5;
 }
 
+/* ── Project stats charts ────────────────────────────────── */
+.project-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  padding: 18px 20px 16px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  animation: pageIn 0.35s ease both;
+}
+
+.stat-card-title {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.stat-card-body {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.stat-svg-wrap {
+  flex-shrink: 0;
+  width: 148px;
+}
+
+.stat-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* arc entrance animation */
+@keyframes stat-arc-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.stat-arc--0 { animation: stat-arc-in 0.45s 0.00s ease both; }
+.stat-arc--1 { animation: stat-arc-in 0.45s 0.07s ease both; }
+.stat-arc--2 { animation: stat-arc-in 0.45s 0.14s ease both; }
+.stat-arc--3 { animation: stat-arc-in 0.45s 0.21s ease both; }
+.stat-arc--4 { animation: stat-arc-in 0.45s 0.28s ease both; }
+
+/* SVG text — SVG inherits font-family but needs explicit sizes */
+.stat-center-n {
+  font-size: 30px;
+  font-weight: 800;
+  font-family: Inter, sans-serif;
+  letter-spacing: -0.03em;
+  transition: fill 0.18s ease;
+}
+
+.stat-center-sub {
+  font-size: 10.5px;
+  font-family: Inter, sans-serif;
+  fill: var(--text-muted);
+}
+
+/* legend */
+.stat-legend {
+  flex: 1;
+  min-width: 0;
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.stat-leg {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  align-items: center;
+  padding: 5px 7px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.14s ease;
+}
+
+.stat-leg:hover,
+.stat-leg--on {
+  background: color-mix(in srgb, var(--surface-2) 80%, transparent);
+}
+
+.stat-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stat-leg-label {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-leg-n {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.stat-proj-pills {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.22s ease, opacity 0.18s ease;
+  margin-top: 0;
+}
+
+.stat-leg--on .stat-proj-pills {
+  max-height: 120px;
+  opacity: 1;
+  margin-top: 5px;
+}
+
+.stat-proj-pill {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--line) 90%, transparent);
+  color: var(--text-subtle);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .project-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-card-body {
+    flex-direction: column;
+    align-items: center;
+  }
+  .stat-legend {
+    width: 100%;
+  }
+}
+
+/* ── Paper preview ───────────────────────────────────────── */
+.paper-preview {
+  position: relative;
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  /* clip height to hide the Drive "Page X/Y" toolbar */
+  max-height: 414px;
+}
+
+.paper-preview-iframe {
+  width: 100%;
+  /* taller than the container so the Drive toolbar scrolls out of view */
+  height: 460px;
+  display: block;
+  border: 0;
+  margin-bottom: -46px;
+}
+
+.paper-preview-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px 20px;
+  color: var(--text-subtle);
+}
+
+.paper-preview-placeholder svg {
+  width: 36px;
+  height: 36px;
+  fill: var(--text-subtle);
+}
+
+.paper-preview-placeholder span {
+  font-size: 13px;
+}
+
+.paper-preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.paper-preview:hover .paper-preview-overlay {
+  opacity: 1;
+}
+
+.paper-preview-overlay span {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ── GitHub card two-column layout ───────────────────────── */
+.gh-dropdown-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 12px 4px 18px;
+}
+
+.gh-dropdown-col-card {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gh-dropdown-col-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .gh-dropdown-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── GitHub card ─────────────────────────────────────────── */
+.gh-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.gh-card:hover {
+  border-color: color-mix(in srgb, var(--line) 60%, var(--text-subtle));
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
+}
+
+.gh-card--loading {
+  pointer-events: none;
+  gap: 10px;
+}
+
+.gh-card-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.gh-icon {
+  width: 14px;
+  height: 14px;
+  fill: var(--text-subtle);
+  flex-shrink: 0;
+}
+
+.gh-card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.gh-card-desc {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.gh-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.gh-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.gh-stat svg {
+  width: 12px;
+  height: 12px;
+  fill: var(--text-subtle);
+}
+
+.gh-stat--muted {
+  color: var(--text-subtle);
+}
+
+.gh-lang-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.gh-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.gh-topic {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-subtle) 14%, transparent);
+  color: var(--text-muted);
+}
+
+/* skeleton shimmer */
+.gh-skeleton {
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--line) 25%,
+    color-mix(in srgb, var(--line) 60%, transparent) 50%,
+    var(--line) 75%
+  );
+  background-size: 200% 100%;
+  animation: gh-shimmer 1.4s infinite;
+}
+
+.gh-skeleton--title { height: 13px; width: 70%; }
+.gh-skeleton--line  { height: 11px; width: 100%; }
+.gh-skeleton--short { width: 55%; }
+
+@keyframes gh-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* language bar */
+.gh-langs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.gh-lang-bar {
+  display: flex;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  gap: 2px;
+}
+
+.gh-lang-bar-segment {
+  border-radius: 999px;
+  transition: flex 0.3s ease;
+}
+
+.gh-lang-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.gh-lang-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.gh-lang-pct {
+  color: var(--text-subtle);
+}
+
+/* commits */
+.gh-commits {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.gh-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: 2px;
+}
+
+.gh-commit {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.gh-commit-sha {
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+  color: var(--text-subtle);
+  letter-spacing: 0.02em;
+}
+
+.gh-commit-msg {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gh-commit-time {
+  font-size: 11px;
+  color: var(--text-subtle);
+  white-space: nowrap;
+}
+
+.rover-dropdown-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 12px 4px 18px;
+}
+
+.rover-dropdown-viewer .urdf-viewer-canvas {
+  height: 400px;
+}
+
+.rover-dropdown-viewer .rover-video {
+  margin-top: 12px;
+}
+
+.rover-dropdown-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rover-steps-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rover-steps-list li {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.rover-step-tag {
+  display: inline-block;
+  margin-right: 7px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--text-subtle);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+@media (max-width: 700px) {
+  .rover-dropdown-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.urdf-viewer {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+}
+
+.urdf-viewer-canvas {
+  width: 100%;
+  height: 480px;
+  display: block;
+}
+
+.urdf-viewer-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 17, 23, 0.75);
+  color: var(--text-muted);
+  font-size: 15px;
+  pointer-events: none;
+}
+
+.urdf-viewer-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  margin: 0;
+  font-size: 11px;
+  color: rgba(156, 163, 175, 0.55);
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
+
 .resume-section {
   margin-top: 22px;
 }

@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import Card3D from '../components/Card3D'
-import RoverShowcase from './RoverShowcase'
 import Projects from './Projects'
 import Resume from './Resume'
 
@@ -56,10 +55,6 @@ export default function Home({ onNavigate: _onNavigate }: { onNavigate: (p: 'pro
         </div>
       </div>
     </section>
-
-    <div id="rover-showcase" className="section-wrapper">
-      <RoverShowcase />
-    </div>
 
     <div id="projects" ref={projectsRef} className="section-wrapper">
       <Projects />

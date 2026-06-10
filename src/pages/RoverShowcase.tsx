@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
+
+const URDFViewer = lazy(() => import('../components/URDFViewer'))
 
 type RoverStep = {
   kicker: string
@@ -31,6 +33,10 @@ export default function RoverShowcase() {
     <section className="rover-showcase">
       <h2 className="section-title">{showcase.title}</h2>
       <p className="rover-subtitle">{showcase.subtitle}</p>
+
+      <Suspense fallback={<div className="urdf-viewer"><div className="urdf-viewer-canvas" /><div className="urdf-viewer-overlay">Loading rover model…</div></div>}>
+        <URDFViewer />
+      </Suspense>
 
       <ol className="rover-timeline">
         {showcase.steps.map((step, index) => (

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import ResumeStats from '../components/ResumeStats'
 
 type Experience = {
   role: string
@@ -39,6 +40,8 @@ export default function Resume() {
           </div>
         </div>
       )}
+
+      {resume?.experience && <ResumeStats experience={resume.experience} />}
 
       {resume?.experience && (
         <div className="resume-section">
