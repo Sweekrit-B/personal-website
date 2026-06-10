@@ -663,6 +663,13 @@ body {
 .stat-arc--3 { animation: stat-arc-in 0.45s 0.21s ease both; }
 .stat-arc--4 { animation: stat-arc-in 0.45s 0.28s ease both; }
 
+@media (prefers-reduced-motion: reduce) {
+  .stat-arc--0, .stat-arc--1, .stat-arc--2, .stat-arc--3, .stat-arc--4 {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 /* SVG text — SVG inherits font-family but needs explicit sizes */
 .stat-center-n {
   font-size: 30px;
