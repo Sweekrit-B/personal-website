@@ -1277,6 +1277,10 @@ body {
   .rover-dropdown-content {
     grid-template-columns: 1fr;
   }
+
+  .rover-dropdown-viewer .urdf-viewer-canvas {
+    height: 260px;
+  }
 }
 
 .urdf-viewer {
