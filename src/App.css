@@ -74,7 +74,7 @@ body {
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 22px;
   margin-top: 6px;
 }
 
@@ -83,7 +83,7 @@ body {
   color: var(--text-muted);
   border-radius: 0;
   padding: 0;
-  font-size: 32px;
+  font-size: 24px;
   line-height: 1.24;
   padding-block: 8px;
   font-weight: 700;
@@ -387,7 +387,7 @@ body {
 
 .profile-name {
   margin: 18px 0 10px;
-  font-size: 50px;
+  font-size: 48px;
   line-height: 1.06;
   letter-spacing: -0.03em;
   font-weight: 700;
@@ -451,7 +451,7 @@ body {
 .evolution-chip {
   flex: 0 0 auto;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   background: transparent;
   padding: 4px;
   cursor: pointer;
@@ -522,7 +522,7 @@ body {
 
 .block-heading {
   margin: 0;
-  font-size: 48px;
+  font-size: 32px;
   line-height: 1.2;
   padding-block: 12px;
   font-weight: 800;
@@ -627,7 +627,7 @@ body {
 
 .section-title {
   margin: 0 0 16px;
-  font-size: 36px;
+  font-size: 32px;
   letter-spacing: -0.02em;
   line-height: 1.2;
   font-weight: 700;
@@ -1326,7 +1326,7 @@ body {
 
 .resume-section h3 {
   margin: 0 0 16px;
-  font-size: 26px;
+  font-size: 22px;
   color: var(--text-muted);
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -1436,7 +1436,7 @@ body {
 }
 
 .item-right {
-  color: var(--text-subtle);
+  color: var(--text-muted);
   font-size: 13px;
   font-weight: 560;
   margin-left: 14px;
@@ -1609,13 +1609,13 @@ body {
 }
 
 .skills {
-  color: var(--text-subtle);
+  color: var(--text-muted);
   font-size: 14px;
   margin: 0;
 }
 
 .detail-location {
-  color: var(--text-subtle);
+  color: var(--text-muted);
   font-size: 14px;
   font-weight: 560;
   margin-bottom: 10px;
