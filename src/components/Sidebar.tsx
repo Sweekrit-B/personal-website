@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import type { Theme } from '../hooks/useTheme'
 
 type SidebarProps = {
@@ -47,27 +48,30 @@ export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
         </div>
 
         <nav className="sidebar-nav">
-          <button
+          <motion.button
             className="nav-button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             aria-label="Scroll to home"
+            whileHover={{ x: 2 }}
           >
             <span className="nav-label">Home</span>
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             className="nav-button"
             onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             aria-label="Scroll to projects"
+            whileHover={{ x: 2 }}
           >
             <span className="nav-label">Projects</span>
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             className="nav-button"
             onClick={() => document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             aria-label="Scroll to resume"
+            whileHover={{ x: 2 }}
           >
             <span className="nav-label">Resume</span>
-          </button>
+          </motion.button>
         </nav>
 
         <div className="sidebar-footer">© {new Date().getFullYear()}</div>

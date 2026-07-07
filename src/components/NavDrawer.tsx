@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion'
+
 type NavDrawerProps = {
   open: boolean
   onClose: () => void
@@ -28,24 +30,27 @@ export default function NavDrawer({ open, onClose }: NavDrawerProps) {
         </div>
 
         <nav className="nav-drawer-nav">
-          <button
+          <motion.button
             onClick={() => go(() => window.scrollTo({ top: 0, behavior: 'smooth' }))}
             aria-label="Scroll to home"
+            whileTap={{ scale: 0.96 }}
           >
             Home
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             onClick={() => go(() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))}
             aria-label="Scroll to projects"
+            whileTap={{ scale: 0.96 }}
           >
             Projects
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             onClick={() => go(() => document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))}
             aria-label="Scroll to resume"
+            whileTap={{ scale: 0.96 }}
           >
             Resume
-          </button>
+          </motion.button>
         </nav>
 
         <div className="sidebar-footer">© {new Date().getFullYear()}</div>
