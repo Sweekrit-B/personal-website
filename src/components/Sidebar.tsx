@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react'
+import type { Theme } from '../hooks/useTheme'
 
-export default function Sidebar() {
+type SidebarProps = {
+  theme: Theme
+  onToggleTheme: () => void
+}
+
+export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
 
   useEffect(() => {
     const stored = localStorage.getItem('sidebar-collapsed')
@@ -12,19 +17,6 @@ export default function Sidebar() {
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0')
   }, [collapsed])
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null
-    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches
-    const nextTheme = savedTheme ?? (prefersLight ? 'light' : 'dark')
-    setTheme(nextTheme)
-    document.documentElement.dataset.theme = nextTheme
-  }, [])
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    localStorage.setItem('theme', theme)
-  }, [theme])
 
   return (
     <aside className={"sidebar" + (collapsed ? ' collapsed' : '')}>
@@ -44,7 +36,7 @@ export default function Sidebar() {
           {!collapsed && (
             <button
               className={`theme-toggle ${theme}`}
-              onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+              onClick={onToggleTheme}
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
               <span className="theme-toggle-icon" aria-hidden="true">

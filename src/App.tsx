@@ -4,14 +4,16 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
 import Resume from './pages/Resume'
+import { useTheme } from './hooks/useTheme'
 
 export default function App() {
   const navigate = useNavigate()
+  const [theme, toggleTheme] = useTheme()
 
   return (
     <div className="site-root">
       <div className="app-layout">
-        <Sidebar />
+        <Sidebar theme={theme} onToggleTheme={toggleTheme} />
 
         <div className="content-area">
           <main className="site-main">
