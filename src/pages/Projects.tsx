@@ -1,4 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
+import { motion } from 'framer-motion'
+import { RevealGroup, RevealItem } from '../components/Reveal'
 import GitHubCard from '../components/GitHubCard'
 import ProjectStats from '../components/ProjectStats'
 
@@ -67,19 +69,22 @@ export default function Projects() {
     <section className="projects">
       <h2 className="section-title">Projects</h2>
       <ProjectStats items={items} />
-      <ul className="list">
+      <RevealGroup as="ul" className="list">
         {items.map((p, i) => (
-          <li key={i} className="list-item">
-            <button
+          <RevealItem as="li" key={i} className="list-item">
+            <motion.button
               className={`item-button ${openIndex === i ? 'open' : ''}`}
               aria-expanded={openIndex === i}
               onClick={() => setOpenIndex((prev) => (prev === i ? null : i))}
+              whileHover={{ scale: 1.005 }}
+              whileTap={{ scale: 0.995 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
               <div className="item-left">
                 <div className="item-title">{p.title}</div>
               </div>
               <div className="item-right">{p.year}</div>
-            </button>
+            </motion.button>
 
             {openIndex === i && (
               <div className="item-dropdown">
@@ -221,9 +226,9 @@ export default function Projects() {
                 )}
               </div>
             )}
-          </li>
+          </RevealItem>
         ))}
-      </ul>
+      </RevealGroup>
     </section>
   )
 }
