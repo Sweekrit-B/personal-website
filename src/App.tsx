@@ -32,7 +32,7 @@ export default function App() {
         <div className="content-area">
           <main className="site-main">
             <Routes>
-              <Route path="/" element={<Home onNavigate={(p: any) => navigate(p === 'home' ? '/' : `/${p}`)} />} />
+              <Route path="/" element={<Home onNavigate={(p: 'projects' | 'resume' | 'home') => navigate(p === 'home' ? '/' : `/${p}`)} />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/resume" element={<Resume />} />
             </Routes>

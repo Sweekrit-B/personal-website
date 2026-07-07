@@ -112,11 +112,10 @@ function Donut({ segs, title }: { segs: Seg[]; title: string }) {
   const [hov, setHov] = useState<string | null>(null)
   const CX = 100, CY = 100, OR = 82, IR = 54
   const sum = segs.reduce((s, g) => s + g.value, 0)
-  let angle = -90
   const paths = segs.map((seg, i) => {
+    const start = -90 + segs.slice(0, i).reduce((s, g) => s + (g.value / sum) * 360, 0)
     const span = (seg.value / sum) * 360
-    const d = arcPath(CX, CY, OR, IR, angle, angle + span)
-    angle += span
+    const d = arcPath(CX, CY, OR, IR, start, start + span)
     return { ...seg, d, i }
   })
 

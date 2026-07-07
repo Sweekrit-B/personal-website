@@ -3,15 +3,11 @@ import { useEffect, useState } from 'react'
 export type Theme = 'dark' | 'light'
 
 export function useTheme(): [Theme, () => void] {
-  const [theme, setTheme] = useState<Theme>('dark')
-
-  useEffect(() => {
+  const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('theme') as Theme | null
     const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches
-    const nextTheme = savedTheme ?? (prefersLight ? 'light' : 'dark')
-    setTheme(nextTheme)
-    document.documentElement.dataset.theme = nextTheme
-  }, [])
+    return savedTheme ?? (prefersLight ? 'light' : 'dark')
+  })
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme

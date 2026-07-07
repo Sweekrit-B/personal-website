@@ -12,10 +12,15 @@ type Experience = {
   bullets?: string[]
 }
 
+type Education = {
+  school?: string
+  degree?: string
+}
+
 type Resume = {
-  education?: any
+  education?: Education
   experience?: Experience[]
-  technicalSkills?: any[]
+  technicalSkills?: string[]
 }
 
 const LOGOS: Record<string, string[]> = {

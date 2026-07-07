@@ -8,12 +8,7 @@ type SidebarProps = {
 }
 
 export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
-  const [collapsed, setCollapsed] = useState(false)
-
-  useEffect(() => {
-    const stored = localStorage.getItem('sidebar-collapsed')
-    setCollapsed(stored === '1')
-  }, [])
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem('sidebar-collapsed') === '1')
 
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0')
