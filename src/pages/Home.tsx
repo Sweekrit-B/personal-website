@@ -19,6 +19,7 @@ export default function Home({ onNavigate: _onNavigate }: { onNavigate: (p: 'pro
           </div>
 
           <div className="hero-content">
+            <Card3D cardImageName={selectedCardName} />
             <div className="profile-intro">
               <p>
                 I am a data science student at UCSD committed to leveraging data
@@ -50,7 +51,6 @@ export default function Home({ onNavigate: _onNavigate }: { onNavigate: (p: 'pro
                 ))}
               </div>
             </div>
-            <Card3D cardImageName={selectedCardName} />
           </div>
         </div>
       </div>

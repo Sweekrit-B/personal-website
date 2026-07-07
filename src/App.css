@@ -435,7 +435,6 @@ body {
   display: flex;
   gap: 32px;
   align-items: flex-start;
-  height: 392px;
 }
 
 .evolution-row {
@@ -907,6 +906,11 @@ body {
 @media (max-width: 720px) {
   .project-stats {
     grid-template-columns: 1fr;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    align-items: center;
   }
 }
 
@@ -1915,11 +1919,11 @@ body {
 
 /* Depth faces */
 .card-3d-wrapper {
-  --card-width: 280px;
-  --card-height: 392px;
+  --card-width: min(280px, 78vw);
+  --card-height: calc(var(--card-width) * 1.4);
   --card-depth: 6px;
   flex-shrink: 0;
-  margin: 0;
+  margin: 0 auto;
 }
 .card-3d-content { position: relative; width: var(--card-width); height: var(--card-height); transform-style: preserve-3d; }
 .card-face { position: absolute; inset: 0; border-radius: inherit; backface-visibility: hidden; }
