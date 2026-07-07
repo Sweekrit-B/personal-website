@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { RevealGroup, RevealItem } from '../components/Reveal'
 import ResumeStats from '../components/ResumeStats'
 
 type Experience = {
@@ -60,15 +62,18 @@ export default function Resume() {
       {resume?.experience && (
         <div className="resume-section">
           <h3>Experience</h3>
-          <ul className="list">
+          <RevealGroup as="ul" className="list">
             {resume.experience.map((e, idx) => (
-              <li key={idx} className="list-item">
-                <button
+              <RevealItem as="li" key={idx} className="list-item">
+                <motion.button
                   className={`item-button ${openIndex === idx ? 'open' : ''}`}
                   aria-expanded={openIndex === idx}
                   onClick={() => {
                     setOpenIndex((prev) => (prev === idx ? null : idx))
                   }}
+                  whileHover={{ scale: 1.005 }}
+                  whileTap={{ scale: 0.995 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 >
                   <div className="item-left">
                     {LOGOS[e.company]
@@ -86,7 +91,7 @@ export default function Resume() {
                     <div className="item-title">{e.role} — {e.company}</div>
                   </div>
                   <div className="item-right">{e.end ? `${e.start} - ${e.end}` : e.start}</div>
-                </button>
+                </motion.button>
 
                 {openIndex === idx && (
                   <div className="item-dropdown">
@@ -100,9 +105,9 @@ export default function Resume() {
                     </div>
                   </div>
                 )}
-              </li>
+              </RevealItem>
             ))}
-          </ul>
+          </RevealGroup>
         </div>
       )}
     </section>
