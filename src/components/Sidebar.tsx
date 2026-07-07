@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import type { Theme } from '../hooks/useTheme'
+import type { ScrollTarget } from '../App'
 
 type SidebarProps = {
   theme: Theme
   onToggleTheme: () => void
+  onNavigate: (target: ScrollTarget) => void
 }
 
-export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
+export default function Sidebar({ theme, onToggleTheme, onNavigate }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem('sidebar-collapsed') === '1')
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
         <nav className="sidebar-nav">
           <motion.button
             className="nav-button"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => onNavigate('top')}
             aria-label="Scroll to home"
             whileHover={{ x: 2 }}
           >
@@ -53,7 +55,7 @@ export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
           </motion.button>
           <motion.button
             className="nav-button"
-            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => onNavigate('projects')}
             aria-label="Scroll to projects"
             whileHover={{ x: 2 }}
           >
@@ -61,7 +63,7 @@ export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
           </motion.button>
           <motion.button
             className="nav-button"
-            onClick={() => document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => onNavigate('resume')}
             aria-label="Scroll to resume"
             whileHover={{ x: 2 }}
           >

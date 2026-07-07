@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
+import type { ScrollTarget } from '../App'
 
 type NavDrawerProps = {
   open: boolean
   onClose: () => void
+  onNavigate: (target: ScrollTarget) => void
 }
 
-export default function NavDrawer({ open, onClose }: NavDrawerProps) {
+export default function NavDrawer({ open, onClose, onNavigate }: NavDrawerProps) {
   const go = (action: () => void) => {
     action()
     onClose()
@@ -31,21 +33,21 @@ export default function NavDrawer({ open, onClose }: NavDrawerProps) {
 
         <nav className="nav-drawer-nav">
           <motion.button
-            onClick={() => go(() => window.scrollTo({ top: 0, behavior: 'smooth' }))}
+            onClick={() => go(() => onNavigate('top'))}
             aria-label="Scroll to home"
             whileTap={{ scale: 0.96 }}
           >
             Home
           </motion.button>
           <motion.button
-            onClick={() => go(() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))}
+            onClick={() => go(() => onNavigate('projects'))}
             aria-label="Scroll to projects"
             whileTap={{ scale: 0.96 }}
           >
             Projects
           </motion.button>
           <motion.button
-            onClick={() => go(() => document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))}
+            onClick={() => go(() => onNavigate('resume'))}
             aria-label="Scroll to resume"
             whileTap={{ scale: 0.96 }}
           >

@@ -69,6 +69,7 @@ export default function Projects() {
     <section className="projects">
       <h2 className="section-title">Projects</h2>
       <ProjectStats items={items} />
+      {items.length > 0 && (
       <RevealGroup as="ul" className="list">
         {items.map((p, i) => (
           <RevealItem as="li" key={i} className="list-item">
@@ -229,6 +230,7 @@ export default function Projects() {
           </RevealItem>
         ))}
       </RevealGroup>
+      )}
     </section>
   )
 }

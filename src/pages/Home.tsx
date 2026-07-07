@@ -5,7 +5,7 @@ import { Reveal } from '../components/Reveal'
 import Projects from './Projects'
 import Resume from './Resume'
 
-export default function Home({ onNavigate: _onNavigate }: { onNavigate: (p: 'projects' | 'resume' | 'home') => void }) {
+export default function Home() {
   const [selectedCardName, setSelectedCardName] = useState('lucario')
   const pokemonNames = ['lucario', 'espeon', 'flareon', 'glaceon', 'jolteon', 'leafeon', 'sylveon', 'umbreon', 'vaporeon']
 
