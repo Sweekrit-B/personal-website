@@ -1,3 +1,5 @@
+> **Superseded 2026-07-06.** Replaced by [2026-07-06-mobile-topbar-drawer-polish-design.md](2026-07-06-mobile-topbar-drawer-polish-design.md), which uses a top-bar + slide-out drawer for mobile nav instead of the bottom tab bar below, and drops the Framer Motion animation system. Only Task 1 of the matching plan (the `useTheme` hook refactor) was ever executed; it has been committed and carries forward unchanged.
+
 # Mobile Nav + Motion + Visual Polish — Design
 
 Date: 2026-07-06

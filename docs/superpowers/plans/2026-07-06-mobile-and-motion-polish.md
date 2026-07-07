@@ -1,3 +1,5 @@
+> **Superseded 2026-07-06.** Replaced by [2026-07-06-mobile-topbar-drawer-polish.md](2026-07-06-mobile-topbar-drawer-polish.md). Only Task 1 (`useTheme` hook refactor) was executed; it's committed (`refactor: lift theme state into shared useTheme hook`) and carries forward unchanged. Tasks 2–7 below (Framer Motion, bottom nav, decluttering, responsive fixes) were never started and should not be resumed — the new plan covers this project's remaining scope with a different nav pattern and no animation library.
+
 # Mobile Nav + Motion + Visual Polish Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
