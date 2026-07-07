@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react'
 import './App.css'
 import Sidebar from './components/Sidebar'
+import MobileHeader from './components/MobileHeader'
+import NavDrawer from './components/NavDrawer'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
@@ -9,9 +12,20 @@ import { useTheme } from './hooks/useTheme'
 export default function App() {
   const navigate = useNavigate()
   const [theme, toggleTheme] = useTheme()
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  useEffect(() => {
+    document.body.style.overflow = drawerOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [drawerOpen])
 
   return (
     <div className="site-root">
+      <MobileHeader theme={theme} onToggleTheme={toggleTheme} onOpenDrawer={() => setDrawerOpen(true)} />
+      <NavDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+
       <div className="app-layout">
         <Sidebar theme={theme} onToggleTheme={toggleTheme} />
 
