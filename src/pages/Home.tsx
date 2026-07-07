@@ -1,12 +1,12 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 import Card3D from '../components/Card3D'
+import { Reveal } from '../components/Reveal'
 import Projects from './Projects'
 import Resume from './Resume'
 
 export default function Home({ onNavigate: _onNavigate }: { onNavigate: (p: 'projects' | 'resume' | 'home') => void }) {
   const [selectedCardName, setSelectedCardName] = useState('lucario')
-  const projectsRef = useRef<HTMLDivElement>(null)
-  const resumeRef = useRef<HTMLDivElement>(null)
   const pokemonNames = ['lucario', 'espeon', 'flareon', 'glaceon', 'jolteon', 'leafeon', 'sylveon', 'umbreon', 'vaporeon']
 
   return (
@@ -20,7 +20,7 @@ export default function Home({ onNavigate: _onNavigate }: { onNavigate: (p: 'pro
 
           <div className="hero-content">
             <Card3D cardImageName={selectedCardName} />
-            <div className="profile-intro">
+            <Reveal className="profile-intro">
               <p>
                 I am a data science student at UCSD committed to leveraging data
                 driven insights and delivering full stack AI-integrated software
@@ -38,31 +38,34 @@ export default function Home({ onNavigate: _onNavigate }: { onNavigate: (p: 'pro
 
               <div className="evolution-row" aria-label="Pokemon selectors">
                 {pokemonNames.map((name) => (
-                  <button
+                  <motion.button
                     key={name}
                     type="button"
                     className={`evolution-chip${selectedCardName === name ? ' active' : ''}`}
                     onClick={() => setSelectedCardName(name)}
                     aria-label={`Show ${name} card`}
                     aria-pressed={selectedCardName === name}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.94 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   >
                     <img src={`${import.meta.env.BASE_URL}gifs/${name}.gif`} alt={name} />
-                  </button>
+                  </motion.button>
                 ))}
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </div>
     </section>
 
-    <div id="projects" ref={projectsRef} className="section-wrapper">
+    <Reveal as="div" id="projects" className="section-wrapper">
       <Projects />
-    </div>
+    </Reveal>
 
-    <div id="resume" ref={resumeRef} className="section-wrapper">
+    <Reveal as="div" id="resume" className="section-wrapper">
       <Resume />
-    </div>
+    </Reveal>
     </div>
   )
 }

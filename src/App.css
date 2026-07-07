@@ -455,8 +455,7 @@ body {
   background: transparent;
   padding: 4px;
   cursor: pointer;
-  transition: transform 140ms ease, border-color 140ms ease, background-color 140ms ease, scale 140ms ease;
-  scale: 1;
+  transition: border-color 140ms ease, background-color 140ms ease;
   position: relative;
 }
 
