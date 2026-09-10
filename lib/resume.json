@@ -18,6 +18,18 @@
   },
   "experience": [
     {
+      "role": "Data Science & Machine Learning Research Intern",
+      "company": "General Atomics",
+      "location": "San Diego, CA",
+      "start": "September 2026",
+      "startDate": "2026-09",
+      "end": "Present",
+      "endDate": null,
+      "bullets": [
+        "In collaboration with UCSD HDSI"
+      ]
+    },
+    {
       "role": "Software Engineering Intern",
       "company": "Adobe",
       "location": "San Francisco, CA",
