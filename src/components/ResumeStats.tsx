@@ -14,6 +14,7 @@ const key = (e: Experience) => `${e.role} @ ${e.company}`
 
 const SHORT: Record<string, string> = {
   'Software Engineering Intern @ Adobe':                                         'Adobe',
+  'Software Engineering Consultant @ SD County IT':                              'SD County IT',
   'Contract Full-Stack Software Engineer @ F3 Global':                           'F3 Global',
   'Autonomous Systems Software Engineer @ Yonder Dynamics':                      'Yonder Dynamics',
   'Data Science & Machine Learning Research Intern @ UC San Diego Health':       'UCSD Health Research',
@@ -29,6 +30,7 @@ const SHORT: Record<string, string> = {
 
 const DOMAIN_MAP: Record<string, string[]> = {
   'Software Engineering Intern @ Adobe':                                  ['AI / LLM', 'Data Science', 'Full Stack', 'Cloud'],
+  'Software Engineering Consultant @ SD County IT':                        ['Full Stack'],
   'Contract Full-Stack Software Engineer @ F3 Global':                     ['Full Stack'],
   'Autonomous Systems Software Engineer @ Yonder Dynamics':                ['Systems / Robotics'],
   'Data Science & Machine Learning Research Intern @ UC San Diego Health': ['Data Science'],
@@ -43,16 +45,17 @@ const DOMAIN_MAP: Record<string, string[]> = {
 }
 
 const LANG_MAP: Record<string, string[]> = {
-  'Software Engineering Intern @ Adobe':                                  ['Python', 'JavaScript', 'Terraform'],
-  'Contract Full-Stack Software Engineer @ F3 Global':                     ['JavaScript'],
+  'Software Engineering Intern @ Adobe':                                  ['Python', 'JavaScript', 'TypeScript', 'Terraform'],
+  'Software Engineering Consultant @ SD County IT':                        ['JavaScript', 'TypeScript'],
+  'Contract Full-Stack Software Engineer @ F3 Global':                     ['JavaScript', 'TypeScript'],
   'Autonomous Systems Software Engineer @ Yonder Dynamics':                ['Python', 'C++'],
   'Data Science & Machine Learning Research Intern @ UC San Diego Health': ['Python'],
-  'Software Engineering Consultant @ The Kaizen Academy':                  ['JavaScript'],
-  'Systems Software Engineering Consultant @ Brain Corp':                  ['JavaScript'],
+  'Software Engineering Consultant @ The Kaizen Academy':                  ['JavaScript', 'TypeScript'],
+  'Systems Software Engineering Consultant @ Brain Corp':                  ['JavaScript', 'TypeScript'],
   'AI/LLM & Backend Software Engineer @ Doe (YC S25)':                    ['Python'],
-  'Backend Software Engineering Intern @ Lion Street Financial':            ['JavaScript'],
+  'Backend Software Engineering Intern @ Lion Street Financial':            ['JavaScript', 'TypeScript'],
   'Software Engineering Consultant @ KlonIT AI':                           ['Python'],
-  'Contract Full-Stack Software Engineer @ UC San Diego Health':           ['JavaScript'],
+  'Contract Full-Stack Software Engineer @ UC San Diego Health':           ['JavaScript', 'TypeScript'],
   'AI Systems Software Engineering Intern @ Voicebotics AI':               ['Python'],
   'Data Science Consultant @ Out of the Blue AI':                          ['Python'],
 }
@@ -68,6 +71,7 @@ const DOMAIN_COLORS: Record<string, string> = {
 const LANG_COLORS: Record<string, string> = {
   Python:     '#5ba3d8',
   JavaScript: '#f0db4f',
+  TypeScript: '#3178c6',
   'C++':      '#f472b6',
   Terraform:  '#8b5cf6',
 }
