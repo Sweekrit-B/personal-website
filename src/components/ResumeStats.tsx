@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { DOMAIN_COLORS } from '../lib/domains'
 
 type Experience = { role: string; company: string }
 
@@ -61,15 +62,6 @@ const LANG_MAP: Record<string, string[]> = {
   'Contract Full-Stack Software Engineer @ UC San Diego Health':           ['JavaScript', 'TypeScript'],
   'AI Systems Software Engineering Intern @ Voicebotics AI':               ['Python'],
   'Data Science Consultant @ Out of the Blue AI':                          ['Python'],
-}
-
-const DOMAIN_COLORS: Record<string, string> = {
-  'AI / LLM':           '#818cf8',
-  'Machine Learning':   '#fb7185',
-  'Full Stack':         '#fbbf24',
-  'Data Science':       '#34d399',
-  'Systems / Robotics': '#fb923c',
-  'Cloud':              '#38bdf8',
 }
 
 const LANG_COLORS: Record<string, string> = {

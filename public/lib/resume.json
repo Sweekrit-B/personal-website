@@ -27,6 +27,14 @@
       "endDate": null,
       "bullets": [
         "In collaboration with UCSD HDSI"
+      ],
+      "domains": [
+        "Data Science",
+        "Machine Learning"
+      ],
+      "skills": [
+        "Python",
+        "Machine Learning"
       ]
     },
     {
@@ -44,6 +52,24 @@
         "Architected a 5-stage LLM pipeline on AWS Bedrock, provisioned with Terraform (IaC) and integrated into CI/CD.",
         "Tracked 500+ decisions/day by building an observability dashboard on AWS RDS with production monitoring.",
         "Validated model decisions continuously by building a recurring LLM evaluation microservice that samples 200 PRs for human labeling."
+      ],
+      "domains": [
+        "AI / LLM",
+        "Machine Learning",
+        "Data Science",
+        "Full Stack",
+        "Cloud"
+      ],
+      "skills": [
+        "Python",
+        "LightGBM",
+        "Apache Arrow",
+        "Databricks",
+        "AWS Bedrock",
+        "AWS RDS",
+        "Terraform",
+        "CI/CD",
+        "LLMs"
       ]
     },
     {
@@ -60,6 +86,20 @@
         "Achieved 99.8% positional accuracy by fusing satellite GPS with wireless correction data over a live networking link.",
         "2x-ed developer throughput and moved 60–70% of testing off-rover by building a Webots-ROS2 simulation integrating 13 rover packages.",
         "Developed embedded Arduino firmware running 4 biochemical tests to control a life-detection experiment robot."
+      ],
+      "domains": [
+        "Systems / Robotics",
+        "Machine Learning"
+      ],
+      "skills": [
+        "Python",
+        "C++",
+        "PyTorch",
+        "ROS2",
+        "Theta*",
+        "Computer Vision",
+        "Arduino",
+        "Docker"
       ]
     },
     {
@@ -75,6 +115,18 @@
         "Resolved 10–15 neurons at 90% accuracy across 12+ microscopy videos by tuning a PyTorch/TensorFlow CNN.",
         "Achieved 79.08% accuracy on HIV prediction by building L1-regularized tree and regression models with k-fold cross-validation.",
         "Identified disease-associated taxa across 800+ bacteria through differential abundance analysis using DESeq2."
+      ],
+      "domains": [
+        "Data Science",
+        "Machine Learning"
+      ],
+      "skills": [
+        "Python",
+        "PyTorch",
+        "TensorFlow",
+        "scikit-learn",
+        "Bash",
+        "Computer Vision"
       ]
     },
     {
@@ -90,6 +142,17 @@
         "Scoped authentication, database architecture, API routing, and frontend UI/UX with the county IT department head.",
         "Owned data authorization end to end by specifying and implementing role-based access control across the API and backend layers.",
         "Replaced a legacy spreadsheet system with real-time permission-sync built on an Express API layer for county-wide access."
+      ],
+      "domains": [
+        "Full Stack"
+      ],
+      "skills": [
+        "JavaScript",
+        "TypeScript",
+        "Express",
+        "Node.js",
+        "REST APIs",
+        "RBAC"
       ]
     },
     {
@@ -104,6 +167,16 @@
         "Increased client acquisition for a 501(c)(3) small business microfinancing nonprofit by building and deploying key frontend pages (client stories, About Us, privacy policy) for a redesigned homepage with React.",
         "Enabled content management by developing Express/MongoDB APIs to create, edit, and delete newsletter articles.",
         "Drove user engagement by integrating a contact system with backend routing and custom email workflows."
+      ],
+      "domains": [
+        "Full Stack"
+      ],
+      "skills": [
+        "JavaScript",
+        "React",
+        "Express",
+        "MongoDB",
+        "Node.js"
       ]
     },
     {
@@ -118,6 +191,18 @@
         "Reduced teacher prep time by 60% by building a file upload system integrating Google Cloud and Supabase storage.",
         "Architected and implemented a full-stack dashboard system for 200+ users, designing PostgreSQL schemas and Express APIs for assignments, user management, file storage, gradebooks, and custom email notifications.",
         "Secured role-based access in dashboards by developing middleware with cookie-based auth and permission gating."
+      ],
+      "domains": [
+        "Full Stack",
+        "Cloud"
+      ],
+      "skills": [
+        "JavaScript",
+        "React",
+        "Express",
+        "PostgreSQL",
+        "Supabase",
+        "Google Cloud"
       ]
     },
     {
@@ -132,6 +217,16 @@
         "Evaluated VDA 5050 API and fleet-management feasibility by building a full-stack MQTT simulation platform with JSON messaging and agent-based modeling of grocery-store robotics scenarios (cleaning, restocking, etc.).",
         "Independently designed the simulation methodology and modeled fleet communication as structured packet exchange to surface protocol constraints and integration tradeoffs.",
         "Delivered the API analysis by leading a team of 3 developers and validating networking behavior across 2 fleet scenarios."
+      ],
+      "domains": [
+        "Systems / Robotics"
+      ],
+      "skills": [
+        "JavaScript",
+        "TypeScript",
+        "MQTT",
+        "Node.js",
+        "Simulation"
       ]
     },
     {
@@ -147,6 +242,19 @@
         "Enabled retrieval for 100K+ dental products with Playwright-based scraping pipelines integrated with cloud SQL.",
         "Secured credential and task-memory storage with RBAC and IV-HMAC encryption, scoped per role and org.",
         "Created 12+ external integrations (Ramp, Google Cloud, Microsoft) with Model Context Protocol infrastructure."
+      ],
+      "domains": [
+        "AI / LLM"
+      ],
+      "skills": [
+        "Python",
+        "RAG",
+        "Pinecone",
+        "MCP",
+        "LLMs",
+        "Playwright",
+        "Vector Databases",
+        "Google Cloud"
       ]
     },
     {
@@ -161,6 +269,16 @@
         "Built AI insurer support by architecting a multi-tenant Express/Supabase backend with structured data flows.",
         "Engineered agentic LLM workflows with tool chaining, memory, and feedback loops for conversation handling.",
         "Delivered multilingual meeting insights via an LLM system with streaming transcription and summarization."
+      ],
+      "domains": [
+        "AI / LLM"
+      ],
+      "skills": [
+        "JavaScript",
+        "Express",
+        "Supabase",
+        "LLMs",
+        "Agentic AI"
       ]
     },
     {
@@ -175,6 +293,17 @@
         "Built a production MCP server integrating Google Suite and local SQL sources to support LLM workflows.",
         "Reduced multi-platform task execution from 9 minutes to less than 1 minute by engineering prompt templates and agent pipelines enabling single-shot natural language automation of 20+ step medical and retail workflows.",
         "Delivered 8+ LLM system capabilities (Natural Language-to-PostgreSQL, context injection, retrieval) while coordinating 4 developers across Agile sprints and client-facing technical reviews."
+      ],
+      "domains": [
+        "AI / LLM"
+      ],
+      "skills": [
+        "Python",
+        "MCP",
+        "LLMs",
+        "Prompt Engineering",
+        "PostgreSQL",
+        "Agentic AI"
       ]
     },
     {
@@ -189,6 +318,18 @@
         "Delivered gamified safety training to 15,000+ high-school students across San Diego County by building a scalable MERN-based EdTech platform, gating e-scooter and e-bike access on course completion.",
         "Boosted engagement by building Duolingo-style React modules with quizzes, animations, and state-driven progression.",
         "Implemented secure session-based auth and persistent progress tracking using MongoDB and Firebase."
+      ],
+      "domains": [
+        "Full Stack",
+        "Cloud"
+      ],
+      "skills": [
+        "JavaScript",
+        "React",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Firebase"
       ]
     },
     {
@@ -203,6 +344,16 @@
         "Built backend services processing 1,030+ CRM records to extract summaries, sentiment, and action items.",
         "Engineered a real-time NLP pipeline with prompt chaining and sliding context to enable bi-directional CRM sync.",
         "Implemented OAuth 2.0 authentication, LLM and GoHighLevel (CRM) API token management, and backend validation (Postman testing, logging) to support secure app installation and reliable integrations."
+      ],
+      "domains": [
+        "AI / LLM"
+      ],
+      "skills": [
+        "JavaScript",
+        "NLP",
+        "LLMs",
+        "OAuth 2.0",
+        "REST APIs"
       ]
     },
     {
@@ -217,21 +368,131 @@
         "Identified 40+ critical incidents in e-commerce analytics across device and geography segments by building hierarchical time-series models (Prophet, ARIMA, scikit-learn) on 1M+ row Parquet datasets.",
         "Attributed temporal anomalies to key dimensions using subgroup error metrics, Pandas, and DBSCAN clustering.",
         "Enabled data-driven decisions via Streamlit/Plotly dashboard visualizing anomaly trends and segment contributions."
+      ],
+      "domains": [
+        "Data Science",
+        "Machine Learning"
+      ],
+      "skills": [
+        "Python",
+        "Pandas",
+        "scikit-learn",
+        "Prophet",
+        "ARIMA",
+        "DBSCAN",
+        "Plotly"
       ]
     }
   ],
   "technicalSkills": [
     {
-      "category": "Languages & Frameworks",
-      "items": ["Python", "Java", "C++", "JavaScript/TypeScript", "SQL", "Kotlin", "HTML/CSS", "MERN stack"]
+      "category": "Languages & OS",
+      "items": [
+        "Python",
+        "Java",
+        "C/C++",
+        "JavaScript/TypeScript",
+        "SQL",
+        "Kotlin",
+        "Bash",
+        "HTML/CSS",
+        "Terraform",
+        "Linux/Unix"
+      ]
     },
     {
-      "category": "Data & AI/ML",
-      "items": ["NoSQL", "MySQL", "Vector DBs", "Pandas", "NumPy", "Excel", "scikit-learn", "TensorFlow", "RAG", "Prompting", "Agents", "MCP"]
+      "category": "Machine Learning",
+      "items": [
+        "scikit-learn",
+        "PyTorch",
+        "TensorFlow",
+        "XGBoost",
+        "LightGBM",
+        "SHAP",
+        "GridSearchCV",
+        "Prophet/ARIMA",
+        "CNNs",
+        "Computer Vision (CV)",
+        "Object Detection",
+        "Perception",
+        "Natural Language Processing (NLP)",
+        "Feature Engineering"
+      ]
     },
     {
-      "category": "Cloud & DevOps",
-      "items": ["AWS", "Google Cloud", "Docker", "Git", "CI/CD", "Agile", "Markdown", "REST APIs", "Vercel", "Firebase", "PostHog"]
+      "category": "Data",
+      "items": [
+        "Pandas",
+        "NumPy",
+        "Databricks",
+        "Apache Arrow/Spark",
+        "PostgreSQL",
+        "MSSQL",
+        "MySQL",
+        "NoSQL",
+        "Excel",
+        "Tableau"
+      ]
+    },
+    {
+      "category": "Software Engineering",
+      "items": [
+        "MongoDB",
+        "Express",
+        "Node.js",
+        "React Native",
+        "React.js",
+        "REST APIs",
+        "FastAPI",
+        "ROS2",
+        "IAM",
+        "SDLC"
+      ]
+    },
+    {
+      "category": "AI",
+      "items": [
+        "Large Language Models (LLMs)",
+        "Agentic AI",
+        "Retrieval Augmented Generation (RAG)",
+        "Model Context Protocol (MCP)",
+        "Prompt Engineering",
+        "XML",
+        "Anthropic/OpenAI SDKs",
+        "Vector Databases",
+        "Pinecone",
+        "GenAI",
+        "AI-assisted Coding"
+      ]
+    },
+    {
+      "category": "Cloud",
+      "items": [
+        "AWS S3",
+        "AWS RDS",
+        "AWS Bedrock",
+        "AWS EC2",
+        "Google Cloud (GCP)",
+        "Docker",
+        "Git",
+        "CI/CD",
+        "Agile",
+        "Atlassian Jira"
+      ]
+    },
+    {
+      "category": "Product & Communication",
+      "items": [
+        "Product discovery",
+        "Requirements scoping",
+        "Roadmapping",
+        "Prioritization",
+        "Stakeholder management",
+        "Cross-functional communication",
+        "Team leadership",
+        "Agile/Scrum",
+        "KPI/OKR"
+      ]
     }
   ]
 }

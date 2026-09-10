@@ -4,6 +4,7 @@ import Card3D from '../components/Card3D'
 import { Reveal } from '../components/Reveal'
 import Projects from './Projects'
 import Resume from './Resume'
+import Skills from './Skills'
 
 export default function Home() {
   const [selectedCardName, setSelectedCardName] = useState('lucario')
@@ -65,6 +66,10 @@ export default function Home() {
 
     <Reveal as="div" id="resume" className="section-wrapper">
       <Resume />
+    </Reveal>
+
+    <Reveal as="div" id="skills" className="section-wrapper">
+      <Skills />
     </Reveal>
     </div>
   )

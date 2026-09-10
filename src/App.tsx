@@ -7,9 +7,10 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
 import Resume from './pages/Resume'
+import Skills from './pages/Skills'
 import { useTheme } from './hooks/useTheme'
 
-export type ScrollTarget = 'top' | 'projects' | 'resume'
+export type ScrollTarget = 'top' | 'projects' | 'resume' | 'skills'
 
 function performScroll(target: ScrollTarget) {
   if (target === 'top') {
@@ -67,6 +68,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/resume" element={<Resume />} />
+              <Route path="/skills" element={<Skills />} />
             </Routes>
           </main>
         </div>

@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "vitest run",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "d3-force": "^3.0.0",
     "framer-motion": "^12.42.2",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/d3-force": "^3.0.10",
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
@@ -34,6 +37,7 @@
     "globals": "^17.5.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.63.0",
-    "vite": "^8.0.10"
+    "vite": "^8.0.10",
+    "vitest": "^2.1.9"
   }
 }

@@ -53,6 +53,13 @@ export default function NavDrawer({ open, onClose, onNavigate }: NavDrawerProps)
           >
             Resume
           </motion.button>
+          <motion.button
+            onClick={() => go(() => onNavigate('skills'))}
+            aria-label="Scroll to skills"
+            whileTap={{ scale: 0.96 }}
+          >
+            Skills
+          </motion.button>
         </nav>
 
         <div className="sidebar-footer">© {new Date().getFullYear()}</div>

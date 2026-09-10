@@ -69,6 +69,14 @@ export default function Sidebar({ theme, onToggleTheme, onNavigate }: SidebarPro
           >
             <span className="nav-label">Resume</span>
           </motion.button>
+          <motion.button
+            className="nav-button"
+            onClick={() => onNavigate('skills')}
+            aria-label="Scroll to skills"
+            whileHover={{ x: 2 }}
+          >
+            <span className="nav-label">Skills</span>
+          </motion.button>
         </nav>
 
         <div className="sidebar-footer">© {new Date().getFullYear()}</div>

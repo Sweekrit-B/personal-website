@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { RevealGroup, RevealItem } from '../components/Reveal'
 import ResumeStats from '../components/ResumeStats'
+import type { SkillGroup } from '../lib/skillClusters'
 
 type Experience = {
   role: string
@@ -10,6 +11,8 @@ type Experience = {
   start?: string
   end?: string | null
   bullets?: string[]
+  domains?: string[]
+  skills?: string[]
 }
 
 type Education = {
@@ -20,7 +23,7 @@ type Education = {
 type Resume = {
   education?: Education
   experience?: Experience[]
-  technicalSkills?: string[]
+  technicalSkills?: SkillGroup[]
 }
 
 const LOGOS: Record<string, string[]> = {
@@ -116,6 +119,7 @@ export default function Resume() {
           </RevealGroup>
         </div>
       )}
+
     </section>
   )
 }

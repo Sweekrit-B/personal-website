@@ -361,7 +361,8 @@ body {
 
 .home-container,
 .projects,
-.resume {
+.resume,
+.skills-page {
   width: 100%;
 }
 
@@ -920,6 +921,201 @@ body {
   .stat-legend {
     width: 100%;
   }
+}
+
+/* ── Skill map ───────────────────────────────────────────── */
+.skill-constellation {
+  margin-top: 8px;
+  padding: 18px 20px 14px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  animation: pageIn 0.35s ease both;
+}
+
+.skc-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 18px;
+  margin-bottom: 6px;
+}
+
+.skc-head .stat-card-title {
+  margin: 0;
+}
+
+.skc-count {
+  margin: 3px 0 0;
+  font-size: 11px;
+  color: var(--text-subtle);
+}
+
+.skc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.skc-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.14s ease;
+}
+
+.skc-legend-item.on {
+  color: var(--text);
+}
+
+.skc-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.skc-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  touch-action: none;
+  overflow: visible;
+}
+
+.skc-link {
+  stroke-width: 1.2;
+  transition: opacity 0.18s ease;
+}
+
+.skc-node {
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+
+.skc-node.skill {
+  cursor: grab;
+}
+
+.skc-shape {
+  transition: transform 0.15s ease;
+}
+
+.skc-node:hover .skc-shape,
+.skc-node.pinned .skc-shape {
+  transform: scale(1.14);
+}
+
+.skc-node.hub.pinned .skc-shape {
+  filter: drop-shadow(0 0 7px currentColor);
+}
+
+.skc-hub-label {
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  fill: var(--text);
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 5px;
+}
+
+.skc-label {
+  font-family: Inter, sans-serif;
+  fill: var(--text);
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 5px;
+}
+
+.skc-label.skill {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.skc-hint {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--text-subtle);
+  text-align: center;
+}
+
+/* traditional categorized list below the graph */
+.skc-catlist {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.skc-cat-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.skc-cat-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skc-cat-chip {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+}
+
+/* mobile fallback — grouped chips */
+.skc-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.skc-mgroup-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 7px;
+}
+
+.skc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skc-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  font-size: 11.5px;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: 999px;
 }
 
 /* ── Paper preview ───────────────────────────────────────── */
