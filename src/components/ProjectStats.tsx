@@ -41,14 +41,14 @@ const FIELD_MAP: Record<string, string[]> = {
 
 const LANG_MAP: Record<string, string[]> = {
   'Yonder Dynamics - Mars Rover Team @ UCSD':                                            ['Python', 'C++'],
-  'Climate Projections and the Future of Storms':                                         ['JavaScript'],
+  'Climate Projections and the Future of Storms':                                         ['JavaScript', 'TypeScript'],
   'Hantavirus Modeling and Prediction':                                                   ['Python'],
   'Climate-Driven Power Outage Prediction':                                               ['Python'],
-  'Aletheia - Medical Aid & Pill Tracking Agentic AI Web App @ CalHacks AI 2025':        ['Python', 'JavaScript'],
-  'TallyUp - Hierarchal Club Finance Tracking App @ LA Hacks 2025':                      ['JavaScript'],
+  'Aletheia - Medical Aid & Pill Tracking Agentic AI Web App @ CalHacks AI 2025':        ['Python', 'JavaScript', 'TypeScript'],
+  'TallyUp - Hierarchal Club Finance Tracking App @ LA Hacks 2025':                      ['JavaScript', 'TypeScript'],
   'ML Paper Recommender':                                                                 ['Python'],
   'Airline Customer Satisfaction Prediction':                                             ['Python'],
-  'To Do List App':                                                                       ['JavaScript'],
+  'To Do List App':                                                                       ['JavaScript', 'TypeScript'],
   'Bioinformatics Algorithms':                                                            ['Python'],
   'Calendar Application':                                                                 ['Kotlin'],
   'Epidemics.io':                                                                         ['Python'],
