@@ -13,6 +13,7 @@ const SHORT: Record<string, string> = {
   'Yonder Dynamics - Mars Rover Team @ UCSD': 'Mars Rover Team',
   'Climate Projections and the Future of Storms': 'Climate Projections',
   'Hantavirus Modeling and Prediction': 'Hantavirus Modeling',
+  'Hotel Booking Cancellation and Pricing Analysis': 'Hotel Booking Analysis',
   'Climate-Driven Power Outage Prediction': 'Power Outage ML',
   'Aletheia - Medical Aid & Pill Tracking Agentic AI Web App @ CalHacks AI 2025': 'Aletheia',
   'TallyUp - Hierarchal Club Finance Tracking App @ LA Hacks 2025': 'TallyUp',
@@ -28,6 +29,7 @@ const FIELD_MAP: Record<string, string[]> = {
   'Yonder Dynamics - Mars Rover Team @ UCSD':                                            ['Robotics', 'Machine Learning'],
   'Climate Projections and the Future of Storms':                                         ['Data Science', 'Data Visualization'],
   'Hantavirus Modeling and Prediction':                                                   ['Machine Learning', 'Data Science'],
+  'Hotel Booking Cancellation and Pricing Analysis':                                       ['Data Science'],
   'Climate-Driven Power Outage Prediction':                                               ['Machine Learning', 'Data Science'],
   'Aletheia - Medical Aid & Pill Tracking Agentic AI Web App @ CalHacks AI 2025':        ['Machine Learning', 'Full Stack'],
   'TallyUp - Hierarchal Club Finance Tracking App @ LA Hacks 2025':                      ['Full Stack'],
@@ -43,6 +45,7 @@ const LANG_MAP: Record<string, string[]> = {
   'Yonder Dynamics - Mars Rover Team @ UCSD':                                            ['Python', 'C++'],
   'Climate Projections and the Future of Storms':                                         ['JavaScript', 'TypeScript'],
   'Hantavirus Modeling and Prediction':                                                   ['Python'],
+  'Hotel Booking Cancellation and Pricing Analysis':                                       ['R'],
   'Climate-Driven Power Outage Prediction':                                               ['Python'],
   'Aletheia - Medical Aid & Pill Tracking Agentic AI Web App @ CalHacks AI 2025':        ['Python', 'JavaScript', 'TypeScript'],
   'TallyUp - Hierarchal Club Finance Tracking App @ LA Hacks 2025':                      ['JavaScript', 'TypeScript'],
@@ -68,6 +71,7 @@ const LANG_COLORS: Record<string, string> = {
   TypeScript: '#3178c6',
   'C++':      '#f472b6',
   Kotlin:     '#b08ef0',
+  R:          '#276dc3',
 }
 
 function buildSegs(

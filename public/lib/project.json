@@ -70,6 +70,19 @@
     ]
   },
   {
+    "title": "Hotel Booking Cancellation and Pricing Analysis",
+    "year": "Spring 2026",
+    "description": "Modeled 119K hotel bookings with logistic regression in R to predict cancellations and analyze pricing, finding that non-refundable deposits carry 287x higher cancellation odds. Tested model significance through hypothesis testing and ANOVA, and diagnosed linearity and normality assumptions via residual analysis.",
+    "skills": [
+      "R",
+      "Logistic Regression",
+      "Hypothesis Testing",
+      "ANOVA",
+      "Statistical Analysis"
+    ],
+    "links": []
+  },
+  {
     "title": "Climate-Driven Power Outage Prediction",
     "year": "Fall 2025",
     "description": "Trained Decision Tree & Random Forest models on 1,534 outages with 10+ climate/geospatial features using k-fold CV & GridSearchCV, improving accuracy from 57.9% → 69.4% (+11.5%). Engineered custom features including seasonal encoding, hurricane binarization, multicollinearity reduction, & applied encoding with median & probabilistic imputation. Performed EDA, permutation testing, & missingness analysis using TVD-based statistics, validating effects on outage duration & fairness via subgroup accuracy testing.",
