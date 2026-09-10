@@ -25,6 +25,7 @@ type Resume = {
 
 const LOGOS: Record<string, string[]> = {
   'Adobe':                 ['adobe.png'],
+  'General Atomics':        ['general-atomics.png'],
   'Yonder Dynamics':       ['yonder-dynamics.png'],
   'UC San Diego Health':   ['ucsd.png'],
   'Brain Corp':            ['braincorp.png'],

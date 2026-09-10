@@ -13,6 +13,7 @@ type Seg = {
 const key = (e: Experience) => `${e.role} @ ${e.company}`
 
 const SHORT: Record<string, string> = {
+  'Data Science & Machine Learning Research Intern @ General Atomics':           'General Atomics',
   'Software Engineering Intern @ Adobe':                                         'Adobe',
   'Software Engineering Consultant @ SD County IT':                              'SD County IT',
   'Contract Full-Stack Software Engineer @ F3 Global':                           'F3 Global',
@@ -29,11 +30,12 @@ const SHORT: Record<string, string> = {
 }
 
 const DOMAIN_MAP: Record<string, string[]> = {
-  'Software Engineering Intern @ Adobe':                                  ['AI / LLM', 'Data Science', 'Full Stack', 'Cloud'],
+  'Data Science & Machine Learning Research Intern @ General Atomics':     ['Data Science', 'Machine Learning'],
+  'Software Engineering Intern @ Adobe':                                  ['AI / LLM', 'Machine Learning', 'Data Science', 'Full Stack', 'Cloud'],
   'Software Engineering Consultant @ SD County IT':                        ['Full Stack'],
   'Contract Full-Stack Software Engineer @ F3 Global':                     ['Full Stack'],
   'Autonomous Systems Software Engineer @ Yonder Dynamics':                ['Systems / Robotics'],
-  'Data Science & Machine Learning Research Intern @ UC San Diego Health': ['Data Science'],
+  'Data Science & Machine Learning Research Intern @ UC San Diego Health': ['Data Science', 'Machine Learning'],
   'Software Engineering Consultant @ The Kaizen Academy':                  ['Full Stack'],
   'Systems Software Engineering Consultant @ Brain Corp':                  ['Systems / Robotics'],
   'AI/LLM & Backend Software Engineer @ Doe (YC S25)':                    ['AI / LLM'],
@@ -45,6 +47,7 @@ const DOMAIN_MAP: Record<string, string[]> = {
 }
 
 const LANG_MAP: Record<string, string[]> = {
+  'Data Science & Machine Learning Research Intern @ General Atomics':     ['Python'],
   'Software Engineering Intern @ Adobe':                                  ['Python', 'JavaScript', 'TypeScript', 'Terraform'],
   'Software Engineering Consultant @ SD County IT':                        ['JavaScript', 'TypeScript'],
   'Contract Full-Stack Software Engineer @ F3 Global':                     ['JavaScript', 'TypeScript'],
@@ -62,6 +65,7 @@ const LANG_MAP: Record<string, string[]> = {
 
 const DOMAIN_COLORS: Record<string, string> = {
   'AI / LLM':           '#818cf8',
+  'Machine Learning':   '#fb7185',
   'Full Stack':         '#fbbf24',
   'Data Science':       '#34d399',
   'Systems / Robotics': '#fb923c',
