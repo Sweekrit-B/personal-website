@@ -3,6 +3,10 @@
     "title": "Yonder Dynamics - Mars Rover Team @ UCSD",
     "year": "2023–2025",
     "isRover": true,
+    "domains": [
+      "Systems / Robotics",
+      "Machine Learning"
+    ],
     "skills": [
       "ROS2",
       "Python",
@@ -53,26 +57,66 @@
     "title": "Climate Projections and the Future of Storms",
     "year": "Spring 2026",
     "description": "Built interactive map and 3D globe visualizations in D3.js to display historical and projected tropical storm tracks across multiple CMIP6 climate scenarios, enabling spatial comparison of storm behavior over time. Developed supplementary time-series and statistical charts contextualizing past and present storm trends, translating raw climate model ensemble data into clear, audience-readable graphics. Owned end-to-end visual design and narrative structure of a data-driven scrollytelling experience, ensuring cohesive styling and a guided story arc from historical context through future emissions projections.",
-    "skills": ["D3.js", "JavaScript", "Data Visualization", "CMIP6", "Scrollytelling", "Climate Science"],
+    "domains": [
+      "Data Visualization",
+      "Data Science"
+    ],
+    "skills": [
+      "D3.js",
+      "JavaScript",
+      "Data Visualization",
+      "CMIP6",
+      "Scrollytelling",
+      "Climate Science"
+    ],
     "links": [
-      { "label": "Live Demo", "href": "https://nkerudi.github.io/Final-Project-DSC106-/storm_futures/" },
-      { "label": "GitHub", "href": "https://github.com/nkerudi/Final-Project-DSC106-" }
+      {
+        "label": "Live Demo",
+        "href": "https://nkerudi.github.io/Final-Project-DSC106-/storm_futures/"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/nkerudi/Final-Project-DSC106-"
+      }
     ]
   },
   {
     "title": "Hantavirus Modeling and Prediction",
     "year": "Spring 2026",
     "description": "Implemented data cleaning pipelines and feature development for synthetic hantavirus clinical data, incorporating country-based epidemiological information, environmental data, and social metrics sourced from the Open-Meteo and World Bank APIs. Developed and tested a three-stage modeling pipeline for hantavirus mortality prediction, performing baseline classification, hyperparameter tuning, class calibration, and custom threshold tuning across Logistic Regression, Random Forest, XGBoost, and LightGBM. Conducted secondary statistical analysis using McNemar Tests and Cochran's Q Test, and provided interpretation of top predictive features using SHAP.",
-    "skills": ["Python", "Logistic Regression", "Random Forest", "XGBoost", "LightGBM", "SHAP", "Feature Engineering", "Epidemiology", "Statistical Analysis"],
+    "domains": [
+      "Machine Learning",
+      "Data Science"
+    ],
+    "skills": [
+      "Python",
+      "Logistic Regression",
+      "Random Forest",
+      "XGBoost",
+      "LightGBM",
+      "SHAP",
+      "Feature Engineering",
+      "Epidemiology",
+      "Statistical Analysis"
+    ],
     "links": [
-      { "label": "GitHub", "href": "https://github.com/Sweekrit-B/dsc-148-hantavirus-preds" },
-      { "label": "Paper", "href": "https://drive.google.com/file/d/1dijuQS3945fdkb-bwvAef3ugjIkTGPWw/view?usp=sharing" }
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Sweekrit-B/dsc-148-hantavirus-preds"
+      },
+      {
+        "label": "Paper",
+        "href": "https://drive.google.com/file/d/1dijuQS3945fdkb-bwvAef3ugjIkTGPWw/view?usp=sharing"
+      }
     ]
   },
   {
     "title": "Hotel Booking Cancellation and Pricing Analysis",
     "year": "Spring 2026",
     "description": "Modeled 119K hotel bookings with logistic regression in R to predict cancellations and analyze pricing, finding that non-refundable deposits carry 287x higher cancellation odds. Tested model significance through hypothesis testing and ANOVA, and diagnosed linearity and normality assumptions via residual analysis.",
+    "domains": [
+      "Data Science"
+    ],
     "skills": [
       "R",
       "Logistic Regression",
@@ -86,6 +130,10 @@
     "title": "Climate-Driven Power Outage Prediction",
     "year": "Fall 2025",
     "description": "Trained Decision Tree & Random Forest models on 1,534 outages with 10+ climate/geospatial features using k-fold CV & GridSearchCV, improving accuracy from 57.9% → 69.4% (+11.5%). Engineered custom features including seasonal encoding, hurricane binarization, multicollinearity reduction, & applied encoding with median & probabilistic imputation. Performed EDA, permutation testing, & missingness analysis using TVD-based statistics, validating effects on outage duration & fairness via subgroup accuracy testing.",
+    "domains": [
+      "Machine Learning",
+      "Data Science"
+    ],
     "skills": [
       "Python",
       "Decision Trees",
@@ -111,6 +159,10 @@
     "year": "Summer 2025",
     "video": "https://www.youtube.com/watch?v=aNmi3gI5nAk",
     "description": "Developed structured agentic AIs using Letta and Anthropic Claude 4, equipped with custom tools such as drug querying and web search, for personalized user recommendations regarding medicinal questions. Created inference models for insurance company grading and image detection models for label reading with Gemini Generative AI API.",
+    "domains": [
+      "AI / LLM",
+      "Full Stack"
+    ],
     "skills": [
       "Python",
       "Agentic AI",
@@ -129,6 +181,9 @@
     "year": "Spring 2025",
     "video": "https://www.youtube.com/watch?v=BPfS8f4Acwg",
     "description": "Built backend from scratch using the MERN stack with React Native frontend; modeled nested groups, subgroups, and per-user balances using MongoDB with relational object structures and nested document design. Engineered RESTful APIs with Express and Axios for real-time debt tracking, custom member assignments, and ledger sync across recursive group trees; tackled bi-directional state-sharing logic between users and nested club structures.",
+    "domains": [
+      "Full Stack"
+    ],
     "skills": [
       "MongoDB",
       "React Native",
@@ -148,6 +203,10 @@
     "title": "ML Paper Recommender",
     "year": "Spring 2025",
     "description": "Used queried ArXIV dataset, TF-IDF vectorization, and cosine similarity to return top search results for scientific papers based on abstract.",
+    "domains": [
+      "Machine Learning",
+      "Data Science"
+    ],
     "skills": [
       "Scikit-Learn",
       "Python",
@@ -168,6 +227,10 @@
     "title": "Airline Customer Satisfaction Prediction",
     "year": "Fall 2024",
     "description": "Created data visualization using Seaborn and Matplotlib and performed high-level analysis for multidimensional CSV customer data; proposed and tested three preprocessing pipelines for highest prediction accuracy. Tested various ML models with Scikit-Learn, including Random Forests, KNNs, and XGBoost to develop high accuracy (96%), low error predictions and feature importances, used to draw business insights for customer acquisition. Consolidated findings into final stakeholder presentation providing personalized business suggestions to airline companies to increase customer satisfaction and capture greater market share for maximal profit.",
+    "domains": [
+      "Machine Learning",
+      "Data Science"
+    ],
     "skills": [
       "Seaborn",
       "Git",
@@ -188,6 +251,9 @@
     "title": "To Do List App",
     "year": "Fall 2024",
     "description": "Associated with Triton Software Engineering. Created dynamically-updating to-do list app utilizing the MERN stack, complete with functionality to check and uncheck tasks, edit task information, and assign users. Managed backend database with MongoDB Atlas and tested API calls with Postman.",
+    "domains": [
+      "Full Stack"
+    ],
     "skills": [
       "MongoDB",
       "React.js",
@@ -209,6 +275,9 @@
     "title": "Bioinformatics Algorithms",
     "year": "Summer 2024",
     "description": "Associated with UC San Diego School of Medicine. Replicated the Needleman-Wunsch algorithm, inputting randomized nucleotide sequences to determine similarity. Built the Hidden Markov Model, determining the existence of mRNA coding regions through probability matrices. Developed the Burrows-Wheeler Algorithm for matching sampled reads to nucleotide sequences via data transformation.",
+    "domains": [
+      "Data Science"
+    ],
     "skills": [
       "Recursion",
       "Backtracking",
@@ -229,6 +298,9 @@
     "title": "Calendar Application",
     "year": "Summer 2024",
     "description": "Developed a working Android calendar application; app displays user data from Google Calendar plug-ins, adds calendar events using a custom-made form, and sends invites to event guests.",
+    "domains": [
+      "Full Stack"
+    ],
     "skills": [
       "Google Calendar API",
       "Kotlin",
@@ -246,6 +318,10 @@
     "year": "Summer 2024",
     "video": "https://www.youtube.com/watch?v=5DtQ335HXNI",
     "description": "Associated with buildspace s5. Developed epidemiology simulator using Mesa and NetworkX Python libraries capable of handling 500+ agents in gridded torus maps and randomly-generated network models to showcase the spread of a user-defined infection. Identified key risk factors for disease spread and implemented as agent properties.",
+    "domains": [
+      "Data Visualization",
+      "Data Science"
+    ],
     "skills": [
       "Data Visualization",
       "Epidemiology",
