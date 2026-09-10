@@ -13,6 +13,7 @@ type Seg = {
 const key = (e: Experience) => `${e.role} @ ${e.company}`
 
 const SHORT: Record<string, string> = {
+  'Software Engineering Intern @ Adobe':                                         'Adobe',
   'Contract Full-Stack Software Engineer @ F3 Global':                           'F3 Global',
   'Autonomous Systems Software Engineer @ Yonder Dynamics':                      'Yonder Dynamics',
   'Data Science & Machine Learning Research Intern @ UC San Diego Health':       'UCSD Health Research',
@@ -27,6 +28,7 @@ const SHORT: Record<string, string> = {
 }
 
 const DOMAIN_MAP: Record<string, string[]> = {
+  'Software Engineering Intern @ Adobe':                                  ['AI / LLM', 'Data Science', 'Full Stack', 'Cloud'],
   'Contract Full-Stack Software Engineer @ F3 Global':                     ['Full Stack'],
   'Autonomous Systems Software Engineer @ Yonder Dynamics':                ['Systems / Robotics'],
   'Data Science & Machine Learning Research Intern @ UC San Diego Health': ['Data Science'],
@@ -41,6 +43,7 @@ const DOMAIN_MAP: Record<string, string[]> = {
 }
 
 const LANG_MAP: Record<string, string[]> = {
+  'Software Engineering Intern @ Adobe':                                  ['Python', 'JavaScript', 'Terraform'],
   'Contract Full-Stack Software Engineer @ F3 Global':                     ['JavaScript'],
   'Autonomous Systems Software Engineer @ Yonder Dynamics':                ['Python', 'C++'],
   'Data Science & Machine Learning Research Intern @ UC San Diego Health': ['Python'],
@@ -59,12 +62,14 @@ const DOMAIN_COLORS: Record<string, string> = {
   'Full Stack':         '#fbbf24',
   'Data Science':       '#34d399',
   'Systems / Robotics': '#fb923c',
+  'Cloud':              '#38bdf8',
 }
 
 const LANG_COLORS: Record<string, string> = {
   Python:     '#5ba3d8',
   JavaScript: '#f0db4f',
   'C++':      '#f472b6',
+  Terraform:  '#8b5cf6',
 }
 
 function buildSegs(
