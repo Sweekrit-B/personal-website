@@ -43,7 +43,7 @@ const DOMAIN_MAP: Record<string, string[]> = {
   'Software Engineering Consultant @ KlonIT AI':                           ['AI / LLM'],
   'Contract Full-Stack Software Engineer @ UC San Diego Health':           ['Full Stack'],
   'AI Systems Software Engineering Intern @ Voicebotics AI':               ['AI / LLM'],
-  'Data Science Consultant @ Out of the Blue AI':                          ['Data Science'],
+  'Data Science Consultant @ Out of the Blue AI':                          ['Data Science', 'Machine Learning'],
 }
 
 const LANG_MAP: Record<string, string[]> = {
