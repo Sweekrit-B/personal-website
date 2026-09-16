@@ -224,6 +224,43 @@
     ]
   },
   {
+    "title": "Fruit Fly Connectome RNN",
+    "year": "Fall 2025",
+    "bullets": [
+      "Built a recurrent neural network in PyTorch constrained by real Drosophila connectome data (Janelia neuPrint), modeling the biological T4/T5 motion-detection circuit.",
+      "Improved direction-classification accuracy from chance level (~50%) to ~75% by diagnosing and resolving training failures in the recurrent architecture.",
+      "Identified a symmetry-breaking bug where identical left/right weight initialization created a stable optimization dead-end, unlocking above-chance learning via randomized init."
+    ],
+    "images": [
+      {
+        "src": "project-images/fruit-fly-connectome-rnn/connectivity-graph.png",
+        "caption": "Motion-detection circuit connectivity (edge width = strength, green = excitatory, red = inhibitory)"
+      },
+      {
+        "src": "project-images/fruit-fly-connectome-rnn/fly-brain.png",
+        "caption": "Sampled skeletons of the motion-detection circuit neurons"
+      }
+    ],
+    "domains": [
+      "Machine Learning",
+      "Neuroscience"
+    ],
+    "skills": [
+      "PyTorch",
+      "Recurrent Neural Networks",
+      "Connectomics",
+      "neuPrint",
+      "Python",
+      "Debugging"
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Sweekrit-B/fruit-fly-connectome-RNN"
+      }
+    ]
+  },
+  {
     "title": "Airline Customer Satisfaction Prediction",
     "year": "Fall 2024",
     "description": "Created data visualization using Seaborn and Matplotlib and performed high-level analysis for multidimensional CSV customer data; proposed and tested three preprocessing pipelines for highest prediction accuracy. Tested various ML models with Scikit-Learn, including Random Forests, KNNs, and XGBoost to develop high accuracy (96%), low error predictions and feature importances, used to draw business insights for customer acquisition. Consolidated findings into final stakeholder presentation providing personalized business suggestions to airline companies to increase customer satisfaction and capture greater market share for maximal profit.",
