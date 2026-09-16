@@ -54,6 +54,70 @@
     ]
   },
   {
+    "title": "Fruit Fly Connectome RNN",
+    "year": "Fall 2026",
+    "bullets": [
+      "Built a recurrent neural network in PyTorch constrained by real Drosophila connectome data (Janelia neuPrint), modeling the biological T4/T5 motion-detection circuit.",
+      "Improved direction-classification accuracy from chance level (~50%) to ~75% by diagnosing and resolving training failures in the recurrent architecture.",
+      "Identified a symmetry-breaking bug where identical left/right weight initialization created a stable optimization dead-end, unlocking above-chance learning via randomized init."
+    ],
+    "images": [
+      {
+        "src": "project-images/fruit-fly-connectome-rnn/connectivity-graph.png",
+        "caption": "Motion-detection circuit connectivity (edge width = strength, green = excitatory, red = inhibitory)"
+      },
+      {
+        "src": "project-images/fruit-fly-connectome-rnn/fly-brain.png",
+        "caption": "Sampled skeletons of the motion-detection circuit neurons"
+      }
+    ],
+    "domains": [
+      "Machine Learning",
+      "Neuroscience"
+    ],
+    "skills": [
+      "PyTorch",
+      "Recurrent Neural Networks",
+      "Connectomics",
+      "neuPrint",
+      "Python",
+      "Debugging"
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Sweekrit-B/fruit-fly-connectome-RNN"
+      }
+    ]
+  },
+  {
+    "title": "ML Algorithms From Scratch in C++",
+    "year": "Fall 2026",
+    "bullets": [
+      "Developed linear regression, binary logistic regression, and multiclass (softmax) logistic regression algorithms from scratch in C++; additionally implemented train-test split, matrix operations, & mini-batch gradient descent.",
+      "Achieved 90-100% accuracy on Iris/MNIST classification and an RMSE of $69K on California Housing dataset, in-line with standard baselines for these benchmarks.",
+      "Identified a per-operation memory allocation bottleneck in the matrix class, fixing it for a 22-38% runtime reduction across benchmarks."
+    ],
+    "domains": [
+      "Machine Learning"
+    ],
+    "skills": [
+      "C++",
+      "Linear Regression",
+      "Logistic Regression",
+      "Softmax Regression",
+      "Gradient Descent",
+      "Matrix Operations",
+      "Performance Optimization"
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Sweekrit-B/cpp-ml-scratch"
+      }
+    ]
+  },
+  {
     "title": "Climate Projections and the Future of Storms",
     "year": "Spring 2026",
     "description": "Built interactive map and 3D globe visualizations in D3.js to display historical and projected tropical storm tracks across multiple CMIP6 climate scenarios, enabling spatial comparison of storm behavior over time. Developed supplementary time-series and statistical charts contextualizing past and present storm trends, translating raw climate model ensemble data into clear, audience-readable graphics. Owned end-to-end visual design and narrative structure of a data-driven scrollytelling experience, ensuring cohesive styling and a guided story arc from historical context through future emissions projections.",
@@ -220,70 +284,6 @@
       {
         "label": "GitHub",
         "href": "https://github.com/Sweekrit-B/lumaa-spring-2025-ai-ml-sweekritb"
-      }
-    ]
-  },
-  {
-    "title": "Fruit Fly Connectome RNN",
-    "year": "Fall 2026",
-    "bullets": [
-      "Built a recurrent neural network in PyTorch constrained by real Drosophila connectome data (Janelia neuPrint), modeling the biological T4/T5 motion-detection circuit.",
-      "Improved direction-classification accuracy from chance level (~50%) to ~75% by diagnosing and resolving training failures in the recurrent architecture.",
-      "Identified a symmetry-breaking bug where identical left/right weight initialization created a stable optimization dead-end, unlocking above-chance learning via randomized init."
-    ],
-    "images": [
-      {
-        "src": "project-images/fruit-fly-connectome-rnn/connectivity-graph.png",
-        "caption": "Motion-detection circuit connectivity (edge width = strength, green = excitatory, red = inhibitory)"
-      },
-      {
-        "src": "project-images/fruit-fly-connectome-rnn/fly-brain.png",
-        "caption": "Sampled skeletons of the motion-detection circuit neurons"
-      }
-    ],
-    "domains": [
-      "Machine Learning",
-      "Neuroscience"
-    ],
-    "skills": [
-      "PyTorch",
-      "Recurrent Neural Networks",
-      "Connectomics",
-      "neuPrint",
-      "Python",
-      "Debugging"
-    ],
-    "links": [
-      {
-        "label": "GitHub",
-        "href": "https://github.com/Sweekrit-B/fruit-fly-connectome-RNN"
-      }
-    ]
-  },
-  {
-    "title": "ML Algorithms From Scratch in C++",
-    "year": "Fall 2026",
-    "bullets": [
-      "Developed linear regression, binary logistic regression, and multiclass (softmax) logistic regression algorithms from scratch in C++; additionally implemented train-test split, matrix operations, & mini-batch gradient descent.",
-      "Achieved 90-100% accuracy on Iris/MNIST classification and an RMSE of $69K on California Housing dataset, in-line with standard baselines for these benchmarks.",
-      "Identified a per-operation memory allocation bottleneck in the matrix class, fixing it for a 22-38% runtime reduction across benchmarks."
-    ],
-    "domains": [
-      "Machine Learning"
-    ],
-    "skills": [
-      "C++",
-      "Linear Regression",
-      "Logistic Regression",
-      "Softmax Regression",
-      "Gradient Descent",
-      "Matrix Operations",
-      "Performance Optimization"
-    ],
-    "links": [
-      {
-        "label": "GitHub",
-        "href": "https://github.com/Sweekrit-B/cpp-ml-scratch"
       }
     ]
   },
