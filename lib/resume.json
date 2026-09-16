@@ -418,7 +418,10 @@
         "Perception",
         "Natural Language Processing (NLP)",
         "Feature Engineering",
-        "Regression (Linear/Logistic)"
+        "Regression (Linear/Logistic)",
+        "Gradient Descent",
+        "Matrix Operations",
+        "Connectomics"
       ]
     },
     {
@@ -448,7 +451,9 @@
         "FastAPI",
         "ROS2",
         "IAM",
-        "SDLC"
+        "SDLC",
+        "Debugging",
+        "Performance Optimization"
       ]
     },
     {
