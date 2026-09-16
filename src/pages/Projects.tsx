@@ -190,10 +190,10 @@ export default function Projects() {
                         />
                       </div>
                       {getGitHubUrl(p) && <GitHubCard url={getGitHubUrl(p)!} />}
+                      {renderGallery(p)}
                     </div>
                     <div className="gh-dropdown-col-info">
                       {renderBody(p)}
-                      {renderGallery(p)}
                     </div>
                   </div>
                 ) : getPaperUrl(p) ? (
@@ -219,10 +219,10 @@ export default function Projects() {
                           </div>
                         )
                       })()}
+                      {renderGallery(p)}
                     </div>
                     <div className="gh-dropdown-col-info">
                       {renderBody(p)}
-                      {renderGallery(p)}
                     </div>
                   </div>
                 ) : (
@@ -231,11 +231,11 @@ export default function Projects() {
                     {getGitHubUrl(p) && (
                       <div className="gh-dropdown-col-card">
                         <GitHubCard url={getGitHubUrl(p)!} />
+                        {renderGallery(p)}
                       </div>
                     )}
                     <div className="gh-dropdown-col-info">
                       {renderBody(p)}
-                      {renderGallery(p)}
                     </div>
                   </div>
                 )}
