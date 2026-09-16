@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { RevealGroup, RevealItem } from '../components/Reveal'
 import GitHubCard from '../components/GitHubCard'
 import ProjectStats from '../components/ProjectStats'
+import Modal from '../components/Modal'
 
 const URDFViewer = lazy(() => import('../components/URDFViewer'))
 
@@ -17,6 +18,8 @@ type Project = {
   year?: string
   video?: string
   description?: string
+  bullets?: string[]
+  images?: { src: string; caption?: string }[]
   skills?: string[]
   links?: { label: string; href: string }[]
   isRover?: boolean
@@ -27,6 +30,7 @@ type Project = {
 export default function Projects() {
   const [items, setItems] = useState<Project[]>([])
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [lightbox, setLightbox] = useState<{ src: string; caption?: string } | null>(null)
 
   const getYouTubeEmbedUrl = (url?: string) => {
     if (!url) return null
@@ -57,6 +61,49 @@ export default function Projects() {
     const m = url.match(/drive\.google\.com\/file\/d\/([^/]+)/)
     return m ? `https://drive.google.com/file/d/${m[1]}/preview` : null
   }
+
+  const renderBody = (p: Project) => (
+    <>
+      {p.bullets && p.bullets.length > 0 ? (
+        <ul className="dropdown-bullets">
+          {p.bullets.map((b, i) => (
+            <li key={i}>{b}</li>
+          ))}
+        </ul>
+      ) : (
+        p.description && <p className="dropdown-text">{p.description}</p>
+      )}
+      {p.skills && p.skills.length > 0 && (
+        <p className="skills">{p.skills.join(' · ')}</p>
+      )}
+      {p.links && p.links.length > 0 && (
+        <ul className="dropdown-links">
+          {p.links.map((l, idx) => (
+            <li key={idx}>
+              <a href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  )
+
+  const renderGallery = (p: Project) =>
+    p.images && p.images.length > 0 && (
+      <div className="project-gallery">
+        {p.images.map((img, idx) => (
+          <button
+            key={idx}
+            type="button"
+            className="project-gallery-item"
+            onClick={() => setLightbox(img)}
+          >
+            <img src={`${import.meta.env.BASE_URL}${img.src}`} alt={img.caption ?? `${p.title} figure ${idx + 1}`} loading="lazy" />
+            {img.caption && <span className="project-gallery-caption">{img.caption}</span>}
+          </button>
+        ))}
+      </div>
+    )
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}lib/project.json`)
@@ -145,19 +192,8 @@ export default function Projects() {
                       {getGitHubUrl(p) && <GitHubCard url={getGitHubUrl(p)!} />}
                     </div>
                     <div className="gh-dropdown-col-info">
-                      {p.description && <p className="dropdown-text">{p.description}</p>}
-                      {p.skills && p.skills.length > 0 && (
-                        <p className="skills">{p.skills.join(' · ')}</p>
-                      )}
-                      {p.links && p.links.length > 0 && (
-                        <ul className="dropdown-links">
-                          {p.links.map((l, idx) => (
-                            <li key={idx}>
-                              <a href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                      {renderBody(p)}
+                      {renderGallery(p)}
                     </div>
                   </div>
                 ) : getPaperUrl(p) ? (
@@ -185,19 +221,8 @@ export default function Projects() {
                       })()}
                     </div>
                     <div className="gh-dropdown-col-info">
-                      {p.description && <p className="dropdown-text">{p.description}</p>}
-                      {p.skills && p.skills.length > 0 && (
-                        <p className="skills">{p.skills.join(' · ')}</p>
-                      )}
-                      {p.links && p.links.length > 0 && (
-                        <ul className="dropdown-links">
-                          {p.links.map((l, idx) => (
-                            <li key={idx}>
-                              <a href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                      {renderBody(p)}
+                      {renderGallery(p)}
                     </div>
                   </div>
                 ) : (
@@ -209,19 +234,8 @@ export default function Projects() {
                       </div>
                     )}
                     <div className="gh-dropdown-col-info">
-                      {p.description && <p className="dropdown-text">{p.description}</p>}
-                      {p.skills && p.skills.length > 0 && (
-                        <p className="skills">{p.skills.join(' · ')}</p>
-                      )}
-                      {p.links && p.links.length > 0 && (
-                        <ul className="dropdown-links">
-                          {p.links.map((l, idx) => (
-                            <li key={idx}>
-                              <a href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                      {renderBody(p)}
+                      {renderGallery(p)}
                     </div>
                   </div>
                 )}
@@ -231,6 +245,9 @@ export default function Projects() {
         ))}
       </RevealGroup>
       )}
+      <Modal open={lightbox !== null} title={lightbox?.caption} onClose={() => setLightbox(null)}>
+        {lightbox && <img src={`${import.meta.env.BASE_URL}${lightbox.src}`} alt={lightbox.caption ?? ''} className="project-gallery-lightbox-img" />}
+      </Modal>
     </section>
   )
 }
