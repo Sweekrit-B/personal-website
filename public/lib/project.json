@@ -1,7 +1,7 @@
 [
   {
     "title": "Yonder Dynamics - Mars Rover Team @ UCSD",
-    "year": "2023–2025",
+    "year": "2023–2026",
     "isRover": true,
     "domains": [
       "Systems / Robotics",
@@ -225,7 +225,7 @@
   },
   {
     "title": "Fruit Fly Connectome RNN",
-    "year": "Fall 2025",
+    "year": "Fall 2026",
     "bullets": [
       "Built a recurrent neural network in PyTorch constrained by real Drosophila connectome data (Janelia neuPrint), modeling the biological T4/T5 motion-detection circuit.",
       "Improved direction-classification accuracy from chance level (~50%) to ~75% by diagnosing and resolving training failures in the recurrent architecture.",
@@ -257,6 +257,33 @@
       {
         "label": "GitHub",
         "href": "https://github.com/Sweekrit-B/fruit-fly-connectome-RNN"
+      }
+    ]
+  },
+  {
+    "title": "ML Algorithms From Scratch in C++",
+    "year": "Fall 2026",
+    "bullets": [
+      "Developed linear regression, binary logistic regression, and multiclass (softmax) logistic regression algorithms from scratch in C++; additionally implemented train-test split, matrix operations, & mini-batch gradient descent.",
+      "Achieved 90-100% accuracy on Iris/MNIST classification and an RMSE of $69K on California Housing dataset, in-line with standard baselines for these benchmarks.",
+      "Identified a per-operation memory allocation bottleneck in the matrix class, fixing it for a 22-38% runtime reduction across benchmarks."
+    ],
+    "domains": [
+      "Machine Learning"
+    ],
+    "skills": [
+      "C++",
+      "Linear Regression",
+      "Logistic Regression",
+      "Softmax Regression",
+      "Gradient Descent",
+      "Matrix Operations",
+      "Performance Optimization"
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Sweekrit-B/cpp-ml-scratch"
       }
     ]
   },

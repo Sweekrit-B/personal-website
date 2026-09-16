@@ -412,11 +412,13 @@
         "GridSearchCV",
         "Prophet/ARIMA",
         "CNNs",
+        "Recurrent Neural Networks (RNNs)",
         "Computer Vision (CV)",
         "Object Detection",
         "Perception",
         "Natural Language Processing (NLP)",
-        "Feature Engineering"
+        "Feature Engineering",
+        "Regression (Linear/Logistic)"
       ]
     },
     {
