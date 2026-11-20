@@ -82,8 +82,9 @@ Type colors _(proposed, tuned for dark)_ — the selected Pokémon sets `--accen
 | Umbreon | Dark | `#a89cc8` |
 | Vaporeon | Water | `#5b9cf0` |
 
-Project cards use their domain's type color (replaces `DOMAIN_COLORS` in `src/lib/domains.ts`):
-AI/LLM → Psychic · Machine Learning → Ghost-violet · Data Science → Water · Full Stack → Electric · Systems/Robotics → Steel · Cloud → Ice. _(proposed)_
+Rows use their fields' type colors (`DOMAIN` in `index.html`):
+AI/LLM → Psychic · Machine Learning → Ghost-violet · Data Science → Water · Full Stack → Electric · Systems/Robotics → Steel · Cloud → Ice.
+A row with several fields draws its title as a left-to-right gradient through each field's color, in the order listed. The "Fields" donut under the card uses the same colors; the "Languages" donut uses the first four slots of the dataviz reference palette (dark steps), which pass its colorblind and contrast checks.
 
 ## Motion
 

@@ -1,14 +1,860 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sweekrit Bhatnagar</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-    <script src="./oneko.js"></script>
-  </body>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sweekrit Bhatnagar</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --page-bg: #0b0e12; --surface: #11151b; --surface-2: #161c24;
+    --text: #e8e6e1; --text-muted: #9aa3ad; --text-subtle: #808993;
+    --line: #1f2731; --line-strong: #2c3642;
+    --accent: #4f8fe0; --before: #e8774a; --after: var(--accent); --after-soft: #8fb4ef;
+    --contour: rgba(143, 180, 239, 0.07);
+    --fs-label: 11px; --fs-small: 14px; --fs-body: 14px; --fs-h3: 18px;
+    /* Type system: mono for everything you scan (titles, labels, dates), sans only for sentences you read */
+    --type-display: 600 28px/1.1 var(--mono);
+    --type-title: 600 12px/16px var(--mono);
+    --type-label: 500 11px/16px var(--mono);
+    --type-meta: 400 11px/16px var(--mono);
+    --type-body: 400 14px/1.65 var(--sans);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 120ms; --dur-base: 220ms; --dur-slow: 360ms;
+    /* Spacing scale, 4px base. Rhythm: 4 inside a row, 12 label→list, 16 row→row, 40 group→group. */
+    --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 40px; --s8: 48px; --s9: 64px;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    background: var(--page-bg); color: var(--text);
+    font: 400 var(--fs-body)/1.55 var(--sans);
+  }
+  a { color: inherit; }
+  ::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); }
+  .label { font: var(--type-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+
+  /* Background: slow-drifting contour lines, like a terrain map */
+  #bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+  .page { position: relative; z-index: 1; width: min(max(80%, 1400px), 100% - 2 * var(--s6)); margin: 0 auto; padding: var(--s7) 0; min-height: 100vh; display: grid; grid-template-rows: auto 1fr; gap: var(--s7); }
+  header { display: flex; justify-content: space-between; align-items: center; gap: var(--s5); }
+  h1 { margin: 0; font: var(--type-display); letter-spacing: 0.04em; text-transform: uppercase; }
+  .tagline { margin: var(--s2) 0 0; font: var(--type-meta); color: var(--text-muted); }
+
+  /* Board: card, projects, experiences, links */
+  .board { display: grid; grid-template-columns: 270px repeat(3, minmax(0, 1fr)) 220px; gap: var(--s7) var(--s5); align-items: start; }
+  /* Sections: a small label running into a dashed rule, then a stack of link rows */
+  .col { min-width: 0; display: flex; flex-direction: column; max-height: calc(100vh - 176px); }
+  .sec { display: flex; align-items: center; gap: var(--s2); margin: 0 0 var(--s1); font: var(--type-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); }
+  .sec::after { content: ''; flex: 1; border-top: 1px dashed var(--line-strong); }
+  .sec span { order: 2; color: var(--text-subtle); letter-spacing: 0.06em; }
+  .list { list-style: none; margin: 0; padding: 0 var(--s2) var(--s5) 0; display: grid; gap: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent); }
+  .row {
+    --c: var(--accent);
+    width: 100%; display: grid; grid-template-columns: 20px minmax(0, 1fr) 16px; gap: var(--s3); align-items: start;
+    padding: var(--s2) 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; text-decoration: none; cursor: pointer;
+  }
+  .row:hover .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  a.row .d { white-space: normal; } /* link rows are short: let them wrap instead of cutting off */
+  .row:focus-visible { outline: 2px solid var(--c); outline-offset: 4px; }
+  /* Icon and arrow sit on the title's first line (16px tall), not the middle of the row */
+  .row .ic { width: 20px; height: 16px; display: grid; place-items: center; }
+  .row .ic i { width: 8px; height: 8px; background: var(--c); box-shadow: 0 0 6px color-mix(in srgb, var(--c) 50%, transparent); }
+  .row .ic img.bare { background: none; } /* the UCSD seal is already round and transparent */
+  .row .ic img { display: block; width: 20px; height: 20px; object-fit: contain; background: #fff; border-radius: 2px; }
+  .row .ic b { font: var(--type-title); color: var(--c); }
+  .row .t { display: block; width: fit-content; font: var(--type-title); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c); }
+  /* Several categories: the title runs through each colour in order. */
+  .row[style*="--g"] .t { background: var(--g); -webkit-background-clip: text; background-clip: text; color: transparent; text-decoration-color: var(--c); }
+  /* Experience columns: groups that scroll together, like one list */
+  .groups { min-height: 0; overflow-y: auto; padding: 0 var(--s2) var(--s5) 0; scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent); }
+  .groups .list { overflow: visible; padding: 0; mask-image: none; }
+  .groups .list + .sec { margin-top: var(--s6); }
+  .row .d.when { margin-top: 0; color: var(--text-subtle); }
+  .row .d { display: block; margin-top: var(--s1); font: var(--type-meta); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row .go { font: 400 15px/16px var(--sans); text-align: right; color: var(--c); transition: transform var(--dur-fast) var(--ease-out); }
+  .row:hover .go { transform: translate(2px, -2px); }
+  .row .go.in { font-size: 14px; }
+  .row:hover .go.in { transform: translateX(3px); }
+  .pip { display: inline-flex; align-items: center; gap: var(--s2); }
+  .pip::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+  /* On paper, darken the type colours so titles stay readable */
+
+  /* Left column: holo card + Pokémon picker */
+  .card-col { display: grid; justify-items: center; gap: var(--s3); position: relative; padding-top: calc(16px + var(--s1)); } /* card top meets the first row, under the section labels */
+  .holo {
+    --mx: 50%; --my: 50%; --rx: 0deg; --ry: 0deg; --o: 0;
+    position: relative; width: min(270px, 70vw); aspect-ratio: 367 / 512; border-radius: 4.5% / 3.2%; overflow: hidden;
+    transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-slow) var(--ease-out);
+    box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.55);
+  }
+  .holo.tracking { transition: none; }
+  .holo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .holo::before, .holo::after { content: ''; position: absolute; inset: 0; pointer-events: none; transition: opacity var(--dur-base) var(--ease-out); }
+  .holo::before {
+    background: repeating-linear-gradient(115deg, hsl(0 85% 65%) 0%, hsl(50 90% 62%) 5%, hsl(140 75% 60%) 10%, hsl(195 85% 62%) 15%, hsl(265 80% 68%) 20%, hsl(330 85% 66%) 25%, hsl(0 85% 65%) 30%);
+    background-size: 300% 300%; background-position: var(--mx) var(--my); mix-blend-mode: color-dodge; filter: brightness(0.7) contrast(1.5); opacity: calc(var(--o) * 0.3);
+  }
+  .holo::after { background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 25%, transparent 55%); mix-blend-mode: overlay; opacity: var(--o); }
+  .caption b { color: var(--accent); font-weight: 500; }
+  .chips { margin-top: var(--s1); display: flex; gap: 0; flex-wrap: wrap; justify-content: center; max-width: 270px; }
+  .chip { width: 30px; height: 30px; display: grid; place-items: center; background: transparent; border: 1px solid transparent; border-radius: 6px; cursor: pointer; }
+  .chip img { width: 26px; height: 26px; object-fit: contain; image-rendering: pixelated; }
+  .chip:hover { background: var(--surface); }
+  /* Under the card: two small donuts of what the board covers (the old site's stats, shrunk). */
+  .stats { width: min(270px, 100%); display: grid; gap: var(--s5); margin-top: var(--s4); }
+  .stat h3 { margin: 0 0 var(--s2); }
+  .stat-b { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: var(--s4); align-items: center; }
+  .stat svg { width: 76px; height: 76px; display: block; overflow: visible; }
+  .stat path { transform-box: view-box; transform-origin: 50px 50px; transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+  .stat ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font: var(--type-meta); color: var(--text-muted); }
+  .stat li { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; gap: var(--s2); align-items: center; transition: opacity var(--dur-base) var(--ease-out); }
+  .stat li i { width: 8px; height: 8px; border-radius: 50%; }
+  .stat li b { font-weight: 400; color: var(--text); font-variant-numeric: tabular-nums; }
+  .stat[data-on] [data-i]:not(.on) { opacity: 0.25; }
+  .stat path.on { transform: scale(1.06); }
+  #burst { position: absolute; left: -60px; top: -60px; width: calc(100% + 120px); height: calc(100% + 120px); pointer-events: none; image-rendering: pixelated; z-index: 3; }
+
+
+  /* Focused view */
+  dialog {
+    width: min(1100px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0;
+    background: var(--surface); color: var(--text); border: 1px solid var(--line-strong); border-radius: 14px;
+    box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.6);
+    opacity: 1; transform: none; transition: opacity 0.25s var(--ease-out), transform 0.3s var(--ease-out), display 0.3s allow-discrete, overlay 0.3s allow-discrete;
+  }
+  @starting-style { dialog[open] { opacity: 0; transform: translateY(12px) scale(0.98); } }
+  dialog::backdrop { background: rgba(5, 7, 10, 0.55); transition: background-color 0.3s, display 0.3s allow-discrete, overlay 0.3s allow-discrete; }
+  @starting-style { dialog[open]::backdrop { background: rgba(5, 7, 10, 0); } }
+  .f-head { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; gap: var(--s4); align-items: start; padding: var(--s5) var(--s6) var(--s4); background: var(--surface); border-bottom: 1px solid var(--line); }
+  .f-head h2 { margin: 0; font: 600 18px/24px var(--mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .f-meta { margin: var(--s2) 0 0; font: var(--type-meta); color: var(--text-muted); }
+  .f-tags { display: flex; gap: var(--s4); margin-top: var(--s2); font: var(--type-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .f-close { flex: none; min-height: 40px; padding: 0 var(--s4); border: 1px solid var(--line-strong); border-radius: 8px; background: transparent; color: var(--text); font: var(--type-title); letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+  .f-close:hover { background: var(--surface-2); }
+  .f-body { padding: var(--s5) var(--s6) var(--s7); }
+  .f-body > :first-child { margin-top: 0; }
+  .f-body .rover-3d { background: #0b0e12; }
+  .f-body .rover-status { color: #9aa3ad; } /* the 3D scene keeps its night sky in both themes */
+
+  /* Below 1440 the five columns get too narrow for one-line titles: card + two columns instead. */
+  @media (max-width: 1439px) {
+    .page { padding: var(--s6); }
+    .board { grid-template-columns: 270px minmax(0, 1fr) minmax(0, 1fr); gap: var(--s7) var(--s6); }
+    .card-col { grid-row: span 2; }
+  }
+  @media (max-width: 900px) {
+    .board { grid-template-columns: 270px minmax(0, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .page { width: auto; }
+    .page { padding: var(--s5) var(--s4) var(--s7); gap: var(--s6); }
+    .board { grid-template-columns: 1fr; gap: var(--s7); }
+    .card-col { grid-row: auto; padding-top: 0; }
+    .col { max-height: 70vh; }
+    .f-head, .f-body { padding-left: var(--s4); padding-right: var(--s4); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; }
+    .holo { transform: none !important; }
+  }
+</style>
+<link rel="stylesheet" href="/src/card-body.css" />
+<style>
+  /* Focused view, on the same type system and spacing scale as the page */
+  .f-body p, .f-body li, .f-body .rv-copy { font: var(--type-body); color: var(--text-muted); }
+  .f-body .rv-copy strong { color: var(--text); font-weight: 600; }
+  .f-body ul { margin: var(--s4) 0 0; padding-left: var(--s4); }
+  .f-body li { margin: 0 0 var(--s2); }
+  .f-body .rv-copy + ul { margin-top: var(--s2); }
+  .f-body p { margin: var(--s4) 0 0; }
+  .f-body .rv { margin-top: var(--s5); }
+  .f-body > .rv:first-child { margin-top: 0; }
+  .f-body .rv-tabs { gap: 0; }
+  .f-body .rv-tabs button { font: var(--type-title); letter-spacing: 0.06em; text-transform: uppercase; padding: 0 var(--s4); min-height: 40px; }
+  .f-body .rv-panel { gap: var(--s5); padding-top: var(--s5); }
+  .f-body .rv-fig { gap: var(--s4); }
+  .f-body .rv-navpair { gap: var(--s4); }
+  .f-body .rv-navpanel { padding: var(--s4); }
+  .f-body .rv-navpanel figcaption { margin-bottom: var(--s2); }
+  .f-body .rv-navpanel figcaption b { font: var(--type-title); letter-spacing: 0.06em; text-transform: uppercase; }
+  .f-body .rv-navpanel figcaption span,
+  .f-body .rv-cnn figcaption, .f-body .gallery figcaption,
+  .f-body .rv-key { font: var(--type-meta); color: var(--text-muted); }
+  .f-body .rv-cnn figcaption { margin-top: var(--s2); }
+  .f-body ul.skill-tags { list-style: none; margin: var(--s6) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s2); }
+  .f-body ul.skill-tags li { margin: 0; padding: var(--s1) var(--s2); border: 1px solid var(--line-strong); font: var(--type-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+  .f-body .rv-key { gap: var(--s2) var(--s4); }
+  .f-body .rv-speed b { font: var(--type-label); letter-spacing: 0.06em; text-transform: uppercase; }
+  .f-body .rv-speed em { font: var(--type-meta); }
+  .f-body .rv-dev .t-box { font: var(--type-title); font-size: calc(12px * var(--k, 1)); }
+  .f-body .rv-fig .t-muted, .f-body .rv-fig .t-axis { font: var(--type-meta); font-size: calc(11px * var(--k, 1)); }
+  .f-body .rover-status, .f-body .rover-sim { font: var(--type-label); letter-spacing: 0.08em; text-transform: uppercase; }
+  .f-body .body-links { gap: var(--s4); margin-top: var(--s4); }
+  .f-body .body-links a { font: var(--type-title); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); border: 0; padding: 0; }
+  .f-body .body-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .f-body .gallery { gap: var(--s4); margin-top: var(--s5); }
+  .f-body .rover-3d { margin-top: 0; }
+  .f-body .pdf-frame { display: block; width: 100%; height: 72vh; border: 1px solid var(--line); background: #fff; }
+  .f-body .f-diagram { margin: var(--s5) 0 0; padding: var(--s4); }
+  .f-body .embed { position: relative; margin: var(--s5) 0 0; aspect-ratio: 1030 / 640; border: 1px solid var(--line); background: var(--surface-2); overflow: hidden; }
+  .f-body .embed video, .f-body .embed iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .f-body .embed-launch { position: absolute; right: var(--s4); bottom: var(--s4); padding: var(--s2) var(--s4); min-height: 40px; font: var(--type-title); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); cursor: pointer; }
+  .f-body .embed-launch:hover { border-color: var(--accent); }
+  .f-body .embed-launch:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .f-body .proj + .proj { margin-top: var(--s8); }
+  .f-body .proj-h { margin: 0; font: var(--type-title); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); }
+  .f-body .proj-h + ul { margin-top: var(--s2); }
+  .f-body .proj .f-diagram { margin-top: var(--s4); }
+  .f-body .figure-frame { height: 900px; margin-top: var(--s5); background: transparent; }
+</style>
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="page">
+    <header>
+      <div>
+        <h1>Sweekrit Bhatnagar</h1>
+        <p class="tagline" id="tagline">Data science, ML and robotics at UC San Diego.</p>
+      </div>
+    </header>
+
+    <main class="board">
+      <div class="card-col">
+        <div class="holo" id="heroCard"><img id="heroImg" src="card-images/lucario.png" alt="Lucario card" /></div>
+        <canvas id="burst" aria-hidden="true"></canvas>
+        <div class="caption label"><b id="capName">Lucario</b> · <span id="capType">Fighting / Steel</span></div>
+        <div class="chips" id="chips" role="group" aria-label="Choose a Pokémon card"></div>
+        <div class="stats" id="stats"></div>
+      </div>
+
+      <section class="col" aria-labelledby="hProj">
+        <h2 class="sec" id="hProj">Projects <span id="projCount"></span></h2>
+        <ul class="list" id="projList"></ul>
+      </section>
+
+      <section class="col" aria-labelledby="h-expGroups">
+        <div class="groups" id="expGroups"></div>
+      </section>
+
+      <section class="col" aria-labelledby="h-contractGroups">
+        <div class="groups" id="contractGroups"></div>
+      </section>
+
+      <section class="col" aria-labelledby="hPubs">
+        <div class="groups">
+        <h2 class="sec" id="hPubs">Publications</h2>
+        <div class="list">
+          <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="https://chemrxiv.org/engage/chemrxiv/article-details/650d1dfb60c37f4f763ac863" target="_blank" rel="noreferrer" data-pdf="publications/key-molecular-descriptors.pdf" data-page="1" data-title="Key Molecular Descriptors Distinguishing Between Synthetic and Natural Products" data-meta="ChemRxiv · 2023" data-domain="Data Science|Machine Learning" title="Key Molecular Descriptors Distinguishing Between Synthetic and Natural Products"><span class="ic"><i></i></span><span><span class="t">Natural Product ML</span><span class="d">ChemRxiv · 2023</span></span><span class="go in" aria-hidden="true">→</span></a>
+          <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="https://emerginginvestigators.org/articles/22-144" target="_blank" rel="noreferrer" data-pdf="publications/socioeconomics-covid19.pdf" data-page="1" data-title="Relating Socioeconomic Position (SEP) and Vaccination with COVID-19 Rates in Select Populations" data-meta="JEI · 2023" data-domain="Data Science|Machine Learning" title="Relating Socioeconomic Position (SEP) and Vaccination with COVID-19 Rates in Select Populations"><span class="ic"><i></i></span><span><span class="t">SEP &amp; COVID-19</span><span class="d">JEI · 2023</span></span><span class="go in" aria-hidden="true">→</span></a>
+        </div>
+        <h2 class="sec">Presentations</h2>
+        <div class="list">
+          <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="publications/sccur-2026-nafld-poster.pdf" target="_blank" rel="noreferrer" data-pdf="publications/sccur-2026-nafld-poster.pdf" data-page="1" data-title="Gut Microbiome Taxa and Community Metabolic Flux for Classifying Significant Fibrosis in Biopsy-Proven NAFLD" data-meta="SCCUR 2026 · poster" data-domain="Data Science|Machine Learning" title="Gut Microbiome Taxa and Community Metabolic Flux for Classifying Significant Fibrosis in Biopsy-Proven NAFLD"><span class="ic"><i></i></span><span><span class="t">Microbiome &amp; NAFLD</span><span class="d">SCCUR 2026 · poster</span></span><span class="go in" aria-hidden="true">→</span></a>
+          <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="publications/sccur-2023-natural-product-talk.pdf" target="_blank" rel="noreferrer" data-pdf="publications/sccur-2023-natural-product-talk.pdf" data-page="1" data-title="Key Molecular Descriptors Distinguishing Natural and Synthetic Products" data-meta="SCCUR 2023 · oral" data-domain="Data Science|Machine Learning" title="Key Molecular Descriptors Distinguishing Between Synthetic and Natural Products"><span class="ic"><i></i></span><span><span class="t">Natural Product ML</span><span class="d">SCCUR 2023 · oral</span></span><span class="go in" aria-hidden="true">→</span></a>
+          <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="publications/sccur-2023-asdrp-posters.pdf" target="_blank" rel="noreferrer" data-pdf="publications/sccur-2023-asdrp-posters.pdf" data-page="2" data-title="Determining Key Pharmacokinetic Properties in FDA-Approved Drugs" data-meta="SCCUR 2023 · poster" data-domain="Data Science|Machine Learning" title="Determining Key Pharmacokinetic Properties in FDA-Approved Drugs"><span class="ic"><i></i></span><span><span class="t">FDA Drug PK</span><span class="d">SCCUR 2023 · poster</span></span><span class="go in" aria-hidden="true">→</span></a>
+          <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="publications/sccur-2023-asdrp-posters.pdf" target="_blank" rel="noreferrer" data-pdf="publications/sccur-2023-asdrp-posters.pdf" data-page="1" data-title="Using a Novel Iterative Parametrization Method and Machine Learning Model to Classify DNA Binding Enzymes Through the Structure of the DNA Strand" data-meta="SCCUR 2023 · poster" data-domain="Data Science|Machine Learning" title="Using a Novel Iterative Parametrization Method and Machine Learning Model to Classify DNA Binding Enzymes Through the Structure of the DNA Strand"><span class="ic"><i></i></span><span><span class="t">DNA Enzymes</span><span class="d">SCCUR 2023 · poster</span></span><span class="go in" aria-hidden="true">→</span></a>
+        </div>
+        <h2 class="sec" id="hLinks">Links</h2>
+        <div class="list">
+          <a class="row" style="--c:#e86fa6" href="https://github.com/Sweekrit-B/" target="_blank" rel="noreferrer"><span class="ic"><i></i></span><span><span class="t">GitHub</span></span><span class="go" aria-hidden="true">↗</span></a>
+          <a class="row" style="--c:#7fd4d8" href="https://www.linkedin.com/in/sweekrit-bhatnagar/" target="_blank" rel="noreferrer"><span class="ic"><i></i></span><span><span class="t">LinkedIn</span></span><span class="go" aria-hidden="true">↗</span></a>
+          <a class="row" style="--c:#f2c94c" href="mailto:sweekritbh@gmail.com"><span class="ic"><i></i></span><span><span class="t">Email</span></span><span class="go" aria-hidden="true">↗</span></a>
+        </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="focus" aria-labelledby="fTitle">
+    <div class="f-head">
+      <div><h2 id="fTitle"></h2><p class="f-meta" id="fMeta"></p><div class="f-tags" id="fTags"></div></div>
+      <button class="f-close" type="button" id="fClose">Close</button>
+    </div>
+    <div class="card-body f-body" id="fBody"></div>
+  </dialog>
+
+<script>
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+const DOMAIN = { 'AI / LLM': '#e86fa6', 'Machine Learning': '#9b86e0', 'Data Science': '#5b9cf0', 'Full Stack': '#f2c94c', 'Systems / Robotics': '#a7b6c6', 'Cloud': '#7fd4d8' }
+// Row colours: --c is the first category, --g a gradient through all of them (title text).
+const tint = (ds) => { const cs = (ds || []).map((d) => DOMAIN[d]).filter(Boolean); return `--c:${cs[0] || "var(--accent)"}${cs.length > 1 ? `; --g:linear-gradient(90deg, ${cs.join(", ")})` : ""}` }
+const pips = (domains) => (domains || []).map((d) => `<span class="pip" style="--c:${DOMAIN[d] || '#808993'}">${esc(d)}</span>`).join('')
+const LOGOS = {
+  'Adobe': ['adobe.png'], 'General Atomics': ['general-atomics.png'], 'Yonder Dynamics': ['yonder-dynamics.png'],
+  'UC San Diego Health': ['ucsd.png'], 'UCSD Urtecho Lab': ['ucsd.png'], 'UCSD Rana Lab': ['ucsd.png'], 'Brain Corp': ['braincorp.png'], 'Doe (YC S25)': ['yc.png'],
+  'Lion Street Financial': ['lion-street.png'], 'Voicebotics AI': ['voicebotics.png'], 'Out of the Blue AI': ['outoftheblue.png'],
+  'F3 Global': ['f3-global.png'], 'County of San Diego': ['sdcounty.png'], 'The Kaizen Academy': ['kaizenacademy.png'],
+}
+const MONTH = { January: 'Jan', February: 'Feb', March: 'Mar', April: 'Apr', May: 'May', June: 'Jun', July: 'Jul', August: 'Aug', September: 'Sep', October: 'Oct', November: 'Nov', December: 'Dec' }
+const shortDate = (s) => (s ? s.replace(/^(\w+)/, (m) => MONTH[m] || m) : '')
+const FIGURES = { 'Fruit Fly Connectome RNN': 'figures/fly-rnn/fly-rnn.html' }
+const bullets = (arr) => (arr && arr.length ? `<ul>${arr.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>` : '')
+const firstSentence = (s) => (s || '').split(/(?<=\.)\s/)[0].replace(/\.$/, '')
+const stack = (skills) => (skills && skills.length ? `<ul class="skill-tags" aria-label="Skills">${skills.map((k) => `<li>${esc(k)}</li>`).join('')}</ul>` : '')
+
+/* ---------- Focused view ---------- */
+const dlg = document.getElementById('focus')
+const fBody = document.getElementById('fBody')
+function openFocus({ title, meta, domains, body }) {
+  document.getElementById('fTitle').innerHTML = title
+  document.getElementById('fMeta').innerHTML = meta
+  document.getElementById('fTags').innerHTML = pips(domains)
+  fBody.innerHTML = body()
+  dlg.showModal()
+  fBody.scrollTop = 0
+  fBody.querySelectorAll('[data-rover]').forEach((el) => window.mountRover?.(el))
+  fBody.querySelectorAll('[data-rover-tabs]').forEach((el) => window.renderRoverTabs?.(el, fBody.querySelector('[data-rover]')))
+  fBody.querySelectorAll('[data-diagram]').forEach((el) => window.mountDiagram?.(el))
+  fBody.querySelectorAll('[data-ml-tabs]').forEach((el) => window.renderMlTabs?.(el))
+  fBody.querySelectorAll('[data-ga-tabs]').forEach((el) => window.renderGaTabs?.(el))
+  // Recorded preview plays first; the live site loads only when asked for.
+  fBody.querySelectorAll('.embed').forEach((fig) => {
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) fig.querySelector('video').play().catch(() => {})
+    const launch = fig.querySelector('.embed-launch')
+    if (launch) launch.onclick = () => {
+      fig.innerHTML = `<iframe src="${fig.dataset.live}" title="Live site: ${fig.dataset.title}" allow="fullscreen"></iframe>`
+      fig.querySelector('iframe').focus()
+    }
+  })
+  fBody.querySelectorAll('iframe[data-fit]').forEach((f) => f.addEventListener('load', () => fitFigure(f)))
+}
+
+// Figure pages are standalone; restyle them to the card's type and spacing, and grow the frame to its content (no inner scroll).
+const FIGURE_CSS = `
+  .iso { --anatomy-mono: ${getComputedStyle(document.documentElement).getPropertyValue('--mono')}; }
+  body { background: transparent; font-family: ${getComputedStyle(document.documentElement).getPropertyValue('--sans')}; }
+  .iso-page { width: 100%; max-width: 760px; margin: 0 auto; padding: 1px 0; }
+  .iso-plate-corner { font-size: 11px; }
+  .iso-plate { box-shadow: 0 0 0 1px var(--anatomy-lo); }
+  .iso-figure { margin: 0; }
+  .fx-arch { margin-top: 24px; }
+  .iso-caption, [data-corner="fig"], .fx-arch .iso-legend { display: none; }
+  .iso-legend { margin-top: 8px; gap: 8px 16px; font: 400 11px/16px var(--anatomy-mono); }`
+function fitFigure(f) {
+  const doc = f.contentDocument
+  if (!doc) return
+  doc.head.insertAdjacentHTML('beforeend', `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"><style>${FIGURE_CSS}</style>`)
+  const size = () => (f.style.height = Math.ceil(doc.body.getBoundingClientRect().height) + 'px') // the content, not the viewport
+  new ResizeObserver(size).observe(doc.body)
+  size()
+}
+document.getElementById('fClose').onclick = () => dlg.close()
+dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close() }) // click on the backdrop
+dlg.addEventListener('close', () => {
+  if (dlg.open) return // the close event is queued; ignore it if another item was opened meanwhile
+  fBody.querySelectorAll('[data-rover]').forEach((el) => el._dispose?.())
+  fBody.innerHTML = ''
+})
+
+function addItem(list, html, focus) {
+  const li = document.createElement('li')
+  li.innerHTML = html
+  li.firstElementChild.onclick = () => openFocus(focus)
+  list.appendChild(li)
+}
+
+/* ---------- Projects ---------- */
+function renderProjects(items) {
+  const list = document.getElementById('projList')
+  document.getElementById('projCount').textContent = items.length
+  for (const p of items) {
+    addItem(list,
+      `<button class="row" type="button" style="${tint(p.domains)}"><span class="ic" aria-hidden="true"><i></i></span><span><span class="t">${esc(p.title)}</span><span class="d">${esc(p.year)}</span></span><span class="go in" aria-hidden="true">→</span></button>`,
+      {
+        title: esc(p.title),
+        meta: [esc(p.year), p.isRover ? 'Software engineer. Led the software sub-team for a year.' : ''].filter(Boolean).join(' · '),
+        domains: p.domains,
+        body: () => `
+          ${p.isRover ? '<div class="rover-3d" data-rover role="img" aria-label="3D model of the Mars rover from its URDF"></div>' : ''}
+          ${p.isRover ? '<div class="rv" data-rover-tabs></div>' : p.tabs === 'ml' ? '<div class="rv" data-ml-tabs></div>' : `${p.lead ? `<p class="rv-copy"><strong>${esc(p.lead)}</strong></p>` : ""}${p.points ? bullets(p.points) : `<p>${esc(p.description)}</p>`}`}
+          ${p.diagram ? `<figure class="rv-navpanel f-diagram" data-diagram="${esc(p.diagram)}"></figure>` : ''}
+          ${p.preview ? `<figure class="embed" data-live="${esc(p.preview.live)}" data-title="${esc(p.title)}"><video src="${esc(p.preview.video)}" poster="${esc(p.preview.poster)}" muted loop playsinline preload="metadata" aria-label="Screen recording of the ${esc(p.title)} site"></video>${p.preview.live ? '<button type="button" class="embed-launch">Launch interactive</button>' : ''}</figure>` : ''}
+          ${FIGURES[p.title] ? `<iframe class="figure-frame" data-fit src="${FIGURES[p.title]}" title="Interactive figure: ${esc(p.title)}"></iframe>` : ''}
+          ${!FIGURES[p.title] && p.images?.length ? `<div class="gallery">${p.images.map((im) => `<figure><img src="${esc(im.src)}" alt="${esc(im.caption || p.title)}" loading="lazy" />${im.caption ? `<figcaption>${esc(im.caption)}</figcaption>` : ''}</figure>`).join('')}</div>` : ''}
+          ${stack(p.skills)}
+          ${p.links?.length || p.video ? `<div class="body-links">${(p.links || []).map((l) => `<a href="${esc(l.href)}" target="_blank" rel="noreferrer">${esc(l.label)} ↗</a>`).join('')}${p.video ? `<a href="${esc(p.video)}" target="_blank" rel="noreferrer">Video ↗</a>` : ''}</div>` : ''}`,
+      })
+  }
+}
+
+/* Draft curation of resume.json: which entries show, in which group, under a one-line role.
+   Keyed by "company|role" so the two UC San Diego Health entries stay apart. */
+const EXP_GROUPS = [
+  ['expGroups', 'Industry Experiences', ['Adobe', 'Doe (YC S25)', 'Lion Street Financial', 'Voicebotics AI']],
+  ['expGroups', 'Research', ['General Atomics', 'UCSD Urtecho Lab', 'UCSD Rana Lab']],
+  ['contractGroups', 'Contract Projects', ['County of San Diego', 'The Kaizen Academy', 'Brain Corp', 'KlonIT AI', 'UC San Diego Health|Contract Full-Stack Software Engineer', 'F3 Global', 'Out of the Blue AI']],
+]
+const SHORT_ROLE = {
+  'Data Science & Machine Learning Research Intern': 'DS & ML Research Intern',
+  'Project Manager & Software Engineering Consultant': 'PM & Software Consultant',
+  'Software Engineering Consultant': 'Software Consultant',
+  'AI/LLM & Backend Software Engineer': 'AI/LLM Backend Engineer',
+  'Backend Software Developer Intern (Dentdelioun LLC)': 'Backend Developer Intern',
+  'Contract Full-Stack Software Engineer': 'Full-Stack Engineer',
+  'AI Systems Developer Intern': 'AI Systems Intern',
+  'Data Engineering Research Intern': 'Data Engineering Intern',
+}
+// The UC San Diego Health research entry covers two labs (brag sheet): Urtecho Lab (Jan 2026 – now) and Rana Lab (Aug 2024 – Jun 2025).
+function splitLabs(jobs) {
+  const i = jobs.findIndex((j) => j.company === 'UC San Diego Health' && /Research/.test(j.role))
+  if (i < 0) return jobs
+  const j = jobs[i], b = j.bullets || []
+  const pick = (re) => b.filter((x) => re.test(x))
+  const urtecho = { ...j, company: 'UCSD Urtecho Lab', start: 'January 2026', bullets: pick(/MASLD|nested|DNABERT|HIV prediction|SCCUR/), skills: ['Python', 'scikit-learn', 'PyTorch', 'Hugging Face', 'Random Forests', 'Nested CV', 'DESeq2'] }
+  const rana = { ...j, company: 'UCSD Rana Lab', role: 'Data Engineering Research Intern', start: 'August 2024', end: 'June 2025', bullets: pick(/FASTQ|two-photon/), skills: ['Python', 'Bash', 'TensorFlow', 'Pandas'], domains: ['Data Science'] }
+  return [...jobs.slice(0, i), urtecho, rana, ...jobs.slice(i + 1)]
+}
+
+/* Recruiter-facing bullets for each card: one line, action first, plain words, the result.
+   resume.json keeps the full detail for the Resume page. */
+const EXP_POINTS = {
+  "Adobe": [
+    "Built an AI pull-request approval system that saves 2,000+ developers 25 hours a week",
+    "Designed its 5-stage agentic LLM pipeline on AWS Bedrock, deployed with Terraform",
+    "Trained a 3-class LightGBM (approve, reject, human review) to 85% on 23 GB of data",
+    "Built a GitHub and Jira data-extraction service scaling to 25K requests/hour",
+    "Tracked 500+ decisions/day on an AWS RDS observability dashboard",
+    "Aligned 5+ teams, including infra and build/test, to take it from idea to beta"
+  ],
+  "Doe (YC S25)": [
+    "Made enterprise LLM retrieval 140x more efficient with RAG over a Pinecone vector DB",
+    "Shipped 12+ live MCP integrations (Ramp, Google Cloud, Microsoft) for LLM data access",
+    "Scraped, cleaned and loaded 100K+ dental products into a cloud MySQL platform",
+    "Built Playwright scrapers for dental vendors (Net32, Henry Schein) as agent tools",
+    "Secured credentials and agent memory with role-based access and encryption"
+  ],
+  "Lion Street Financial": [
+    "Designed the backend for an AI training dashboard for insurance agents",
+    "Built Express REST APIs for an agentic LLM framework: conversation state and tool use",
+    "Built a real-time, multi-language LLM monitor that records and summarizes meetings",
+    "Modeled training flows on real customer journeys and call transcripts"
+  ],
+  "Voicebotics AI": [
+    "Built backend services for SummarEQ, summarizing 1,030+ calls, emails and messages",
+    "Built a real-time OpenAI pipeline that pulls summaries, sentiment and action items",
+    "Implemented OAuth 2.0 install and token flows, with load testing and logging",
+    "Wrote technical docs and guided backend architecture for React and middleware teams"
+  ],
+  "County of San Diego": [
+    "Led 4 developers building a secure contact-management system for 8,000+ county staff",
+    "Scoped auth, database, API and UI requirements with the county's IT head",
+    "Owned security: role-based access control on both the frontend and the API",
+    "Replaced a legacy spreadsheet system with real-time permission sync"
+  ],
+  "The Kaizen Academy": [
+    "Led design and build of a full-stack learning platform for 200+ students and teachers",
+    "Cut teacher prep time 60% with a cloud file-upload system (Google Cloud, Supabase)",
+    "Designed the Postgres schema and auth: OAuth, role-based access and permissions"
+  ],
+  "Brain Corp": [
+    "Led 3 developers evaluating the VDA 5050 robot-fleet standard in 2 warehouse scenarios",
+    "Designed the simulation: an MQTT platform with agent-based models of robot workflows",
+    "Surfaced protocol limits and integration tradeoffs for the robot fleet",
+    "Assessed API usability and feasibility across fleet-management software"
+  ],
+  "KlonIT AI": [
+    "Managed 4 developers in Agile sprints to ship an MCP server for Drive, Calendar and SQL",
+    "Cut a 19-step workflow from 9 minutes to under 1 with prompt templates and agents",
+    "Delivered 8+ LLM features, including natural-language SQL and dynamic retrieval",
+    "Led API QA, version control and endpoint docs across the 10-week build"
+  ],
+  "UC San Diego Health": [
+    "Delivered e-bike safety training to 15,000+ students amid a 300% rise in injuries",
+    "Built Duolingo-style React lessons (quizzes, animations) from Figma designs",
+    "Built the Express + MongoDB backend for secure login and progress tracking"
+  ],
+  "F3 Global": [
+    "Built client-story components, the About Us page and a mobile refactor for a nonprofit",
+    "Connected the contact form to a MongoDB + Express backend for automatic emails"
+  ],
+  "Out of the Blue AI": [
+    "Found 40+ critical incidents with time-series models (Prophet, ARIMA) on 1M+ rows",
+    "Traced each anomaly to the data driving it with subgroup error metrics and DBSCAN",
+    "Built a Streamlit dashboard of anomaly trends for stakeholders"
+  ]
+}
+
+// Research cards hold several projects: each gets a heading, its own bullets and its diagram (src/diagrams.ts).
+const EXP_PROJECTS = {
+  "General Atomics": [
+    {
+      "name": "TGLF surrogate with uncertainty",
+      "tabs": "ga",
+      "points": [
+        "Built PyTorch models that stand in for a slow fusion-plasma turbulence simulator (TGLF)",
+        "Compared 7 models, from a ridge baseline to quantile neural-net ensembles",
+        "Five-network quantile ensemble predicts heat and particle flux with 90% intervals",
+        "Predicts 10,000 cases in 0.23 s, versus seconds per case for the simulator"
+      ]
+    },
+    {
+      "name": "DIII-D database",
+      "diagram": "gaDiiid",
+      "points": [
+        "Validated TGLF on DIII-D shot #128913 at 13 radii with exact agreement",
+        "Traced a failure on a held-out profile (negative R²) to out-of-range inputs",
+        "Retrained on a new 8,000-case HPC database: R² rose to 0.58–0.69 on every flux"
+      ]
+    }
+  ],
+  "UCSD Urtecho Lab": [
+    {
+      "name": "MASLD classifier",
+      "diagram": "masld",
+      "points": [
+        "Predicted liver disease (MASLD) in an HIV+ cohort from 2,185 features: AUROC 0.81",
+        "Replaced an 18-sample test split with nested cross-validation; fixed 4 pipeline bugs",
+        "Mapped the bacterial families tied to disease with DESeq2 differential abundance",
+        "Separated HIV status from patient metabolites with PCA and PLS-DA",
+        "Presenting the liver-fibrosis classifier at SCCUR 2026"
+      ]
+    },
+    {
+      "name": "Promoter language model",
+      "diagram": "promoter",
+      "points": [
+        "Fine-tuned DNABERT-2 (117M parameters) to predict promoter strength from DNA",
+        "Added learned layer mixing and attention pooling on top of the pretrained model",
+        "Reached Spearman 0.82 on held-out promoters, beating a k-mer ridge baseline (0.71)",
+        "Explained predictions by masking each token and measuring the change"
+      ]
+    }
+  ],
+  "UCSD Rana Lab": [
+    {
+      "name": "Neuron detection (CaImAn)",
+      "diagram": "caiman",
+      "points": [
+        "Tuned CaImAn hyperparameters to resolve 10–15 neurons at 90% across 12+ recordings",
+        "Adapted the open-source CaImAn pipeline to run headless on a server, with added plots",
+        "Validated motion correction and neuron detection with overlays and runtime stats"
+      ]
+    },
+    {
+      "name": "Telomere length: HIV− vs HIV+",
+      "diagram": "telomere",
+      "points": [
+        "Built a nanopore pipeline comparing telomere length in HIV− and latent HIV+ T cells",
+        "Found telomere reads with NCRF, split cell lines by barcode, measured length with TeloBP",
+        "Mapped reads to chromosome arms with minimap2 and Telogator2, benchmarked on HG002",
+        "Adapted the Telomere Profiling method from Karimian et al. (Science, 2024)",
+        "Integrated Telogator2, TARPON and Telo-seq for allele-specific telomere lengths"
+      ]
+    }
+  ]
+}
+const diagram = (p) => (p.diagrams || [p.diagram]).map((id) => `<figure class="rv-navpanel f-diagram"><div data-diagram="${id}"></div></figure>`).join('')
+const projects = (list) => list.map((p) =>
+  `<section class="proj"><h3 class="proj-h">${esc(p.name)}</h3>${bullets(p.points)}${p.tabs ? `<div class="rv" data-${p.tabs}-tabs></div>` : diagram(p)}</section>`).join('')
+
+/* ---------- Experiences ---------- */
+function renderExperience(resume) {
+  const e = resume.education
+  if (e) document.getElementById('tagline').textContent = `${e.degree.replace('B.S. Data Science', 'B.S. Data Science (specialization in ML/AI)')}, UC San Diego, ${e.graduation}.`
+  const jobs = splitLabs(resume.experience || [])
+  const find = (key) => jobs.find((j) => key === j.company || key === `${j.company}|${j.role}`)
+  const shown = []
+  EXP_GROUPS.forEach(([hostId, name, keys]) => {
+    const host = document.getElementById(hostId)
+    const items = keys.map(find).filter(Boolean)
+    shown.push(...items)
+    host.insertAdjacentHTML('beforeend', `<h2 class="sec"${host.children.length ? '' : ` id="h-${hostId}"`}>${name} <span>${items.length}</span></h2><ul class="list"></ul>`)
+    const list = host.lastElementChild
+    for (const j of items) {
+      const f = (LOGOS[j.company] || [])[0] // 50×50 copies, drawn small
+      const logo = f ? `<img src="company-logos/50/${f}" alt="" width="50" height="50"${f === 'ucsd.png' ? ' class="bare"' : ''} />` : `<b>${esc(j.company[0])}</b>`
+      const when = `${esc(shortDate(j.start))} – ${esc(shortDate(j.end) || 'Present')}`
+      const role = SHORT_ROLE[j.role] || j.role
+      addItem(list,
+        `<button class="row" type="button" style="${tint(j.domains)}"><span class="ic" aria-hidden="true">${logo}</span><span><span class="t">${esc(j.company)}</span><span class="d">${esc(role)}</span><span class="d when">${when}</span></span><span class="go in" aria-hidden="true">→</span></button>`,
+        {
+          title: esc(j.company),
+          meta: `${esc(j.role)} · ${when}${j.location ? ` · ${esc(j.location)}` : ''}`,
+          domains: j.domains,
+          body: () => `${EXP_PROJECTS[j.company] ? projects(EXP_PROJECTS[j.company]) : bullets(EXP_POINTS[j.company] || j.bullets)}${stack(j.skills)}`,
+        })
+    }
+  })
+  return shown
+}
+
+/* ---------- Under the card: fields and languages across every project and experience on the board ---------- */
+// Languages use the dataviz reference palette (dark steps, validated on --page-bg); fields keep the site's DOMAIN colours.
+const LANG = { Python: '#3987e5', JavaScript: '#d95926', TypeScript: '#199e70', 'C++': '#c98500' }
+const LANGS = ['Python', 'JavaScript', 'TypeScript', 'C++', 'C', 'R', 'Kotlin', 'Java', 'Bash', 'Terraform', 'SQL', 'Go', 'Rust', 'Swift']
+const OTHER = '#808993'
+// Each slice is how many items carry that label; anything without a colour folds into "Other", which sits last.
+function tally(items, keysOf, colors) {
+  const acc = new Map()
+  for (const it of items) for (const k of new Set(keysOf(it).map((k) => (colors[k] ? k : 'Other')))) {
+    if (!acc.has(k)) acc.set(k, [])
+    acc.get(k).push(it.title || it.company)
+  }
+  return [...acc].map(([label, names]) => ({ label, names, color: colors[label] || OTHER }))
+    .sort((a, b) => (a.label === 'Other') - (b.label === 'Other') || b.names.length - a.names.length)
+}
+const pol = (r, a) => [50 + r * Math.sin((a * Math.PI) / 180), 50 - r * Math.cos((a * Math.PI) / 180)].map((v) => v.toFixed(2))
+// One ring segment from a0 to a1 (degrees clockwise from 12 o'clock), with a 3° gap between neighbours.
+function ringArc(r0, r1, a0, a1) {
+  const s = a0 + 1.5, e = a1 - 1.5, L = e - s > 180 ? 1 : 0
+  const [x0, y0] = pol(r1, s), [x1, y1] = pol(r1, e), [x2, y2] = pol(r0, e), [x3, y3] = pol(r0, s)
+  return `M${x0} ${y0}A${r1} ${r1} 0 ${L} 1 ${x1} ${y1}L${x2} ${y2}A${r0} ${r0} 0 ${L} 0 ${x3} ${y3}Z`
+}
+function donut(title, segs) {
+  const sum = segs.reduce((s, x) => s + x.names.length, 0)
+  let a = 0
+  const arcs = segs.map((x, i) => { const a0 = a; a += (x.names.length / sum) * 360; return `<path data-i="${i}" d="${ringArc(31, 47, a0, a)}" fill="${x.color}"><title>${esc(x.label)}: ${x.names.map(esc).join(', ')}</title></path>` }).join('')
+  const legend = segs.map((x, i) => `<li data-i="${i}" title="${esc(x.names.join(', '))}"><i style="background:${x.color}"></i>${esc(x.label)}<b>${x.names.length}</b></li>`).join('')
+  return `<section class="stat"><h3 class="label">${title}</h3><div class="stat-b"><svg viewBox="0 0 100 100" role="img" aria-label="${title}: ${segs.map((x) => `${esc(x.label)} ${x.names.length}`).join(', ')}">${arcs}</svg><ul>${legend}</ul></div></section>`
+}
+function renderStats(items) {
+  const host = document.getElementById('stats')
+  host.innerHTML = donut('Fields', tally(items, (it) => it.domains || [], DOMAIN)) +
+    donut('Languages', tally(items, (it) => (it.skills || []).filter((s) => LANGS.includes(s)), LANG))
+  // Hovering a slice or its legend entry fades the rest of that chart.
+  host.addEventListener('pointerover', (e) => {
+    const s = e.target.closest('.stat'), t = e.target.closest('[data-i]')
+    if (!s) return
+    s.toggleAttribute('data-on', !!t)
+    s.querySelectorAll('[data-i]').forEach((n) => n.classList.toggle('on', !!t && n.dataset.i === t.dataset.i))
+  })
+  host.addEventListener('pointerleave', () => host.querySelectorAll('.stat').forEach((s) => s.removeAttribute('data-on')))
+}
+
+Promise.all([fetch('lib/resume.json').then((r) => r.json()), fetch('lib/project.json').then((r) => r.json())])
+  .then(([resume, projects]) => { const jobs = renderExperience(resume); renderProjects(projects); renderStats([...projects, ...jobs]) })
+  .catch((err) => { document.getElementById('projList').innerHTML = `<li class="label" style="padding:10px">Could not load data: ${esc(err.message)}</li>` })
+
+/* ---------- Background: contour lines of a slowly drifting height field ---------- */
+const bg = document.getElementById('bg')
+const g = bg.getContext('2d')
+const hash = (x, y) => { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s) }
+const sm = (t) => t * t * (3 - 2 * t)
+function vnoise(x, y) {
+  const xi = Math.floor(x), yi = Math.floor(y), xf = sm(x - xi), yf = sm(y - yi)
+  const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1)
+  return a + (b - a) * xf + (c - a) * yf + (a - b - c + d) * xf * yf
+}
+const field = (x, y, t) => 0.65 * vnoise(x * 0.0032 + t * 0.018, y * 0.0032 - t * 0.011) + 0.35 * vnoise(x * 0.0071 - t * 0.009, y * 0.0071 + 3.3)
+const CELL = 14
+const LEVELS = [0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66]
+function drawBg(t) {
+  const dpr = Math.min(devicePixelRatio, 2)
+  const W = innerWidth, H = innerHeight
+  if (bg.width !== Math.round(W * dpr)) { bg.width = Math.round(W * dpr); bg.height = Math.round(H * dpr) }
+  g.setTransform(dpr, 0, 0, dpr, 0, 0)
+  g.clearRect(0, 0, W, H)
+  const cols = Math.ceil(W / CELL) + 1, rows = Math.ceil(H / CELL) + 1
+  const v = new Float32Array(cols * rows)
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) v[j * cols + i] = field(i * CELL, j * CELL, t)
+  g.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--contour')
+  g.lineWidth = 1
+  g.beginPath()
+  // Marching squares: each cell crossed by a level gets a short segment between its interpolated edge points.
+  for (const L of LEVELS) {
+    for (let j = 0; j < rows - 1; j++) for (let i = 0; i < cols - 1; i++) {
+      const a = v[j * cols + i], b = v[j * cols + i + 1], c = v[(j + 1) * cols + i + 1], d = v[(j + 1) * cols + i]
+      const pts = []
+      const x = i * CELL, y = j * CELL
+      if ((a < L) !== (b < L)) pts.push([x + ((L - a) / (b - a)) * CELL, y])
+      if ((b < L) !== (c < L)) pts.push([x + CELL, y + ((L - b) / (c - b)) * CELL])
+      if ((d < L) !== (c < L)) pts.push([x + ((L - d) / (c - d)) * CELL, y + CELL])
+      if ((a < L) !== (d < L)) pts.push([x, y + ((L - a) / (d - a)) * CELL])
+      for (let k = 0; k + 1 < pts.length; k += 2) { g.moveTo(pts[k][0], pts[k][1]); g.lineTo(pts[k + 1][0], pts[k + 1][1]) }
+    }
+  }
+  g.stroke()
+}
+let last = 0
+function loop(now) {
+  if (now - last > 66 && !document.hidden) { drawBg(now / 1000); last = now } // ~15 fps is plenty for a slow drift
+  requestAnimationFrame(loop)
+}
+if (reduced) { drawBg(0); addEventListener('resize', () => drawBg(0)) } else requestAnimationFrame(loop)
+
+
+/* ---------- Pokémon card: picker, holo tilt, pixel burst ---------- */
+const MONS = [
+  ['lucario', 'Fighting / Steel', '#4f8fe0'], ['espeon', 'Psychic', '#e86fa6'], ['flareon', 'Fire', '#e8774a'],
+  ['glaceon', 'Ice', '#7fd4d8'], ['jolteon', 'Electric', '#f2c94c'], ['leafeon', 'Grass', '#6cc070'],
+  ['sylveon', 'Fairy', '#eda3c9'], ['umbreon', 'Dark', '#a89cc8'], ['vaporeon', 'Water', '#5b9cf0'],
+]
+const cap = (s) => s[0].toUpperCase() + s.slice(1)
+const chips = document.getElementById('chips')
+MONS.forEach(([name, type, color], i) => {
+  const b = document.createElement('button')
+  b.className = 'chip'
+  b.type = 'button'
+  b.setAttribute('aria-pressed', i === 0)
+  b.setAttribute('aria-label', `${cap(name)}, ${type} type`)
+  b.innerHTML = `<img src="gifs/${name}.gif" alt="" />`
+  b.onclick = () => {
+    chips.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', c === b))
+    const img = document.getElementById('heroImg')
+    img.src = `card-images/${name}.png`
+    img.alt = `${cap(name)} card`
+    document.getElementById('capName').textContent = cap(name)
+    document.getElementById('capType').textContent = type
+    tintContours(color)
+    if (!reduced) burst(name)
+  }
+  chips.appendChild(b)
+})
+const canvas = document.getElementById('burst')
+const ctx = canvas.getContext('2d')
+// One pixel effect per Pokémon, drawn on a 1/5-scale canvas so every dot is a chunky pixel.
+// Each effect gets the canvas size and returns a frame function of progress k (0 → 1).
+const rnd = (a, b) => a + Math.random() * (b - a)
+const dot = (x, y, c, s = 1) => { ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), s, s) }
+const FX = {
+  lucario: (W, H) => { // aura sphere: a blue ring bursts out from the card's centre
+    const cx = W / 2, cy = H * 0.42, R = Math.min(W, H) * 0.45
+    return (k) => {
+      const r = R * (1 - (1 - k) ** 3)
+      for (let a = 0; a < Math.PI * 2; a += 0.09) dot(cx + Math.cos(a) * (r + rnd(-1, 1)), cy + Math.sin(a) * (r + rnd(-1, 1)), Math.random() < 0.3 ? '#fff' : '#4f8fe0')
+      if (k < 0.3) for (let i = 0; i < 20; i++) { const a = rnd(0, 7), q = rnd(0, R * 0.25 * (1 - k * 3)); dot(cx + Math.cos(a) * q, cy + Math.sin(a) * q, '#bcd6ff') }
+    }
+  },
+  espeon: (W, H) => { // psychic: pink motes spiral outward
+    const cx = W / 2, cy = H * 0.42, R = Math.min(W, H) * 0.5
+    const p = Array.from({ length: 60 }, (_, i) => ({ a: (i / 60) * Math.PI * 2, s: rnd(0.6, 1) }))
+    return (k) => p.forEach((q, i) => { const a = q.a + k * 5, r = R * k * q.s; dot(cx + Math.cos(a) * r, cy + Math.sin(a) * r, i % 4 ? '#e86fa6' : '#f7c6e0') })
+  },
+  flareon: (W, H) => { // flame burst: embers rise from the bottom, white-hot to red as they cool
+    const p = Array.from({ length: 90 }, () => ({ x: rnd(W * 0.15, W * 0.85), y: rnd(H * 0.6, H * 0.95), vy: rnd(0.8, 2.2), w: rnd(0, 6), d: rnd(0, 0.35) }))
+    const heat = ['#fff6c2', '#f2c94c', '#e8774a', '#c43c1e']
+    return (k) => p.forEach((q) => { const t = (k - q.d) / (1 - q.d); if (t < 0) return; dot(q.x + Math.sin(t * 8 + q.w) * 1.5, q.y - q.vy * t * 40, heat[Math.min(3, Math.floor(t * 4))], t < 0.3 ? 2 : 1) })
+  },
+  glaceon: (W, H) => { // ice: branching snowflakes form all around the card, turning slowly as they drift down
+    const line = (x0, y0, a, len, c) => { for (let q = 0; q <= len; q += 0.7) dot(x0 + Math.cos(a) * q, y0 + Math.sin(a) * q, c) }
+    const crystal = (cx, cy, R, g, rot) => { // g: growth, 0 → 1
+      const r = R * g
+      for (let s = 0; s < 6; s++) {
+        const a = (s / 6) * Math.PI * 2 - Math.PI / 2 + rot
+        line(cx, cy, a, r, '#8fd3ea')
+        for (const [f, b] of [[0.35, 0.32], [0.6, 0.24], [0.82, 0.14]]) { // side branches, shorter toward the tip
+          const along = R * f
+          if (r < along) continue
+          const x = cx + Math.cos(a) * along, y = cy + Math.sin(a) * along, bl = Math.min(R * b, (r - along) * 0.8)
+          line(x, y, a + Math.PI / 3, bl, '#cdeef8')
+          line(x, y, a - Math.PI / 3, bl, '#cdeef8')
+        }
+        if (g >= 1) dot(cx + Math.cos(a) * r - 0.5, cy + Math.sin(a) * r - 0.5, '#fff', 2) // tips glint once grown
+      }
+      dot(cx - 0.5, cy - 0.5, '#fff', 2)
+    }
+    const spots = [[0.14, 0.12], [0.86, 0.26], [0.12, 0.58], [0.84, 0.78], [0.5, 0.94]]
+    const flakes = spots.map(([x, y], i) => ({ x: W * x, y: H * y, R: rnd(5, 7), d: i * 0.07, v: rnd(0.04, 0.1), spin: rnd(-0.8, 0.8) }))
+    const snow = Array.from({ length: 12 }, () => ({ x: rnd(0, W), y: rnd(-H * 0.2, H * 0.5), v: rnd(0.3, 0.8) }))
+    return (k) => {
+      const was = ctx.globalAlpha
+      ctx.globalAlpha = was * 0.55 // kept faint: frost, not a blizzard
+      flakes.forEach((f) => { const g = (k - f.d) * 3.5; if (g > 0) crystal(f.x, f.y + k * H * f.v, f.R, Math.min(1, g), k * f.spin) })
+      snow.forEach((s) => dot(s.x + Math.sin(k * 6 + s.x) * 2, s.y + k * H * s.v, '#e6fbff'))
+      ctx.globalAlpha = was
+    }
+  },
+  jolteon: (W, H) => { // lightning strike: a jagged bolt hits the card, flickers, and throws sparks
+    const pts = [[W * rnd(0.4, 0.6), 0]]
+    while (pts[pts.length - 1][1] < H * 0.45) { const [x, y] = pts[pts.length - 1]; pts.push([x + rnd(-6, 6), y + rnd(3, 7)]) }
+    const end = pts[pts.length - 1]
+    const sparks = Array.from({ length: 30 }, () => ({ a: rnd(0, 7), v: rnd(0.5, 1) }))
+    return (k) => {
+      if (k < 0.12) { ctx.fillStyle = `rgba(255, 248, 200, ${0.35 * (1 - k / 0.12)})`; ctx.fillRect(0, 0, W, H) }
+      if (k < 0.45 && Math.floor(k * 30) % 3 !== 1) for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], n = Math.ceil(Math.hypot(x1 - x0, y1 - y0)); for (let s = 0; s <= n; s++) dot(x0 + ((x1 - x0) * s) / n, y0 + ((y1 - y0) * s) / n, s % 2 ? '#fff' : '#f2c94c') }
+      sparks.forEach((q) => { const r = k * 30 * q.v; dot(end[0] + Math.cos(q.a) * r, end[1] + Math.sin(q.a) * r + k * k * 10, '#f2c94c') })
+    }
+  },
+  leafeon: (W, H) => { // leaves: a gust carries leaves across the card
+    const p = Array.from({ length: 36 }, () => ({ y: rnd(H * 0.1, H * 0.85), d: rnd(0, 0.4), w: rnd(0, 6), c: Math.random() < 0.5 ? '#6cc070' : '#a6dc6e' }))
+    return (k) => p.forEach((q) => { const t = (k - q.d) / (1 - q.d); if (t < 0) return; const x = -4 + t * (W + 8), y = q.y + Math.sin(t * 9 + q.w) * 5; dot(x, y, q.c); dot(x + 1, y + (Math.sin(t * 9 + q.w) > 0 ? 1 : -1), q.c) })
+  },
+  sylveon: (W, H) => { // fairy: sparkles twinkle in and out across the card
+    const p = Array.from({ length: 28 }, () => ({ x: rnd(W * 0.1, W * 0.9), y: rnd(H * 0.05, H * 0.85), t: rnd(0, 0.6), c: Math.random() < 0.4 ? '#fff' : '#eda3c9' }))
+    return (k) => p.forEach((q) => { const u = (k - q.t) / 0.4; if (u < 0 || u > 1) return; const s = u < 0.5 ? 1 : 2; dot(q.x, q.y, q.c); for (let i = 1; i <= s; i++) { dot(q.x + i, q.y, q.c); dot(q.x - i, q.y, q.c); dot(q.x, q.y + i, q.c); dot(q.x, q.y - i, q.c) } })
+  },
+  umbreon: (W, H) => { // dark: Umbreon's yellow rings pulse outward, one after another
+    const cx = W / 2, cy = H * 0.42, R = Math.min(W, H) * 0.45
+    return (k) => [0, 0.18, 0.36].forEach((d) => { const t = (k - d) / (1 - d); if (t < 0) return; const r = R * t; for (let a = 0; a < Math.PI * 2; a += 0.12) dot(cx + Math.cos(a) * r, cy + Math.sin(a) * r, t < 0.6 ? '#f2d24c' : '#a89cc8') })
+  },
+  vaporeon: (W, H) => { // water: a splash arcs up from the bottom while bubbles rise
+    const cx = W / 2, by = H * 0.9
+    const drops = Array.from({ length: 40 }, () => ({ vx: rnd(-1.4, 1.4), vy: rnd(-3.2, -1.8) }))
+    const bubbles = Array.from({ length: 16 }, () => ({ x: rnd(W * 0.15, W * 0.85), v: rnd(0.4, 0.9), d: rnd(0, 0.4) }))
+    return (k) => {
+      drops.forEach((q) => { const t = k * 22; dot(cx + q.vx * t, by + q.vy * t + 0.14 * t * t, Math.random() < 0.3 ? '#dff1ff' : '#5b9cf0') })
+      bubbles.forEach((b) => { const t = (k - b.d) / (1 - b.d); if (t < 0) return; const y = H * 0.85 - t * H * 0.7 * b.v; ctx.strokeStyle = '#9fd0ff'; ctx.lineWidth = 1; ctx.strokeRect(Math.round(b.x) + 0.5, Math.round(y) + 0.5, 2, 2) })
+    }
+  },
+}
+function burst(name) {
+  const r = canvas.getBoundingClientRect()
+  canvas.width = Math.round(r.width / 5)
+  canvas.height = Math.round(r.height / 5)
+  const draw = FX[name](canvas.width, canvas.height)
+  const t0 = performance.now(), DUR = 900
+  ;(function frame(t) {
+    const k = (t - t0) / DUR
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    if (k >= 1) return
+    ctx.globalAlpha = k < 0.75 ? 1 : (1 - k) / 0.25
+    draw(k)
+    ctx.globalAlpha = 1
+    requestAnimationFrame(frame)
+  })(t0)
+}
+// Background contour lines lean a little toward the chosen Pokémon's type colour (30% mix, same faint alpha).
+function tintContours(hex) {
+  const n = parseInt(hex.slice(1), 16), base = [143, 180, 239]
+  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c, i) => Math.round(base[i] * 0.7 + c * 0.3))
+  document.documentElement.style.setProperty('--contour', `rgba(${r}, ${g}, ${b}, 0.07)`)
+  if (reduced) drawBg(0)
+}
+// Publications open in the focused view with the browser's PDF viewer; without JS the row still links to the journal.
+document.querySelectorAll('a[data-pdf]').forEach((a) => a.addEventListener('click', (e) => {
+  if (e.metaKey || e.ctrlKey || e.shiftKey) return
+  e.preventDefault()
+  const { pdf, page, title, meta, domain } = a.dataset
+  const original = a.getAttribute('href') === pdf ? '' : `<a href="${a.href}" target="_blank" rel="noreferrer">Original ↗</a>`
+  openFocus({
+    title: esc(title), meta: esc(meta), domains: domain.split('|'),
+    body: () => `<iframe class="pdf-frame" src="${pdf}#page=${page || 1}&navpanes=0&view=FitH" title="${esc(title)} (PDF)"></iframe><div class="body-links">${original}<a href="${pdf}" download>Download PDF</a></div>`,
+  })
+}))
+
+const heroCard = document.getElementById('heroCard')
+if (!reduced) {
+  heroCard.addEventListener('pointermove', (e) => {
+    const r = heroCard.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height
+    heroCard.classList.add('tracking')
+    heroCard.style.setProperty('--mx', `${px * 100}%`)
+    heroCard.style.setProperty('--my', `${py * 100}%`)
+    heroCard.style.setProperty('--ry', `${(px - 0.5) * 24}deg`)
+    heroCard.style.setProperty('--rx', `${(0.5 - py) * 24}deg`)
+    heroCard.style.setProperty('--o', 1)
+  })
+  heroCard.addEventListener('pointerleave', () => {
+    heroCard.classList.remove('tracking')
+    heroCard.style.setProperty('--rx', '0deg')
+    heroCard.style.setProperty('--ry', '0deg')
+    heroCard.style.setProperty('--o', 0)
+  })
+}
+</script>
+<script type="module" src="/src/roverViewer.ts"></script>
+<script type="module" src="/src/mlTabs.ts"></script>
+<script type="module" src="/src/gaTabs.ts"></script>
+<script type="module" src="/src/diagrams.ts"></script>
+</body>
 </html>

@@ -259,7 +259,8 @@
         "Surfaced protocol constraints and integration tradeoffs by modeling fleet communication as structured packet exchange."
       ],
       "domains": [
-        "Systems / Robotics"
+        "Systems / Robotics",
+        "Full Stack"
       ],
       "skills": [
         "MQTT",
@@ -285,7 +286,9 @@
         "Reprioritized the integration roadmap toward financial and healthcare connectors after customer calls surfaced enterprise needs."
       ],
       "domains": [
-        "AI / LLM"
+        "AI / LLM",
+        "Full Stack",
+        "Cloud"
       ],
       "skills": [
         "Python",
@@ -310,7 +313,8 @@
         "Developed a real-time, multi-language LLM meeting monitor for international advisors to record calls, retrieve summaries and surface client insights."
       ],
       "domains": [
-        "AI / LLM"
+        "AI / LLM",
+        "Full Stack"
       ],
       "skills": [
         "Node.js",

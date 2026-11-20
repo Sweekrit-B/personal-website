@@ -1,8 +1,6 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// One page (index.html) plus its modules in src/; public/ is copied as is.
 export default defineConfig({
-  plugins: [react()],
   base: '/personal-website/',
 })
