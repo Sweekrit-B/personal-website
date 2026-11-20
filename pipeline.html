@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rover Pipeline Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --page-bg: #0b0e12;
+    --surface: #11151b;
+    --surface-2: #161c24;
+    --text: #e8e6e1;
+    --text-muted: #9aa3ad;
+    --text-subtle: #5d6670;
+    --line: #1f2731;
+    --line-strong: #2c3642;
+    --grid: rgba(120, 150, 190, 0.07);
+    --accent: #4f8fe0;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --dur-fast: 120ms;
+    --dur-base: 220ms;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--text);
+    font: 400 17px/1.6 var(--sans);
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, #000 30%, transparent 100%);
+    pointer-events: none;
+  }
+  .label {
+    font: 500 12px/1.4 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .page { position: relative; max-width: 1280px; margin: 0 auto; padding: 40px 32px 64px; }
+  header { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+  header b { color: var(--accent); font-weight: 500; }
+  h1 { margin: 6px 0 0; font: 500 28px/1.2 var(--sans); letter-spacing: -0.01em; }
+
+  .modes { display: flex; border: 1px solid var(--line); }
+  .modes button {
+    font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase;
+    background: transparent; color: var(--text-muted); border: 0;
+    padding: 0 18px; min-height: 44px; cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .modes button[aria-pressed='true'] { background: var(--surface-2); color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+  .modes button:focus-visible, .node:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .legend { display: flex; gap: 20px; align-items: center; margin: 18px 0 0; color: var(--text-subtle); }
+  .legend .mine-key::before { content: '◆ '; color: var(--accent); }
+
+  /* Diagram */
+  .diagram { position: relative; margin-top: 40px; }
+  #edges { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  #edges path { fill: none; stroke: var(--line-strong); stroke-width: 1; }
+  #edges path.dashed { stroke-dasharray: 4 5; }
+  #edges .packet { fill: var(--accent); }
+  #edges text { font: 500 10.5px var(--mono); letter-spacing: 0.06em; fill: var(--text-subtle); text-transform: uppercase; }
+  #edges .lbg { fill: var(--page-bg); }
+
+  .grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: auto auto;
+    gap: 72px 56px;
+    align-items: center;
+  }
+  .node {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 14px 14px 12px;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .node:hover { border-color: var(--line-strong); }
+  .node[aria-pressed='true'] { border-color: var(--accent); }
+  .node.mine { box-shadow: inset 2px 0 0 var(--accent); }
+  .node .t { font: 500 13px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
+  .node.mine .t::before { content: '◆ '; color: var(--accent); }
+  .node .s { font-size: 14px; line-height: 1.4; color: var(--text-muted); margin-top: 4px; }
+  .node .badge { margin-top: 10px; font: 500 12px/1.3 var(--mono); color: var(--text); }
+  .node .badge:empty { display: none; }
+  .node .badge::before { content: '▸ '; color: var(--accent); }
+  .node .body { transition: opacity var(--dur-base) var(--ease-out); }
+  .node.swap .body { opacity: 0; transition: opacity var(--dur-fast) var(--ease-in); }
+
+  #n-cam { grid-area: 1 / 1; }
+  #n-gps { grid-area: 2 / 1; }
+  #n-npu { grid-area: 1 / 2; }
+  #n-ekf { grid-area: 2 / 2; }
+  #n-bus { grid-area: 1 / 3 / 3 / 4; align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+  #n-plan { grid-area: 1 / 4 / 3 / 5; }
+  #n-drive { grid-area: 1 / 5 / 3 / 6; }
+
+  .oakd { height: 120px; margin: -4px -6px 6px; position: relative; }
+  .oakd canvas { display: block; width: 100%; height: 100%; }
+  .oakd .note { position: absolute; inset: 0; display: grid; place-items: center; color: var(--text-subtle); opacity: 0; }
+  .before .oakd canvas { opacity: 0; }
+  .before .oakd .note { opacity: 1; }
+
+  .sim {
+    margin-top: 72px;
+    border: 1px dashed var(--line-strong);
+    padding: 16px 18px;
+    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    cursor: pointer; text-align: left; color: inherit; font: inherit; background: transparent; width: 100%;
+  }
+  .sim[aria-pressed='true'] { border-color: var(--accent); }
+  .sim .t { font: 500 13px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
+  .sim.mine .t::before { content: '◆ '; color: var(--accent); }
+  .sim .s { color: var(--text-muted); font-size: 14px; }
+
+  .caption {
+    margin-top: 40px;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 24px;
+    min-height: 120px;
+  }
+  .caption p { margin: 0; color: var(--text-muted); max-width: 70ch; }
+  .caption .label b { color: var(--accent); font-weight: 500; }
+
+  @media (max-width: 900px) {
+    .page { padding: 24px 16px 48px; }
+    #edges { display: none; }
+    .grid { grid-template-columns: 1fr; gap: 14px; }
+    .grid > .node { grid-area: auto !important; }
+    .caption { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <div class="label"><b>FIG. 02</b> — Autonomy pipeline · Mars rover</div>
+        <h1>How the rover sees, locates, and plans</h1>
+      </div>
+      <div class="modes" role="group" aria-label="Pipeline version">
+        <button type="button" id="m-before" aria-pressed="false">Before</button>
+        <button type="button" id="m-after" aria-pressed="true">After</button>
+      </div>
+    </header>
+    <div class="legend label">
+      <span class="mine-key">My work</span>
+      <span id="modeNote">After: the pipeline as I left it</span>
+    </div>
+
+    <div class="diagram" id="diagram">
+      <svg id="edges" aria-hidden="true"></svg>
+      <div class="grid" id="grid"></div>
+      <button type="button" class="sim node-like" id="n-sim" aria-pressed="false"></button>
+    </div>
+
+    <div class="caption" aria-live="polite">
+      <div class="label" id="capTitle">Select a block</div>
+      <p id="capBody">Click any block to read what changed and why.</p>
+    </div>
+  </div>
+
+  <script type="module" src="/demo/pipeline.ts"></script>
+</body>
+</html>

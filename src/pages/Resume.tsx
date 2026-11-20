@@ -37,7 +37,7 @@ const LOGOS: Record<string, string[]> = {
   'Voicebotics AI':        ['voicebotics.png'],
   'Out of the Blue AI':    ['outoftheblue.png'],
   'F3 Global':             ['f3-global.png'],
-  'SD County IT':          ['sdcounty.png'],
+  'County of San Diego':          ['sdcounty.png'],
   'The Kaizen Academy':    ['kaizenacademy.png'],
 }
 

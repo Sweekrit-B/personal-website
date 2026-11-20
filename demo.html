@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Grounded Site Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* Tokens — mirror DESIGN.md */
+  :root {
+    --page-bg: #0b0e12;
+    --surface: #11151b;
+    --surface-2: #161c24;
+    --text: #e8e6e1;
+    --text-muted: #9aa3ad;
+    --text-subtle: #808993;
+    --line: #1f2731;
+    --line-strong: #2c3642;
+    --accent: #4f8fe0;
+    --before: #e8774a;
+    --after: var(--accent);
+    --after-soft: #8fb4ef;
+
+    --fs-label: 12px;
+    --fs-small: 14px;
+    --fs-body: 17px;
+    --fs-h3: 18px;
+    --fs-h2: 28px;
+    --fs-display: clamp(36px, 6vw, 56px);
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --dur-fast: 120ms;
+    --dur-base: 220ms;
+    --dur-slow: 360ms;
+
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--text);
+    font: 400 var(--fs-body)/1.6 var(--sans);
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+
+  .label {
+    font: 500 var(--fs-label)/1.4 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .demo-banner { text-align: center; padding: 6px 16px; border-bottom: 1px solid var(--line); color: var(--text-subtle); }
+
+  /* Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .toc {
+    position: sticky; top: 0; align-self: start; height: 100vh;
+    padding: 48px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .toc a {
+    text-decoration: none;
+    color: var(--text-subtle);
+    font: 500 var(--fs-small)/1.4 var(--mono);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .toc a span { margin-right: 10px; }
+  .toc a:hover, .toc a.active { color: var(--text); }
+  .toc a.active span { color: var(--accent); }
+
+  main { padding: 48px 32px 120px; min-width: 0; }
+  section { margin-bottom: 112px; scroll-margin-top: 24px; }
+
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px; margin-bottom: 24px;
+  }
+  .section-head h2 { margin: 0; font: 500 var(--fs-h2)/1.2 var(--sans); letter-spacing: -0.01em; }
+  .section-head h2 .num { font-family: var(--mono); color: var(--accent); margin-right: 14px; font-size: 0.6em; vertical-align: 0.2em; }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 56px;
+    align-items: center;
+    min-height: 70vh;
+  }
+  .hero h1 { font: 500 var(--fs-display)/1.05 var(--sans); letter-spacing: -0.025em; margin: 12px 0 18px; }
+  .hero .bio { color: var(--text-muted); max-width: 54ch; margin: 0 0 12px; }
+  .hero .bio em { color: var(--text-subtle); font-style: normal; font-family: var(--mono); font-size: var(--fs-label); }
+  .hero .edu { margin-bottom: 28px; color: var(--text-subtle); }
+  .links { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 36px; }
+  .links a {
+    text-decoration: none;
+    font: 500 var(--fs-small)/1 var(--mono);
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 4px;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .links a:hover { border-color: var(--accent); }
+
+  .chips { display: flex; gap: 4px; flex-wrap: wrap; }
+  .chip {
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    background: transparent; border: 1px solid transparent; border-radius: 6px;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  }
+  .chip img { width: 36px; height: 36px; object-fit: contain; image-rendering: pixelated; }
+  .chip:hover { background: var(--surface); }
+  .chip[aria-pressed='true'] { border-color: var(--accent); background: var(--surface); }
+
+  .card-stage { position: relative; display: grid; justify-items: center; gap: 12px; }
+  .card-stage .caption b { color: var(--accent); font-weight: 500; }
+
+  /* Holo (hero only) */
+  .holo {
+    --mx: 50%; --my: 50%; --rx: 0deg; --ry: 0deg; --o: 0;
+    position: relative;
+    width: min(290px, 70vw);
+    aspect-ratio: 367 / 512;
+    border-radius: 4.5% / 3.2%;
+    overflow: hidden;
+    transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-slow) var(--ease-out);
+  }
+  .holo.tracking { transition: none; }
+  .holo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .holo::before, .holo::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  .holo::before {
+    background: repeating-linear-gradient(115deg,
+      hsl(0 85% 65%) 0%, hsl(50 90% 62%) 5%, hsl(140 75% 60%) 10%,
+      hsl(195 85% 62%) 15%, hsl(265 80% 68%) 20%, hsl(330 85% 66%) 25%, hsl(0 85% 65%) 30%);
+    background-size: 300% 300%;
+    background-position: var(--mx) var(--my);
+    mix-blend-mode: color-dodge;
+    filter: brightness(0.7) contrast(1.5);
+    opacity: calc(var(--o) * 0.3);
+  }
+  .holo::after {
+    background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 25%, transparent 55%);
+    mix-blend-mode: overlay;
+    opacity: var(--o);
+  }
+  .holo.lit { box-shadow: 0 30px 60px -20px rgba(0,0,0,0.7); }
+  #burst { position: absolute; inset: -60px; pointer-events: none; image-rendering: pixelated; z-index: 3; }
+
+  /* Filters */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filter {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 500 var(--fs-label)/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-muted);
+    background: transparent; border: 1px solid var(--line);
+    padding: 0 12px; min-height: 36px;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .filter:hover { color: var(--text); }
+  .filter[aria-pressed='true'] { color: var(--text); border-color: var(--line-strong); background: var(--surface); }
+
+  /* Cards */
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .card:hover { border-color: var(--line-strong); }
+  .card.open { grid-column: 1 / -1; border-color: var(--line-strong); }
+  .card[hidden] { display: none; }
+  .card-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    width: 100%;
+    padding: 18px;
+    background: transparent; border: 0; color: inherit; font: inherit; text-align: left;
+    cursor: pointer;
+  }
+  .card-head:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .card-head.no-logo { grid-template-columns: minmax(0, 1fr); }
+  .logos { display: flex; gap: 4px; }
+  .logo {
+    width: 40px; height: 40px; border-radius: 8px; object-fit: contain;
+    background: #fff; padding: 4px;
+  }
+  .logo.fallback { display: grid; place-items: center; background: var(--surface-2); color: var(--text-muted); font: 500 16px var(--mono); padding: 0; }
+  .meta { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .title { font: 600 var(--fs-h3)/1.3 var(--sans); }
+  .sub { color: var(--text-muted); font-size: var(--fs-small); margin-top: 2px; }
+  .when { white-space: nowrap; color: var(--text-subtle); }
+  .gist {
+    margin-top: 10px; color: var(--text-muted); font-size: var(--fs-small);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .card.open .gist { display: none; }
+  .tags { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
+  .pip { display: inline-flex; align-items: center; gap: 6px; }
+  .pip::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+  .more { margin-left: auto; color: var(--text-subtle); }
+
+  .card-body { padding: 0 18px 20px; border-top: 1px solid var(--line); margin: 0 18px; padding-left: 0; padding-right: 0; animation: in var(--dur-base) var(--ease-out); }
+  @keyframes in { from { opacity: 0; transform: translateY(4px); } }
+  .card-body ul { margin: 16px 0 0; padding-left: 18px; color: var(--text-muted); max-width: 80ch; }
+  .card-body li { margin-bottom: 8px; }
+  .card-body li::marker { color: var(--accent); }
+  .card-body p { color: var(--text-muted); max-width: 80ch; margin: 16px 0 0; }
+  .rover-3d { position: relative; height: 380px; margin-top: 16px; border: 1px solid var(--line); background: var(--page-bg); }
+  .rover-3d canvas { display: block; cursor: grab; }
+  .rover-3d canvas:active { cursor: grabbing; }
+  .figure-frame { display: block; width: 100%; height: 1090px; margin-top: 16px; border: 0; background: var(--page-bg); }
+  @media (max-width: 860px) { .figure-frame { height: 1250px; } }
+  .rover-sim { position: absolute; left: 12px; top: 10px; font-size: 13px; color: var(--after-soft); border: 1px solid var(--after); padding: 3px 8px; pointer-events: none; }
+  .rover-status { position: absolute; left: 12px; bottom: 10px; font-size: 13px; color: var(--text-muted); pointer-events: none; }
+  /* Rover tabs */
+  .rv { margin-top: 20px; }
+  .rv-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+  .rv-tabs button {
+    flex: none; background: transparent; border: 0; color: var(--text-muted);
+    font: 500 var(--fs-small)/1 var(--sans);
+    padding: 0 14px; min-height: 44px; cursor: pointer;
+    box-shadow: inset 0 -2px 0 transparent;
+    transition: color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .rv-tabs button span { font: 400 13px/1 var(--mono); color: var(--text-subtle); margin-left: 4px; }
+  .rv-tabs button[aria-selected='true'] span { color: var(--after-soft); }
+  .rv-tabs button:hover { color: var(--text); }
+  @media (max-width: 860px) { .rv-tabs { mask-image: linear-gradient(to right, #000 82%, transparent); } } /* shows the strip scrolls */
+  .rv-tabs button[aria-selected='true'] { color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+  .rv-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .rv-panel { display: grid; gap: 20px; padding-top: 22px; animation: in var(--dur-base) var(--ease-out); }
+  .rv-copy { margin: 0; max-width: 70ch; color: var(--text-muted); font-size: 15px; line-height: 1.65; }
+  .rv-copy strong { color: var(--text); font-weight: 600; }
+  .rv-foot { margin: 20px 0 0; max-width: 80ch; font-size: 13px; line-height: 1.55; color: var(--text-subtle); }
+  .rv-fig { display: grid; gap: 16px; align-content: start; min-width: 0; }
+  .rv-fig svg { display: block; width: 100%; height: auto; font-family: var(--mono); }
+  .rv-nav .g { stroke: var(--line); stroke-width: 0.6; }
+  .rv-nav .g1, .rv-sci .g1 { stroke: var(--line-strong); stroke-width: 1; }
+  .rv-nav .obst { fill: #3a2018; stroke: #5a3424; }
+  .rv-nav .stair { fill: none; stroke: var(--text-subtle); stroke-width: 1.4; stroke-dasharray: 4 4; }
+  .rv-nav .path { fill: none; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 600; stroke-dashoffset: 600; animation: rv-draw 1.4s var(--ease-out) forwards; }
+  .rv-nav .path-a { stroke: var(--after); }
+  .rv-nav .path-bfs { stroke: var(--before); stroke-width: 2.4; stroke-dasharray: 1400; stroke-dashoffset: 1400; animation-duration: 1.4s; }
+  .rv-nav .seen { fill: var(--before); opacity: 0; animation: rv-seen 0.4s var(--ease-out) forwards; }
+  @keyframes rv-seen { to { opacity: 0.13; } }
+  .rv-nav .wp { opacity: 0; animation: rv-pop 0.25s var(--ease-out) forwards; }
+  .is-bfs .rv-nav .wp { fill: var(--before); stroke: none; }
+  @keyframes rv-pop { to { opacity: 1; } }
+  .rv-nav .goal { fill: var(--text); stroke: var(--text); stroke-width: 1.5; }
+  .rv-loc .ring { fill: none; stroke: var(--line-strong); }
+  .rv-loc .cross { stroke: var(--line); }
+  .rv-loc .target { fill: none; stroke: var(--text); stroke-width: 2; }
+  .rv-loc .fix { opacity: 0; animation: rv-fix 4s linear infinite; }
+  .is-gps .rv-loc .fix { fill: var(--before); }
+  .is-rtk .rv-loc .fix { fill: var(--after); }
+  .is-gps figcaption b { color: var(--before); }
+  .is-rtk figcaption b { color: var(--after); }
+  @keyframes rv-fix { 0% { opacity: 0; } 2% { opacity: 1; } 80% { opacity: 0.45; } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .rv-loc .fix { animation: none; opacity: 0.7; } }
+  /* Perception: relative detection speed */
+  .rv-speed { display: grid; gap: 8px; }
+  .rv-speed > div { display: grid; grid-template-columns: 110px 1fr 36px; align-items: center; gap: 12px; transition: opacity var(--dur-base) var(--ease-out); }
+  .rv-speed b { font: 500 13px/1 var(--sans); color: var(--text); }
+  .rv-speed i { display: block; height: 10px; width: var(--w); background: var(--c); }
+  .rv-speed em { font: 500 13px/1 var(--mono); font-style: normal; color: var(--text); text-align: right; }
+  /* Dev workflow: where each test runs */
+  .is-old figcaption b { color: var(--before); }
+  .is-new figcaption b { color: var(--after); }
+  .rv-dev { display: block; width: 100%; height: auto; }
+  .rv-dev .box { fill: var(--surface-2); stroke: var(--line-strong); }
+  .rv-dev .box.is-sim { stroke: var(--after); }
+  .is-old .rv-dev .box.is-hw { stroke: var(--before); }
+  .rv-dev .lane { fill: none; stroke: var(--line-strong); stroke-dasharray: 3 3; }
+  .rv-dev .t-box { fill: var(--text); font: 600 13px var(--sans); }
+  .rv-dev .tok-hw { fill: var(--before); }
+  .is-new .rv-dev .tok-hw { fill: var(--after-soft); }
+  .rv-dev .tok-sim { fill: var(--after); }
+  .rv-navpair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .rv-navpanel { margin: 0; border: 1px solid var(--line); background: var(--surface); padding: 12px 12px 10px; }
+  .rv-navpanel figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .rv-navpanel figcaption b { font: 600 14px/1.3 var(--sans); color: var(--text); }
+  .is-bfs figcaption b { color: var(--before); }
+  .is-theta figcaption b { color: var(--after); }
+  .rv-navpanel figcaption span { font-size: 13px; color: var(--text-muted); }
+  .rv-nav .path-b { stroke: var(--after-soft); opacity: 0.6; stroke-width: 2; animation-delay: 0.3s; }
+  .rv-nav .wp { fill: var(--page-bg); stroke: var(--after); stroke-width: 2; }
+  .rv-nav .wp-b { stroke: var(--after-soft); opacity: 0.6; }
+  .rv-nav .rover { fill: var(--surface-2); stroke: var(--text-muted); }
+  .rv-fig .t-muted { fill: var(--text-muted); font-size: 11px; }
+  .rv-fig .t-axis { fill: var(--text-subtle); font-size: 11px; letter-spacing: 0.06em; }
+  @keyframes rv-draw { to { stroke-dashoffset: 0; } }
+  .rv-sci .raw { fill: none; stroke: var(--text-subtle); stroke-width: 1.2; }
+  .rv-sci .smooth { fill: none; stroke: var(--after); stroke-width: 2.5; stroke-dasharray: 900; stroke-dashoffset: 900; animation: rv-draw 1.6s var(--ease-out) forwards; }
+  .rv-sci .outlier { fill: none; stroke: var(--before); stroke-width: 1.5; }
+  .rv-sci .peak { stroke: var(--after); stroke-dasharray: 3 3; }
+  .rv-sci .peak-dot { fill: var(--after); }
+  .rv-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 400 13px/1.4 var(--sans); color: var(--text-muted); }
+  .rv-key span { display: inline-flex; align-items: center; gap: 8px; }
+  .rv-key i { display: inline-block; width: 18px; height: 0; border-top: 3px solid var(--after); }
+  .rv-key .k-b { border-top-color: var(--after-soft); opacity: 0.6; border-top-width: 2px; }
+  .rv-key .k-stair { border-top: 1.5px dashed var(--text-subtle); }
+  .rv-key .k-raw { border-top: 1.5px solid var(--text-subtle); }
+  .rv-cnn { margin: 0; }
+  .rv-cnn img { display: block; width: 100%; height: auto; border: 1px solid var(--line); background: var(--surface); }
+  .rv-cnn figcaption { margin-top: 8px; font-size: 13px; color: var(--text-muted); }
+  .card-body p.stack { margin-top: 16px; font-size: 13px; color: var(--text-muted); }
+  .gallery { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .gallery figure { margin: 0; max-width: 320px; }
+  .gallery img { width: 100%; display: block; border: 1px solid var(--line); background: #fff; }
+  .gallery figcaption { margin-top: 6px; color: var(--text-subtle); font-size: 13px; }
+  .body-links { display: flex; gap: 18px; margin-top: 18px; flex-wrap: wrap; }
+  .body-links a { text-decoration: none; font: 500 var(--fs-small)/1 var(--mono); border-bottom: 1px solid var(--line-strong); padding-bottom: 4px; }
+  .body-links a:hover { border-color: var(--accent); }
+
+  /* Skills */
+  .skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 32px; }
+  .skills h3 { margin: 0 0 8px; }
+  .skills p { margin: 0; color: var(--text-muted); font-size: var(--fs-small); line-height: 1.7; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { position: static; height: auto; flex-direction: row; flex-wrap: wrap; padding: 16px 16px 0; gap: 16px; }
+    main { padding: 32px 16px 80px; }
+    .hero { grid-template-columns: 1fr; min-height: 0; gap: 32px; }
+    .cards { grid-template-columns: 1fr; }
+    .skills, .rv-panel { grid-template-columns: 1fr; }
+    .rv-navpair { grid-template-columns: 1fr; }
+    .meta { flex-direction: column; gap: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .holo { transform: none !important; }
+    *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="demo-banner label">Demo · grounded version · reads project.json + resume.json</div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Sections">
+      <a href="#index"><span>00</span>Index</a>
+      <a href="#experience"><span>01</span>Experience</a>
+      <a href="#projects"><span>02</span>Projects</a>
+      <a href="#skills"><span>03</span>Skills</a>
+    </nav>
+
+    <main>
+      <section id="index" class="hero">
+        <div>
+          <div class="label">Data science · ML · robotics</div>
+          <h1>Sweekrit Bhatnagar</h1>
+          <p class="bio">
+            I build autonomy software for a Mars rover and shipped an LLM PR-approval system at Adobe.
+            <em>[draft bio]</em>
+          </p>
+          <div class="edu label" id="edu"></div>
+          <div class="links">
+            <a href="https://github.com/Sweekrit-B/" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="https://www.linkedin.com/in/sweekrit-bhatnagar/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <a href="mailto:sweekritbh@gmail.com">Email ↗</a>
+          </div>
+          <div class="chips" id="chips" role="group" aria-label="Choose a Pokémon card"></div>
+        </div>
+        <div class="card-stage">
+          <div class="holo" id="heroCard"><img id="heroImg" src="card-images/lucario.png" alt="Lucario card" /></div>
+          <canvas id="burst" aria-hidden="true"></canvas>
+          <div class="caption label"><b id="capName">Lucario</b> · <span id="capType">Fighting / Steel</span></div>
+        </div>
+      </section>
+
+      <section id="experience">
+        <div class="section-head">
+          <h2><span class="num">01</span>Experience</h2>
+          <span class="label" id="expCount"></span>
+        </div>
+        <div class="cards" id="expCards"></div>
+      </section>
+
+      <section id="projects">
+        <div class="section-head">
+          <h2><span class="num">02</span>Projects</h2>
+          <span class="label" id="projCount"></span>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Filter projects by area"></div>
+        <div class="cards" id="projCards"></div>
+      </section>
+
+      <section id="skills">
+        <div class="section-head">
+          <h2><span class="num">03</span>Skills</h2>
+        </div>
+        <div class="skills" id="skillGroups"></div>
+      </section>
+    </main>
+  </div>
+
+<script>
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+
+/* Domain → type color (DESIGN.md) */
+const DOMAIN = {
+  'AI / LLM': '#e86fa6',
+  'Machine Learning': '#9b86e0',
+  'Data Science': '#5b9cf0',
+  'Full Stack': '#f2c94c',
+  'Systems / Robotics': '#a7b6c6',
+  'Cloud': '#7fd4d8',
+}
+const pips = (domains) => (domains || []).map((d) => `<span class="pip label" style="--c:${DOMAIN[d] || '#5d6670'}">${esc(d)}</span>`).join('')
+
+/* Same logo map as src/pages/Resume.tsx */
+const LOGOS = {
+  'Adobe': ['adobe.png'], 'General Atomics': ['general-atomics.png'], 'Yonder Dynamics': ['yonder-dynamics.png'],
+  'UC San Diego Health': ['ucsd.png'], 'Brain Corp': ['braincorp.png'], 'Doe (YC S25)': ['doe.png', 'yc.png'],
+  'Lion Street Financial': ['lion-street.png'], 'Voicebotics AI': ['voicebotics.png'], 'Out of the Blue AI': ['outoftheblue.png'],
+  'F3 Global': ['f3-global.png'], 'County of San Diego': ['sdcounty.png'], 'The Kaizen Academy': ['kaizenacademy.png'],
+}
+const MONTH = { January: 'Jan', February: 'Feb', March: 'Mar', April: 'Apr', May: 'May', June: 'Jun', July: 'Jul', August: 'Aug', September: 'Sep', October: 'Oct', November: 'Nov', December: 'Dec' }
+const shortDate = (s) => (s ? s.replace(/^(\w+)/, (m) => MONTH[m] || m) : '')
+/* Anatomy figures (demo/figures/<name>/build.mjs), keyed by project title */
+const FIGURES = {
+  'Fruit Fly Connectome RNN': 'demo/figures/fly-rnn/fly-rnn.html',
+}
+const firstSentence = (s) => (s || '').split(/(?<=\.)\s/)[0]
+
+/* ---------- Expandable card (one open per list) ---------- */
+function makeCard(list, { logos, title, sub, when, gist, domains, body }) {
+  const card = document.createElement('article')
+  card.className = 'card'
+  const id = `b${Math.random().toString(36).slice(2, 8)}`
+  card.innerHTML = `
+    <button class="card-head${logos ? '' : ' no-logo'}" aria-expanded="false" aria-controls="${id}">
+      ${logos || ''}
+      <div>
+        <div class="meta"><span class="title">${title}</span><span class="when label">${when}</span></div>
+        ${sub ? `<div class="sub">${sub}</div>` : ''}
+        ${gist ? `<div class="gist">${gist}</div>` : ''}
+        <div class="tags">${pips(domains)}<span class="more label">Details +</span></div>
+      </div>
+    </button>`
+  const head = card.querySelector('.card-head')
+  head.onclick = () => {
+    const opening = !card.classList.contains('open')
+    list.querySelectorAll('.card.open').forEach((c) => close(c))
+    if (opening) {
+      card.classList.add('open')
+      head.setAttribute('aria-expanded', 'true')
+      head.querySelector('.more').textContent = 'Close −'
+      const b = document.createElement('div')
+      b.className = 'card-body'
+      b.id = id
+      b.innerHTML = body()
+      card.appendChild(b)
+      b.querySelectorAll('[data-rover]').forEach((el) => window.mountRover?.(el))
+      b.querySelectorAll('[data-rover-tabs]').forEach((el) => window.renderRoverTabs?.(el, b.querySelector('[data-rover]')))
+      if (card.getBoundingClientRect().top < 0) card.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' })
+    }
+  }
+  list.appendChild(card)
+  return card
+}
+function close(card) {
+  card.classList.remove('open')
+  const head = card.querySelector('.card-head')
+  head.setAttribute('aria-expanded', 'false')
+  head.querySelector('.more').textContent = 'Details +'
+  card.querySelectorAll('[data-rover]').forEach((el) => el._dispose?.())
+  card.querySelector('.card-body')?.remove()
+}
+
+const bullets = (arr) => (arr && arr.length ? `<ul>${arr.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>` : '')
+const stack = (skills) => (skills && skills.length ? `<p class="stack">Built with ${skills.map(esc).join(', ')}.</p>` : '')
+
+/* ---------- Experience ---------- */
+function renderExperience(resume) {
+  const e = resume.education
+  if (e) document.getElementById('edu').textContent = `${e.degree} · UC San Diego · ${e.graduation}`
+  const list = document.getElementById('expCards')
+  const jobs = resume.experience || []
+  document.getElementById('expCount').textContent = `${jobs.length} roles`
+  for (const j of jobs) {
+    const files = LOGOS[j.company]
+    const logos = files
+      ? `<div class="logos">${files.map((f) => `<img class="logo" src="company-logos/${f}" alt="" onerror="this.remove()" />`).join('')}</div>`
+      : `<div class="logos"><div class="logo fallback" aria-hidden="true">${esc(j.company[0])}</div></div>`
+    makeCard(list, {
+      logos,
+      title: esc(j.company),
+      sub: esc(j.role),
+      when: `${esc(shortDate(j.start))} – ${esc(shortDate(j.end) || 'Present')}`,
+      gist: esc((j.bullets || [])[0]),
+      domains: j.domains,
+      body: () => `
+        ${j.location ? `<p class="label" style="margin-top:16px">${esc(j.location)}</p>` : ''}
+        ${bullets(j.bullets)}
+        ${stack(j.skills)}`,
+    })
+  }
+  renderSkills(resume.technicalSkills || [])
+}
+
+/* ---------- Projects ---------- */
+let projectCards = []
+function renderProjects(items) {
+  const list = document.getElementById('projCards')
+  document.getElementById('projCount').textContent = `${items.length} projects`
+  projectCards = items.map((p) => {
+    const gist = p.bullets?.length ? p.bullets[0] : p.isRover ? p.subtitle || (p.steps || []).map((s) => s.kicker).join(' · ') : firstSentence(p.description)
+    const card = makeCard(list, {
+      title: esc(p.title),
+      when: esc(p.year),
+      gist: esc(gist),
+      sub: p.isRover ? 'Software engineer. Led the software sub-team for a year.' : '',
+      domains: p.domains,
+      body: () => `
+        ${p.isRover ? '<div class="rover-3d" data-rover role="img" aria-label="3D model of the Mars rover from its URDF"></div>' : ''}
+        ${FIGURES[p.title] ? `<iframe class="figure-frame" src="${FIGURES[p.title]}" title="Interactive figure: ${esc(p.title)}" loading="lazy"></iframe>` : ''}
+        ${p.isRover
+          ? '<div class="rv" data-rover-tabs></div>'
+          : p.bullets?.length ? bullets(p.bullets) : `<p>${esc(p.description)}</p>`}
+        ${p.images?.length ? `<div class="gallery">${p.images.map((im) => `<figure><img src="${esc(im.src)}" alt="${esc(im.caption || p.title)}" loading="lazy" />${im.caption ? `<figcaption>${esc(im.caption)}</figcaption>` : ''}</figure>`).join('')}</div>` : ''}
+        ${stack(p.skills)}
+        ${p.links?.length || p.video ? `<div class="body-links">${(p.links || []).map((l) => `<a href="${esc(l.href)}" target="_blank" rel="noreferrer">${esc(l.label)} ↗</a>`).join('')}${p.video ? `<a href="${esc(p.video)}" target="_blank" rel="noreferrer">Video ↗</a>` : ''}</div>` : ''}`,
+    })
+    return { card, domains: p.domains || [] }
+  })
+
+  // Filters: only domains that actually appear, in DESIGN.md order.
+  const present = Object.keys(DOMAIN).filter((d) => items.some((p) => (p.domains || []).includes(d)))
+  const filters = document.getElementById('filters')
+  const all = ['All', ...present]
+  all.forEach((d, i) => {
+    const b = document.createElement('button')
+    b.type = 'button'
+    b.className = 'filter'
+    b.setAttribute('aria-pressed', i === 0)
+    const n = d === 'All' ? items.length : items.filter((p) => (p.domains || []).includes(d)).length
+    b.innerHTML = d === 'All' ? `All · ${n}` : `<span class="pip" style="--c:${DOMAIN[d]}"></span>${esc(d)} · ${n}`
+    b.onclick = () => {
+      filters.querySelectorAll('.filter').forEach((f) => f.setAttribute('aria-pressed', f === b))
+      for (const { card, domains } of projectCards) {
+        const show = d === 'All' || domains.includes(d)
+        card.hidden = !show
+        if (!show) close(card)
+      }
+    }
+    filters.appendChild(b)
+  })
+}
+
+/* ---------- Skills ---------- */
+function renderSkills(groups) {
+  document.getElementById('skillGroups').innerHTML = groups
+    .map((g) => `<div><h3 class="label">${esc(g.category)}</h3><p>${g.items.map(esc).join(' · ')}</p></div>`)
+    .join('')
+}
+
+/* ---------- Load data ---------- */
+Promise.all([fetch('lib/resume.json').then((r) => r.json()), fetch('lib/project.json').then((r) => r.json())])
+  .then(([resume, projects]) => {
+    renderExperience(resume)
+    renderProjects(projects)
+  })
+  .catch((err) => {
+    document.getElementById('expCards').innerHTML = `<p class="label">Could not load data: ${esc(err.message)}</p>`
+  })
+
+/* ---------- Active section in the rail ---------- */
+const links = [...document.querySelectorAll('.toc a')]
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (!e.isIntersecting) continue
+    links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === `#${e.target.id}`))
+  }
+}, { rootMargin: '-40% 0px -55% 0px' })
+document.querySelectorAll('main section').forEach((s) => io.observe(s))
+
+/* ---------- Hero: Pokémon selector, holo, pixel burst ---------- */
+const MONS = [
+  ['lucario', 'Fighting / Steel', '#4f8fe0'], ['espeon', 'Psychic', '#e86fa6'], ['flareon', 'Fire', '#e8774a'],
+  ['glaceon', 'Ice', '#7fd4d8'], ['jolteon', 'Electric', '#f2c94c'], ['leafeon', 'Grass', '#6cc070'],
+  ['sylveon', 'Fairy', '#eda3c9'], ['umbreon', 'Dark', '#a89cc8'], ['vaporeon', 'Water', '#5b9cf0'],
+]
+const cap = (s) => s[0].toUpperCase() + s.slice(1)
+const chips = document.getElementById('chips')
+MONS.forEach(([name, type, color], i) => {
+  const b = document.createElement('button')
+  b.className = 'chip'
+  b.type = 'button'
+  b.setAttribute('aria-pressed', i === 0)
+  b.setAttribute('aria-label', `${cap(name)}, ${type} type`)
+  b.innerHTML = `<img src="gifs/${name}.gif" alt="" />`
+  b.onclick = () => {
+    chips.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', c === b))
+    document.documentElement.style.setProperty('--accent', color)
+    const img = document.getElementById('heroImg')
+    img.src = `card-images/${name}.png`
+    img.alt = `${cap(name)} card`
+    document.getElementById('capName').textContent = cap(name)
+    document.getElementById('capType').textContent = type
+    if (!reduced) burst(color)
+  }
+  chips.appendChild(b)
+})
+
+// Stand-in for pixelfx: square pixels, gravity, ~650ms, once per click.
+const canvas = document.getElementById('burst')
+const ctx = canvas.getContext('2d')
+function burst(color) {
+  const r = canvas.getBoundingClientRect()
+  canvas.width = Math.round(r.width / 5)
+  canvas.height = Math.round(r.height / 5)
+  const cx = canvas.width / 2, cy = canvas.height * 0.45
+  const parts = Array.from({ length: 34 }, () => {
+    const a = Math.random() * Math.PI * 2, sp = 0.6 + Math.random() * 1.6
+    return { x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 0.6, c: Math.random() < 0.25 ? '#fff' : color }
+  })
+  const t0 = performance.now()
+  ;(function frame(t) {
+    const k = (t - t0) / 650
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    if (k >= 1) return
+    ctx.globalAlpha = 1 - k
+    for (const p of parts) {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.06
+      ctx.fillStyle = p.c
+      ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1)
+    }
+    requestAnimationFrame(frame)
+  })(t0)
+}
+
+const heroCard = document.getElementById('heroCard')
+if (!reduced) {
+  heroCard.addEventListener('pointermove', (e) => {
+    const r = heroCard.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height
+    heroCard.classList.add('tracking', 'lit')
+    heroCard.style.setProperty('--mx', `${px * 100}%`)
+    heroCard.style.setProperty('--my', `${py * 100}%`)
+    heroCard.style.setProperty('--ry', `${(px - 0.5) * 24}deg`)
+    heroCard.style.setProperty('--rx', `${(0.5 - py) * 24}deg`)
+    heroCard.style.setProperty('--o', 1)
+  })
+  heroCard.addEventListener('pointerleave', () => {
+    heroCard.classList.remove('tracking', 'lit')
+    heroCard.style.setProperty('--rx', '0deg')
+    heroCard.style.setProperty('--ry', '0deg')
+    heroCard.style.setProperty('--o', 0)
+  })
+}
+</script>
+<script type="module" src="/demo/roverViewer.ts"></script>
+</body>
+</html>
