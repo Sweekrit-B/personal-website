@@ -1,11 +1,13 @@
 [
   {
-    "title": "Yonder Dynamics - Mars Rover Team @ UCSD",
+    "title": "Mars Rover Team",
     "year": "2023–2026",
     "isRover": true,
     "domains": [
       "Systems / Robotics",
-      "Machine Learning"
+      "Machine Learning",
+      "Data Science",
+      "Full Stack"
     ],
     "skills": [
       "ROS2",
@@ -51,11 +53,19 @@
         "title": "Developer workflow and ROS2 migration",
         "summary": "Created a Docker container used by the 20+ member software team and served as a primary contributor to the ROS to ROS2 switch, increasing package range and capabilities."
       }
-    ]
+    ],
+    "video": "https://www.youtube.com/watch?v=ofyGU1TOSJY"
   },
   {
     "title": "Fruit Fly Connectome RNN",
+    "points": [
+      "PyTorch RNN with weights initialized from the fruit fly connectome (neuPrint)",
+      "Models the T4/T5 circuit that detects motion direction",
+      "Training sat at chance (~50%): identical left/right weights trapped the optimizer",
+      "Randomized initialization broke the symmetry and reached 75% accuracy"
+    ],
     "year": "Fall 2026",
+    "lead": "Took a connectome-constrained RNN from chance to 75% accuracy.",
     "bullets": [
       "Built a recurrent neural network in PyTorch constrained by real Drosophila connectome data (Janelia neuPrint), modeling the biological T4/T5 motion-detection circuit.",
       "Improved direction-classification accuracy from chance level (~50%) to ~75% by diagnosing and resolving training failures in the recurrent architecture.",
@@ -90,7 +100,8 @@
     ]
   },
   {
-    "title": "ML Algorithms From Scratch in C++",
+    "title": "ML From Scratch (C++)",
+    "tabs": "ml",
     "year": "Fall 2026",
     "bullets": [
       "Developed linear regression, binary logistic regression, and multiclass (softmax) logistic regression algorithms from scratch in C++; additionally implemented train-test split, matrix operations, & mini-batch gradient descent.",
@@ -117,7 +128,18 @@
     ]
   },
   {
-    "title": "Climate Projections and the Future of Storms",
+    "title": "Climate Projections",
+    "points": [
+      "D3.js map and 3D globe of historical and projected tropical storm tracks",
+      "Compares storm behavior across CMIP6 climate scenarios",
+      "Time-series and statistical charts put past and present trends in context",
+      "Owned the visual design and story arc of the scrollytelling site"
+    ],
+    "preview": {
+      "video": "project-images/climate-projections/preview.mp4",
+      "poster": "project-images/climate-projections/poster.jpg",
+      "live": "https://nkerudi.github.io/Final-Project-DSC106-/storm_futures/"
+    },
     "year": "Spring 2026",
     "description": "Built interactive map and 3D globe visualizations in D3.js to display historical and projected tropical storm tracks across multiple CMIP6 climate scenarios, enabling spatial comparison of storm behavior over time. Developed supplementary time-series and statistical charts contextualizing past and present storm trends, translating raw climate model ensemble data into clear, audience-readable graphics. Owned end-to-end visual design and narrative structure of a data-driven scrollytelling experience, ensuring cohesive styling and a guided story arc from historical context through future emissions projections.",
     "domains": [
@@ -144,7 +166,17 @@
     ]
   },
   {
-    "title": "Hantavirus Modeling and Prediction",
+    "title": "Hantavirus Modeling",
+    "points": [
+      "Joined 10K synthetic patient records with epidemiology, climate and World Bank data",
+      "A logistic-regression baseline without the added data caught only 18% of deaths",
+      "Cross-validated and grid-searched LR, random forest, XGBoost and LightGBM",
+      "Calibrated LightGBM with an F2/MCC-tuned threshold (0.12) reached F2 = 0.60",
+      "McNemar and Cochran's Q: tree models beat the baseline (p < 0.001)",
+      "SHAP explanations served in a Streamlit demo"
+    ],
+    "diagram": "hanta",
+    "lead": "Built a three-stage pipeline to predict hantavirus deaths.",
     "year": "Spring 2026",
     "description": "Implemented data cleaning pipelines and feature development for synthetic hantavirus clinical data, incorporating country-based epidemiological information, environmental data, and social metrics sourced from the Open-Meteo and World Bank APIs. Developed and tested a three-stage modeling pipeline for hantavirus mortality prediction, performing baseline classification, hyperparameter tuning, class calibration, and custom threshold tuning across Logistic Regression, Random Forest, XGBoost, and LightGBM. Conducted secondary statistical analysis using McNemar Tests and Cochran's Q Test, and provided interpretation of top predictive features using SHAP.",
     "domains": [
@@ -174,7 +206,17 @@
     ]
   },
   {
-    "title": "Hotel Booking Cancellation and Pricing Analysis",
+    "title": "Hotel Booking Analysis",
+    "points": [
+      "Logistic regression on cancellations, controlling for lead time",
+      "Non-refundable deposits: 287× the odds of cancelling (refundable: 0.57×)",
+      "That near-perfect rate looks like a recording artifact, not real behavior",
+      "Linear model: segment × hotel beat hotel-only on nightly rate (partial F-test)",
+      "Resorts price below city hotels in most segments, down to −€26 for corporate",
+      "Residual diagnostics: all four linear-model assumptions were violated"
+    ],
+    "diagram": "hotel",
+    "lead": "Fit two regressions in R on 119K hotel bookings.",
     "year": "Spring 2026",
     "description": "Modeled 119K hotel bookings with logistic regression in R to predict cancellations and analyze pricing, finding that non-refundable deposits carry 287x higher cancellation odds. Tested model significance through hypothesis testing and ANOVA, and diagnosed linearity and normality assumptions via residual analysis.",
     "domains": [
@@ -190,7 +232,15 @@
     "links": []
   },
   {
-    "title": "Climate-Driven Power Outage Prediction",
+    "title": "Power Outage Prediction",
+    "diagram": "power",
+    "points": [
+      "Decision tree and random forest on 1,534 outages with 10+ climate/geo features",
+      "k-fold CV and GridSearchCV lifted accuracy from 57.9% to 69.4%",
+      "Engineered seasonal encoding and hurricane flags; cut multicollinearity",
+      "Median and probabilistic imputation for missing values",
+      "Permutation tests, TVD missingness analysis and subgroup fairness checks"
+    ],
     "year": "Fall 2025",
     "description": "Trained Decision Tree & Random Forest models on 1,534 outages with 10+ climate/geospatial features using k-fold CV & GridSearchCV, improving accuracy from 57.9% → 69.4% (+11.5%). Engineered custom features including seasonal encoding, hurricane binarization, multicollinearity reduction, & applied encoding with median & probabilistic imputation. Performed EDA, permutation testing, & missingness analysis using TVD-based statistics, validating effects on outage duration & fairness via subgroup accuracy testing.",
     "domains": [
@@ -218,10 +268,16 @@
     ]
   },
   {
-    "title": "Aletheia - Medical Aid & Pill Tracking Agentic AI Web App @ CalHacks AI 2025",
+    "title": "Aletheia",
+    "diagram": "aletheia",
+    "points": [
+      "Medical-aid and pill-tracking agentic AI app, built at CalHacks AI 2025",
+      "Letta agents on Claude 4 with drug-lookup and web-search tools",
+      "Insurance grading and pill-label reading with the Gemini API"
+    ],
     "year": "Summer 2025",
     "video": "https://www.youtube.com/watch?v=aNmi3gI5nAk",
-    "description": "Developed structured agentic AIs using Letta and Anthropic Claude 4, equipped with custom tools such as drug querying and web search, for personalized user recommendations regarding medicinal questions. Created inference models for insurance company grading and image detection models for label reading with Gemini Generative AI API.",
+    "description": "Medical aid and pill tracking agentic AI web app, built at CalHacks AI 2025. Developed structured agentic AIs using Letta and Anthropic Claude 4, equipped with custom tools such as drug querying and web search, for personalized user recommendations regarding medicinal questions. Created inference models for insurance company grading and image detection models for label reading with Gemini Generative AI API.",
     "domains": [
       "AI / LLM",
       "Full Stack"
@@ -240,10 +296,17 @@
     ]
   },
   {
-    "title": "TallyUp - Hierarchal Club Finance Tracking App @ LA Hacks 2025",
+    "title": "TallyUp",
+    "diagram": "tally",
+    "points": [
+      "Club finance app with nested groups, built at LA Hacks 2025",
+      "MERN backend from scratch with a React Native frontend",
+      "MongoDB nested documents for groups, subgroups and per-user balances",
+      "Express REST APIs for real-time debt tracking and ledger sync"
+    ],
     "year": "Spring 2025",
     "video": "https://www.youtube.com/watch?v=BPfS8f4Acwg",
-    "description": "Built backend from scratch using the MERN stack with React Native frontend; modeled nested groups, subgroups, and per-user balances using MongoDB with relational object structures and nested document design. Engineered RESTful APIs with Express and Axios for real-time debt tracking, custom member assignments, and ledger sync across recursive group trees; tackled bi-directional state-sharing logic between users and nested club structures.",
+    "description": "Hierarchical club finance tracking app, built at LA Hacks 2025. Built backend from scratch using the MERN stack with React Native frontend; modeled nested groups, subgroups, and per-user balances using MongoDB with relational object structures and nested document design. Engineered RESTful APIs with Express and Axios for real-time debt tracking, custom member assignments, and ledger sync across recursive group trees; tackled bi-directional state-sharing logic between users and nested club structures.",
     "domains": [
       "Full Stack"
     ],
@@ -264,6 +327,11 @@
   },
   {
     "title": "ML Paper Recommender",
+    "diagram": "paper",
+    "points": [
+      "Search for arXiv papers by abstract",
+      "TF-IDF vectors ranked by cosine similarity"
+    ],
     "year": "Spring 2025",
     "description": "Used queried ArXIV dataset, TF-IDF vectorization, and cosine similarity to return top search results for scientific papers based on abstract.",
     "domains": [
@@ -287,7 +355,14 @@
     ]
   },
   {
-    "title": "Airline Customer Satisfaction Prediction",
+    "title": "Airline Satisfaction",
+    "diagram": "airline",
+    "points": [
+      "EDA and visualizations of multidimensional customer data (Seaborn, Matplotlib)",
+      "Compared three preprocessing pipelines for prediction accuracy",
+      "Random forest, KNN and XGBoost reached 96% accuracy",
+      "Stakeholder presentation on raising satisfaction and market share"
+    ],
     "year": "Fall 2024",
     "description": "Created data visualization using Seaborn and Matplotlib and performed high-level analysis for multidimensional CSV customer data; proposed and tested three preprocessing pipelines for highest prediction accuracy. Tested various ML models with Scikit-Learn, including Random Forests, KNNs, and XGBoost to develop high accuracy (96%), low error predictions and feature importances, used to draw business insights for customer acquisition. Consolidated findings into final stakeholder presentation providing personalized business suggestions to airline companies to increase customer satisfaction and capture greater market share for maximal profit.",
     "domains": [
@@ -312,6 +387,12 @@
   },
   {
     "title": "To Do List App",
+    "diagram": "todo",
+    "points": [
+      "MERN to-do app, built with Triton Software Engineering",
+      "Check off, edit and assign tasks to users",
+      "MongoDB Atlas backend; API calls tested with Postman"
+    ],
     "year": "Fall 2024",
     "description": "Associated with Triton Software Engineering. Created dynamically-updating to-do list app utilizing the MERN stack, complete with functionality to check and uncheck tasks, edit task information, and assign users. Managed backend database with MongoDB Atlas and tested API calls with Postman.",
     "domains": [
@@ -335,7 +416,14 @@
     ]
   },
   {
-    "title": "Bioinformatics Algorithms",
+    "title": "Bioinformatics Algos",
+    "diagram": "bio",
+    "points": [
+      "Built with UC San Diego School of Medicine",
+      "Needleman–Wunsch alignment scores sequence similarity",
+      "Hidden Markov model finds mRNA coding regions",
+      "Burrows–Wheeler transform matches sampled reads to sequences"
+    ],
     "year": "Summer 2024",
     "description": "Associated with UC San Diego School of Medicine. Replicated the Needleman-Wunsch algorithm, inputting randomized nucleotide sequences to determine similarity. Built the Hidden Markov Model, determining the existence of mRNA coding regions through probability matrices. Developed the Burrows-Wheeler Algorithm for matching sampled reads to nucleotide sequences via data transformation.",
     "domains": [
@@ -358,7 +446,13 @@
     ]
   },
   {
-    "title": "Calendar Application",
+    "title": "Calendar App",
+    "diagram": "calendar",
+    "points": [
+      "Android calendar app built on Google Calendar data",
+      "Custom form to add events",
+      "Sends invites to event guests"
+    ],
     "year": "Summer 2024",
     "description": "Developed a working Android calendar application; app displays user data from Google Calendar plug-ins, adds calendar events using a custom-made form, and sends invites to event guests.",
     "domains": [
@@ -378,12 +472,21 @@
   },
   {
     "title": "Epidemics.io",
+    "preview": {
+      "video": "project-images/epidemics-io/preview.mp4",
+      "poster": "project-images/epidemics-io/poster.jpg"
+    },
+    "points": [
+      "Epidemic simulator built during buildspace s5",
+      "Mesa and NetworkX model 500+ agents on torus grids and random networks",
+      "Spreads a user-defined infection; risk factors are agent properties"
+    ],
     "year": "Summer 2024",
     "video": "https://www.youtube.com/watch?v=5DtQ335HXNI",
     "description": "Associated with buildspace s5. Developed epidemiology simulator using Mesa and NetworkX Python libraries capable of handling 500+ agents in gridded torus maps and randomly-generated network models to showcase the spread of a user-defined infection. Identified key risk factors for disease spread and implemented as agent properties.",
     "domains": [
-      "Data Visualization",
-      "Data Science"
+      "Data Science",
+      "Full Stack"
     ],
     "skills": [
       "Data Visualization",
@@ -395,7 +498,7 @@
     "links": [
       {
         "label": "Live Demo",
-        "href": "https://epidemicsio.streamlit.app/"
+        "href": "https://epidemics-io.streamlit.app/"
       },
       {
         "label": "GitHub",

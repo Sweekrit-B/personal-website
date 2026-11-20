@@ -2,8 +2,8 @@
   "education": {
     "school": "University of California, San Diego, La Jolla, CA",
     "degree": "B.S. Data Science, Minor in Business Economics",
-    "graduation": "June 2027",
-    "graduationDate": "2027-06",
+    "graduation": "June 2028",
+    "graduationDate": "2028-06",
     "coursework": [
       "Data Structures & Algorithms",
       "Data Mining",
@@ -20,13 +20,18 @@
     {
       "role": "Data Science & Machine Learning Research Intern",
       "company": "General Atomics",
-      "location": "San Diego, CA",
+      "location": "La Jolla, CA",
       "start": "September 2026",
       "startDate": "2026-09",
       "end": "Present",
       "endDate": null,
       "bullets": [
-        "In collaboration with UCSD HDSI"
+        "Building PyTorch surrogate models for the TGLF plasma-turbulence code: five-seed quantile-regression ensembles that predict ion heat, electron heat and particle fluxes with 90% prediction intervals.",
+        "Diagnosed a surrogate failure on an unseen DIII-D profile (negative R² on every flux) as out-of-range inputs, then designed and ran an 8,000-case TGLF database on an HPC cluster with wider input ranges.",
+        "Retraining on that database lifted R² on the failing profile from −0.99 to 0.60 (ion heat), −1.75 to 0.69 (electron heat) and −1.41 to 0.58 (particle flux), with 92–100% interval coverage.",
+        "Validated TGLF against DIII-D shot #128913 at 13 radii with exact agreement, and generated a 1,000-case database with zero failed runs.",
+        "Propagated input uncertainty on a real DIII-D plasma: 10,000 cases predicted in 0.23 s (about 23 µs each) versus seconds per case for TGLF, validated against 300 TGLF runs.",
+        "Compared random forest, XGBoost and neural-network surrogates on 5,000 TGLF runs with a leakage-safe 70/15/15 pipeline, grid search and 5-fold cross-validation."
       ],
       "domains": [
         "Data Science",
@@ -34,7 +39,102 @@
       ],
       "skills": [
         "Python",
+        "PyTorch",
+        "scikit-learn",
+        "XGBoost",
+        "Quantile Regression",
+        "Uncertainty Quantification",
+        "HPC"
+      ]
+    },
+    {
+      "role": "VP of Technology",
+      "company": "Triton Consulting Group",
+      "start": "May 2026",
+      "startDate": "2026-05",
+      "end": "Present",
+      "endDate": null,
+      "bullets": [
+        "Lead 50+ consultants and developers across technical projects, from strategy and execution to client communication.",
+        "Help direct full-stack projects serving 5,000+ users across startups, nonprofits and government organizations, leading requirements gathering, architecture and development.",
+        "Primary mentor for new analysts: trained 10–15 of them in software development and DS/ML analysis through mini-project primers.",
+        "One of the primary liaisons between clients and engineering teams."
+      ],
+      "domains": [
+        "Full Stack"
+      ],
+      "skills": [
+        "Leadership",
+        "Mentoring",
+        "Requirements Scoping",
+        "System Design",
+        "Client Communication"
+      ]
+    },
+    {
+      "role": "Software Engineer",
+      "company": "Yonder Dynamics",
+      "location": "La Jolla, CA",
+      "start": "October 2024",
+      "startDate": "2024-10",
+      "end": "Present",
+      "endDate": null,
+      "bullets": [
+        "Led the software sub-team for a year, defining architecture and evaluating spike docs to de-risk technical decisions.",
+        "Cut autonomous path-planning latency by 70% by replacing BFS with a Theta* graph search over point-cloud data.",
+        "Streamed real-time detection of 10+ objects to the navigation stack; trained a YOLO model and quantized it to RKNN for the rover’s NPU, a 4x speedup with lower CPU load.",
+        "Achieved 99.8% positional accuracy by fusing satellite GPS with RTCM correction data at 10 Hz over a live network link.",
+        "Led the ROS1 → ROS2 migration across 12+ rover modules, and built Docker environments that made onboarding over 3x faster.",
+        "2x-ed developer throughput and moved 70% of testing off-rover with a Webots simulation integrating 13 rover packages.",
+        "Developed embedded Arduino firmware running 4 biochemical tests for a life-detection experiment robot."
+      ],
+      "domains": [
+        "Systems / Robotics",
         "Machine Learning"
+      ],
+      "skills": [
+        "Python",
+        "C++",
+        "PyTorch",
+        "YOLO",
+        "RKNN",
+        "ROS2",
+        "Theta*",
+        "Webots",
+        "Docker",
+        "Arduino"
+      ]
+    },
+    {
+      "role": "Data Science & Machine Learning Research Intern",
+      "company": "UC San Diego Health",
+      "location": "La Jolla, CA",
+      "start": "August 2024",
+      "startDate": "2024-08",
+      "end": "Present",
+      "endDate": null,
+      "bullets": [
+        "Built random-forest classifiers predicting MASLD in an HIV+ cohort (n = 89) from 2,185 clinical, gut-microbiome and metabolic-flux features, reaching a nested cross-validated AUROC of 0.81 ± 0.02.",
+        "Re-engineered evaluation from a single 18-sample test split to 3 × 5-fold nested cross-validation, and audited a collaborator’s pipeline, fixing 4 methodological bugs including label leakage.",
+        "Fine-tuned DNABERT-2 (117M parameters) with learned layer fusion and attention pooling to predict promoter strength from DNA sequence, reaching Spearman ≈ 0.84 on about 2,200 held-out sequences.",
+        "Achieved 79.08% accuracy on HIV prediction via L1-regularized tree and regression models with cross-validation.",
+        "Processed about 1.4 GB of FASTQ sequencing data into validated 13K-line CSVs via Bash ETL pipelines.",
+        "Resolved 10–15 neurons at 90% accuracy across 12+ two-photon microscopy recordings by tuning a CNN.",
+        "Presenting at SCCUR 2026: “Gut Microbiome Taxa and Community Metabolic Flux for Classifying Significant Fibrosis in Biopsy-Proven NAFLD.”"
+      ],
+      "domains": [
+        "Data Science",
+        "Machine Learning"
+      ],
+      "skills": [
+        "Python",
+        "scikit-learn",
+        "PyTorch",
+        "Hugging Face",
+        "Random Forests",
+        "Nested CV",
+        "DESeq2",
+        "Bash"
       ]
     },
     {
@@ -46,12 +146,13 @@
       "end": "September 2026",
       "endDate": "2026-09",
       "bullets": [
-        "Saved 25 engineer-hours/week for 2,000+ developers by designing and shipping an autonomous AI PR-approval system end to end.",
-        "Achieved 85% test-set accuracy by tuning a LightGBM classifier on 23 GB of MSSQL data through Apache Arrow pipelines.",
-        "Scaled a fault-tolerant data extraction service to 25K requests/hour using GitHub and Jira REST APIs.",
-        "Architected a 5-stage LLM pipeline on AWS Bedrock, provisioned with Terraform (IaC) and integrated into CI/CD.",
-        "Tracked 500+ decisions/day by building an observability dashboard on AWS RDS with production monitoring.",
-        "Validated model decisions continuously by building a recurring LLM evaluation microservice that samples 200 PRs for human labeling."
+        "Saved 25 hours/week for 2,000+ developers by designing and developing an AI PR-approval system end to end.",
+        "Drove alignment across 5+ teams, including infra and build/test, to ship the system from ideation to beta.",
+        "Tuned a LightGBM classifier to 85% test-set accuracy on 23 GB of MSSQL data via Apache Arrow pipelines.",
+        "Scaled a fault-tolerant data extraction service to 25K requests/hour via GitHub and Jira REST APIs.",
+        "Architected a 5-stage agentic LLM pipeline on AWS Bedrock, provisioned with Terraform and integrated into GitHub and CircleCI CI/CD.",
+        "Tracked 500+ decisions/day via production telemetry and an observability dashboard on AWS RDS.",
+        "Built an LLM evaluation harness benchmarking model decisions against 200 human-labeled PRs."
       ],
       "domains": [
         "AI / LLM",
@@ -73,75 +174,40 @@
       ]
     },
     {
-      "role": "Autonomous Systems Software Engineer",
-      "company": "Yonder Dynamics",
+      "role": "Software Engineer",
+      "company": "F3 Global",
       "location": "La Jolla, CA",
-      "start": "October 2024",
-      "startDate": "2024-10",
-      "end": "Present",
-      "endDate": null,
+      "start": "January 2026",
+      "startDate": "2026-01",
+      "end": "June 2026",
+      "endDate": "2026-06",
       "bullets": [
-        "Streamed real-time detection of 10+ objects to the navigation stack by integrating a PyTorch CNN with an on-rover NPU.",
-        "Cut autonomous path-planning latency by 70% by implementing a Theta* graph-search algorithm over pointcloud data.",
-        "Achieved 99.8% positional accuracy by fusing satellite GPS with wireless correction data over a live networking link.",
-        "2x-ed developer throughput and moved 60–70% of testing off-rover by building a Webots-ROS2 simulation integrating 13 rover packages.",
-        "Developed embedded Arduino firmware running 4 biochemical tests to control a life-detection experiment robot."
+        "Led development of the About Us, How You Can Help and Privacy Policy pages for a nonprofit website redesign in React and Node.js, built from designers’ Figma wireframes.",
+        "Integrated the contact form with a MongoDB and Express backend for automated custom email delivery."
       ],
       "domains": [
-        "Systems / Robotics",
-        "Machine Learning"
+        "Full Stack"
       ],
       "skills": [
-        "Python",
-        "C++",
-        "PyTorch",
-        "ROS2",
-        "Theta*",
-        "Computer Vision",
-        "Arduino",
-        "Docker"
+        "React",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Figma"
       ]
     },
     {
-      "role": "Data Science & Machine Learning Research Intern",
-      "company": "UC San Diego Health",
-      "location": "La Jolla, CA",
-      "start": "August 2024",
-      "startDate": "2024-08",
-      "end": "Present",
-      "endDate": null,
-      "bullets": [
-        "Processed 1.4M KB of FASTQ sequencing inputs into quality-checked 13K-line CSVs through Bash ETL pipelines.",
-        "Resolved 10–15 neurons at 90% accuracy across 12+ microscopy videos by tuning a PyTorch/TensorFlow CNN.",
-        "Achieved 79.08% accuracy on HIV prediction by building L1-regularized tree and regression models with k-fold cross-validation.",
-        "Identified disease-associated taxa across 800+ bacteria through differential abundance analysis using DESeq2."
-      ],
-      "domains": [
-        "Data Science",
-        "Machine Learning"
-      ],
-      "skills": [
-        "Python",
-        "PyTorch",
-        "TensorFlow",
-        "scikit-learn",
-        "Bash",
-        "Computer Vision"
-      ]
-    },
-    {
-      "role": "Software Engineering Consultant",
-      "company": "SD County IT",
-      "location": "San Diego, CA",
+      "role": "Project Manager & Software Engineering Consultant",
+      "company": "County of San Diego",
       "start": "April 2026",
       "startDate": "2026-04",
       "end": "June 2026",
       "endDate": "2026-06",
       "bullets": [
-        "Served 26.5K county employees by shipping a stakeholder-scoped contact-management system for an emergency services department.",
-        "Scoped authentication, database architecture, API routing, and frontend UI/UX with the county IT department head.",
-        "Owned data authorization end to end by specifying and implementing role-based access control across the API and backend layers.",
-        "Replaced a legacy spreadsheet system with real-time permission-sync built on an Express API layer for county-wide access."
+        "Led 4 developers building a secure contact-management system for a county emergency services department of 8,000+.",
+        "Scoped requirements with the county IT department head across authentication, database architecture, API routing and frontend UI/UX.",
+        "Owned security requirements end to end, specifying and implementing role-based access control at both frontend and API.",
+        "Built real-time permission sync with an Express API layer, replacing a legacy spreadsheet system."
       ],
       "domains": [
         "Full Stack"
@@ -150,33 +216,8 @@
         "JavaScript",
         "TypeScript",
         "Express",
-        "Node.js",
-        "REST APIs",
-        "RBAC"
-      ]
-    },
-    {
-      "role": "Contract Full-Stack Software Engineer",
-      "company": "F3 Global",
-      "location": "Dover, DE",
-      "start": "January 2026",
-      "startDate": "2026-01",
-      "end": "April 2026",
-      "endDate": "2026-04",
-      "bullets": [
-        "Increased client acquisition for a 501(c)(3) small business microfinancing nonprofit by building and deploying key frontend pages (client stories, About Us, privacy policy) for a redesigned homepage with React.",
-        "Enabled content management by developing Express/MongoDB APIs to create, edit, and delete newsletter articles.",
-        "Drove user engagement by integrating a contact system with backend routing and custom email workflows."
-      ],
-      "domains": [
-        "Full Stack"
-      ],
-      "skills": [
-        "JavaScript",
-        "React",
-        "Express",
-        "MongoDB",
-        "Node.js"
+        "RBAC",
+        "Requirements Scoping"
       ]
     },
     {
@@ -188,45 +229,45 @@
       "end": "March 2026",
       "endDate": "2026-03",
       "bullets": [
-        "Reduced teacher prep time by 60% by building a file upload system integrating Google Cloud and Supabase storage.",
-        "Architected and implemented a full-stack dashboard system for 200+ users, designing PostgreSQL schemas and Express APIs for assignments, user management, file storage, gradebooks, and custom email notifications.",
-        "Secured role-based access in dashboards by developing middleware with cookie-based auth and permission gating."
+        "Led design and development of a full-stack MERN + Supabase learning platform for 200+ students, parents and teachers.",
+        "Cut teacher prep time 60% with a cloud file-upload system (Google Cloud + Supabase storage) after identifying file handling as the largest workflow.",
+        "Designed the Supabase Postgres schema and auth: OAuth, role-based access control and cookie-based permission gating."
       ],
       "domains": [
         "Full Stack",
         "Cloud"
       ],
       "skills": [
-        "JavaScript",
         "React",
-        "Express",
-        "PostgreSQL",
+        "Node.js",
         "Supabase",
-        "Google Cloud"
+        "PostgreSQL",
+        "Google Cloud",
+        "OAuth"
       ]
     },
     {
-      "role": "Systems Software Engineering Consultant",
+      "role": "Project Manager & Software Engineering Consultant",
       "company": "Brain Corp",
-      "location": "La Jolla, CA",
       "start": "September 2025",
       "startDate": "2025-09",
       "end": "December 2025",
       "endDate": "2025-12",
       "bullets": [
-        "Evaluated VDA 5050 API and fleet-management feasibility by building a full-stack MQTT simulation platform with JSON messaging and agent-based modeling of grocery-store robotics scenarios (cleaning, restocking, etc.).",
-        "Independently designed the simulation methodology and modeled fleet communication as structured packet exchange to surface protocol constraints and integration tradeoffs.",
-        "Delivered the API analysis by leading a team of 3 developers and validating networking behavior across 2 fleet scenarios."
+        "Led 3 developers through an evaluation of the VDA 5050 fleet-management standard across 2 mock-warehouse scenarios (stocking and cleaning).",
+        "Designed the simulation methodology for an open-ended evaluation, building an MQTT platform with agent-based modeling of grocery robotics workflows.",
+        "Surfaced protocol constraints and integration tradeoffs by modeling fleet communication as structured packet exchange."
       ],
       "domains": [
-        "Systems / Robotics"
+        "Systems / Robotics",
+        "Full Stack"
       ],
       "skills": [
-        "JavaScript",
-        "TypeScript",
         "MQTT",
-        "Node.js",
-        "Simulation"
+        "VDA 5050",
+        "Agent-Based Simulation",
+        "JavaScript",
+        "TypeScript"
       ]
     },
     {
@@ -238,72 +279,73 @@
       "end": "September 2025",
       "endDate": "2025-09",
       "bullets": [
-        "Improved user-facing LLM response efficiency by 140x by architecting an agentic backend with XML-prompted RAG chains integrated with Pinecone vector databases, intent routing, and structured outputs.",
-        "Enabled retrieval for 100K+ dental products with Playwright-based scraping pipelines integrated with cloud SQL.",
-        "Secured credential and task-memory storage with RBAC and IV-HMAC encryption, scoped per role and org.",
-        "Created 12+ external integrations (Ramp, Google Cloud, Microsoft) with Model Context Protocol infrastructure."
+        "Improved enterprise LLM retrieval efficiency 140x via RAG chains over a Pinecone vector database.",
+        "Scraped 100K+ dental products and integrated them into a cloud MySQL platform after normalization and deduplication.",
+        "Implemented 12+ live Model Context Protocol integrations (Ramp, Google Cloud, Microsoft) giving LLMs structured data access.",
+        "Secured credential and task-memory storage with RBAC and IV-HMAC encryption, scoped per role and organization.",
+        "Reprioritized the integration roadmap toward financial and healthcare connectors after customer calls surfaced enterprise needs."
       ],
       "domains": [
-        "AI / LLM"
+        "AI / LLM",
+        "Full Stack",
+        "Cloud"
       ],
       "skills": [
         "Python",
         "RAG",
         "Pinecone",
         "MCP",
-        "LLMs",
         "Playwright",
-        "Vector Databases",
-        "Google Cloud"
+        "MySQL"
       ]
     },
     {
-      "role": "Backend Software Engineering Intern",
+      "role": "Backend Software Developer Intern (Dentdelioun LLC)",
       "company": "Lion Street Financial",
-      "location": "Chicago, IL",
+      "location": "Chicago, IL · part-time",
       "start": "June 2025",
       "startDate": "2025-06",
       "end": "August 2025",
       "endDate": "2025-08",
       "bullets": [
-        "Built AI insurer support by architecting a multi-tenant Express/Supabase backend with structured data flows.",
-        "Engineered agentic LLM workflows with tool chaining, memory, and feedback loops for conversation handling.",
-        "Delivered multilingual meeting insights via an LLM system with streaming transcription and summarization."
+        "Designed a greenfield backend for an internal training and advisory dashboard (MERN, Supabase, Firebase) that simulates client scenarios and gives insurance agents AI-guided support.",
+        "Built Express/Node REST APIs and middleware for an agentic LLM framework handling conversation state, multi-step tool use and workflows.",
+        "Developed a real-time, multi-language LLM meeting monitor for international advisors to record calls, retrieve summaries and surface client insights."
       ],
       "domains": [
-        "AI / LLM"
+        "AI / LLM",
+        "Full Stack"
       ],
       "skills": [
-        "JavaScript",
+        "Node.js",
         "Express",
         "Supabase",
-        "LLMs",
-        "Agentic AI"
+        "Firebase",
+        "LLMs"
       ]
     },
     {
-      "role": "Software Engineering Consultant",
+      "role": "Project Manager & Software Engineering Consultant",
       "company": "KlonIT AI",
-      "location": "La Jolla, CA",
+      "location": "Remote",
       "start": "March 2025",
       "startDate": "2025-03",
       "end": "June 2025",
       "endDate": "2025-06",
       "bullets": [
-        "Built a production MCP server integrating Google Suite and local SQL sources to support LLM workflows.",
-        "Reduced multi-platform task execution from 9 minutes to less than 1 minute by engineering prompt templates and agent pipelines enabling single-shot natural language automation of 20+ step medical and retail workflows.",
-        "Delivered 8+ LLM system capabilities (Natural Language-to-PostgreSQL, context injection, retrieval) while coordinating 4 developers across Agile sprints and client-facing technical reviews."
+        "Managed 4 developers across Agile sprints and client technical reviews, shipping a Model Context Protocol server that integrates Google Drive, Calendar and SQL data.",
+        "Cut task execution from 9 minutes to under 1 minute by automating 19-step cross-platform workflows with prompt templates and agent pipelines.",
+        "Delivered 8+ LLM KPIs including natural-language SQL generation, context injection and dynamic retrieval."
       ],
       "domains": [
         "AI / LLM"
       ],
       "skills": [
-        "Python",
-        "MCP",
-        "LLMs",
-        "Prompt Engineering",
+        "TypeScript",
         "PostgreSQL",
-        "Agentic AI"
+        "MCP",
+        "Claude",
+        "Agile"
       ]
     },
     {
@@ -315,45 +357,43 @@
       "end": "June 2025",
       "endDate": "2025-06",
       "bullets": [
-        "Delivered gamified safety training to 15,000+ high-school students across San Diego County by building a scalable MERN-based EdTech platform, gating e-scooter and e-bike access on course completion.",
-        "Boosted engagement by building Duolingo-style React modules with quizzes, animations, and state-driven progression.",
-        "Implemented secure session-based auth and persistent progress tracking using MongoDB and Firebase."
+        "Delivered gamified e-bike and scooter safety training to 15,000+ San Diego high school students with a MERN + Firebase platform built with UC San Diego Medicine.",
+        "Built Duolingo-style interactive React components (quizzes, in-lesson animations) from designers’ Figma wireframes.",
+        "Engineered an Express + MongoDB backend for secure authentication and persistent progress tracking."
       ],
       "domains": [
         "Full Stack",
         "Cloud"
       ],
       "skills": [
-        "JavaScript",
         "React",
-        "Node.js",
+        "TypeScript",
         "Express",
         "MongoDB",
         "Firebase"
       ]
     },
     {
-      "role": "AI Systems Software Engineering Intern",
+      "role": "AI Systems Developer Intern",
       "company": "Voicebotics AI",
-      "location": "Short Hills, NJ",
+      "location": "Remote",
       "start": "January 2025",
       "startDate": "2025-01",
       "end": "June 2025",
       "endDate": "2025-06",
       "bullets": [
-        "Built backend services processing 1,030+ CRM records to extract summaries, sentiment, and action items.",
-        "Engineered a real-time NLP pipeline with prompt chaining and sliding context to enable bi-directional CRM sync.",
-        "Implemented OAuth 2.0 authentication, LLM and GoHighLevel (CRM) API token management, and backend validation (Postman testing, logging) to support secure app installation and reliable integrations."
+        "Built backend services for SummarEQ, a MERN app using GoHighLevel APIs to extract summaries, sentiment and action items across 1,030+ calls, emails and messages.",
+        "Developed a real-time NLP pipeline with OpenAI APIs, using prompt chaining and sliding windows to summarize CRM data.",
+        "Implemented OAuth 2.0 install and token flows, plus Postman load testing and backend logging."
       ],
       "domains": [
         "AI / LLM"
       ],
       "skills": [
-        "JavaScript",
-        "NLP",
-        "LLMs",
+        "Node.js",
+        "OpenAI API",
         "OAuth 2.0",
-        "REST APIs"
+        "MongoDB"
       ]
     },
     {
@@ -365,9 +405,9 @@
       "end": "March 2025",
       "endDate": "2025-03",
       "bullets": [
-        "Identified 40+ critical incidents in e-commerce analytics across device and geography segments by building hierarchical time-series models (Prophet, ARIMA, scikit-learn) on 1M+ row Parquet datasets.",
-        "Attributed temporal anomalies to key dimensions using subgroup error metrics, Pandas, and DBSCAN clustering.",
-        "Enabled data-driven decisions via Streamlit/Plotly dashboard visualizing anomaly trends and segment contributions."
+        "Identified 40+ critical incidents by building hierarchical time-series models (Prophet, ARIMA, scikit-learn) on 1M+ row Parquet data.",
+        "Attributed anomalies to root dimensions via subgroup error metrics and DBSCAN clustering.",
+        "Built a Streamlit dashboard (Matplotlib, Plotly) of anomaly trends for stakeholders."
       ],
       "domains": [
         "Data Science",
@@ -375,12 +415,10 @@
       ],
       "skills": [
         "Python",
-        "Pandas",
-        "scikit-learn",
         "Prophet",
         "ARIMA",
         "DBSCAN",
-        "Plotly"
+        "Streamlit"
       ]
     }
   ],
