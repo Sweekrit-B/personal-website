@@ -128,6 +128,33 @@
     ]
   },
   {
+    "title": "LLM Fine-Tuning Efficiency",
+    "year": "Fall 2026",
+    "lead": "Team of 4 (CSE 151B): lowest perplexity from 20 minutes of fine-tuning on a T4.",
+    "points": [
+      "Built FP16 mixed precision and a warmup + cosine LR that decays over the time budget",
+      "Length-sorted, pre-tokenized batches: 2.9× more real tokens than the supplied loop",
+      "Validation perplexity 3.145 → 3.061 (−2.7%); hard-token loss down 1.7%",
+      "Ran the baseline comparisons: higher LR, larger batch, every story padded to 384",
+      "Benchmark: loss on the 10% of tokens the base model found hardest (6,852 positions)",
+      "Ablations: the speedups drove most of the gain; LR decay only helped at 20 minutes"
+    ],
+    "diagram": "llmft",
+    "description": "Team project for CSE 151B: fine-tuned TinyStories-33M for the lowest held-out perplexity in a 20-minute Colab T4 budget. Added FP16 autocast, length-sorted pre-tokenized batches and a warmup + cosine learning-rate schedule over the time budget, processing 2.9x more real tokens than the supplied loop and lowering validation perplexity from 3.145 to 3.061. Evaluated with the team's hard-token benchmark: loss on the 10% of positions the base model found hardest.",
+    "domains": [
+      "AI / LLM",
+      "Machine Learning"
+    ],
+    "skills": [
+      "Python",
+      "PyTorch",
+      "Hugging Face Transformers",
+      "Mixed Precision (FP16)",
+      "LR Scheduling"
+    ],
+    "links": []
+  },
+  {
     "title": "Climate Projections",
     "points": [
       "D3.js map and 3D globe of historical and projected tropical storm tracks",

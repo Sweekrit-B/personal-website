@@ -611,7 +611,38 @@ function gaDiiidFigure() {
 ${key([['--after', 'team data'], ['--hv-green', 'new database'], ['--before', 'surrogate'], ['--hv-purple', 'check'], ['--hv-red', 'failure'], ['--hv-teal', 'after the fix']])}`
 }
 
-const DIAGRAMS: Record<string, () => string> = { hanta: hantaFigure, hotel: hotelFigure, power: powerFigure, aletheia: aletheiaFigure, tally: tallyFigure, paper: paperFigure, airline: airlineFigure, todo: todoFigure, bio: bioFigure, calendar: calendarFigure, masld: masldFigure, promoter: promoterFigure, caiman: caimanFigure, telomere: telomereFigure, gaModels: gaModelsFigure, gaDiiid: gaDiiidFigure }
+// CSE 151B, LLM fine-tuning efficiency: the supplied loop vs the final loop, same 20-minute T4 budget.
+// Facts from the team write-up (CSE151B_GROUP_WRITEUP_JAMS.pdf) and algorithm.py.
+function llmftFigure() {
+  const A = 40, B = 136, C = B + H + 44 // rows: baseline, final, LR schedule
+  const mA = A + H / 2, mB = B + H / 2, mid = (mA + mB) / 2
+  return `<svg class="ml-fig hv" viewBox="0 0 1000 ${C + H + 16}" role="img" aria-label="Fine-tuning TinyStories-33M for 20 minutes on a Colab T4, baseline against the final method. Both start from the same 50,000 training stories. The supplied baseline tokenizes each batch inside the training loop and trains in FP32 at a constant learning rate of 1e-5; it sees 5.5 million real tokens and reaches validation perplexity 3.145, hard-token loss 3.52. The final method pre-tokenizes once, sorts stories by length and pads each batch only to its longest story, trains with FP16 autocast, and uses a learning rate that warms up and then follows a cosine decay over the time budget. It sees 16.0 million real tokens, 2.9 times as many, and reaches perplexity 3.061, hard-token loss 3.46. Perplexity is measured on 1,000 validation stories; hard-token loss on the 6,852 positions the base model found hardest.">
+  ${HEAD}
+  ${cyl(20, mid - 22, 130, 44, '50,000 stories', 'src')}
+  ${arrow(`M150 ${mid} L198 ${mA}`)}${arrow(`M150 ${mid} L198 ${mB}`)}
+  <text class="t-axis" x="200" y="${A - 12}">BASELINE</text>
+  <text class="t-axis" x="200" y="${B - 12}">FINAL</text>
+  ${box(200, A, 170, 'Tokenize per batch', 'inside the loop', 'step')}
+  ${box(200, B, 170, 'Pre-tokenize', 'sorted · pad to longest', 'step')}
+  <text class="t-axis" x="388" y="20">TRAINING · 20 MIN ON A T4</text>
+  <rect class="stage" x="388" y="28" width="214" height="${C + H + 10 - 28}" rx="4"/>
+  ${arrow(`M370 ${mA} H398`)}${arrow(`M370 ${mB} H398`)}
+  ${box(400, A, 190, 'TinyStories-33M', 'FP32 · flat LR 1e-5', 'model')}
+  ${box(400, B, 190, 'TinyStories-33M', 'FP16 autocast', 'final')}
+  ${box(400, C, 190, 'LR schedule', 'warmup → cosine decay', 'step')}
+  ${arrow(`M495 ${C} V${B + H + 2}`)}
+  ${arrow(`M590 ${mA} H748`)}${arrow(`M590 ${mB} H748`)}
+  <text class="t-muted" x="669" y="${mA - 8}" text-anchor="middle">5.5M tokens</text>
+  <text class="t-muted" x="669" y="${mB - 8}" text-anchor="middle">16.0M tokens · 2.9×</text>
+  ${box(750, A, 230, 'Perplexity 3.145', 'hard-token loss 3.52', 'out')}
+  ${box(750, B, 230, 'Perplexity 3.061', 'hard-token loss 3.46', 'out')}
+  <text class="t-muted" x="865" y="${C + 18}" text-anchor="middle">perplexity: 1,000 validation stories</text>
+  <text class="t-muted" x="865" y="${C + 36}" text-anchor="middle">hard: 6,852 hardest tokens</text>
+</svg>
+${key([['--after', 'training data'], ['--hv-purple', 'processing'], ['--before', 'model'], ['--hv-teal', 'result']])}`
+}
+
+const DIAGRAMS: Record<string, () => string> = { hanta: hantaFigure, hotel: hotelFigure, power: powerFigure, aletheia: aletheiaFigure, tally: tallyFigure, paper: paperFigure, airline: airlineFigure, todo: todoFigure, bio: bioFigure, calendar: calendarFigure, masld: masldFigure, promoter: promoterFigure, caiman: caimanFigure, telomere: telomereFigure, gaModels: gaModelsFigure, gaDiiid: gaDiiidFigure, llmft: llmftFigure }
 
 window.mountDiagram = (el) => {
   el.innerHTML = DIAGRAMS[el.dataset.diagram ?? '']?.() ?? ''

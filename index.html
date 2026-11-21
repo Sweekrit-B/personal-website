@@ -203,6 +203,7 @@
   .f-body .body-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
   .f-body .gallery { gap: var(--s4); margin-top: var(--s5); }
   .f-body .rover-3d { margin-top: 0; }
+  .f-body .pdf-sum + .pdf-frame { margin-top: var(--s5); }
   .f-body .pdf-frame { display: block; width: 100%; height: 72vh; border: 1px solid var(--line); background: #fff; }
   .f-body .f-diagram { margin: var(--s5) 0 0; padding: var(--s4); }
   .f-body .embed { position: relative; margin: var(--s5) 0 0; aspect-ratio: 1030 / 640; border: 1px solid var(--line); background: var(--surface-2); overflow: hidden; }
@@ -262,6 +263,12 @@
           <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="publications/sccur-2023-natural-product-talk.pdf" target="_blank" rel="noreferrer" data-pdf="publications/sccur-2023-natural-product-talk.pdf" data-page="1" data-title="Key Molecular Descriptors Distinguishing Natural and Synthetic Products" data-meta="SCCUR 2023 · oral" data-domain="Data Science|Machine Learning" title="Key Molecular Descriptors Distinguishing Between Synthetic and Natural Products"><span class="ic"><i></i></span><span><span class="t">Natural Product ML</span><span class="d">SCCUR 2023 · oral</span></span><span class="go in" aria-hidden="true">→</span></a>
           <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="publications/sccur-2023-asdrp-posters.pdf" target="_blank" rel="noreferrer" data-pdf="publications/sccur-2023-asdrp-posters.pdf" data-page="2" data-title="Determining Key Pharmacokinetic Properties in FDA-Approved Drugs" data-meta="SCCUR 2023 · poster" data-domain="Data Science|Machine Learning" title="Determining Key Pharmacokinetic Properties in FDA-Approved Drugs"><span class="ic"><i></i></span><span><span class="t">FDA Drug PK</span><span class="d">SCCUR 2023 · poster</span></span><span class="go in" aria-hidden="true">→</span></a>
           <a class="row" style="--c:#5b9cf0; --g:linear-gradient(90deg, #5b9cf0, #9b86e0)" href="publications/sccur-2023-asdrp-posters.pdf" target="_blank" rel="noreferrer" data-pdf="publications/sccur-2023-asdrp-posters.pdf" data-page="1" data-title="Using a Novel Iterative Parametrization Method and Machine Learning Model to Classify DNA Binding Enzymes Through the Structure of the DNA Strand" data-meta="SCCUR 2023 · poster" data-domain="Data Science|Machine Learning" title="Using a Novel Iterative Parametrization Method and Machine Learning Model to Classify DNA Binding Enzymes Through the Structure of the DNA Strand"><span class="ic"><i></i></span><span><span class="t">DNA Enzymes</span><span class="d">SCCUR 2023 · poster</span></span><span class="go in" aria-hidden="true">→</span></a>
+        </div>
+        <h2 class="sec">Writings</h2>
+        <div class="list">
+          <a class="row" style="--c:#e86fa6" href="publications/cse151b-scalable-oversight.pdf" target="_blank" rel="noreferrer" data-pdf="publications/cse151b-scalable-oversight.pdf" data-page="1" data-title="Scalable Oversight" data-meta="CSE 151B 2026 · essay" data-domain="AI / LLM" title="Scalable Oversight"><span class="ic"><i></i></span><span><span class="t">Scalable Oversight</span><span class="d">CSE 151B 2026 · essay</span></span><span class="go in" aria-hidden="true">→</span></a>
+          <a class="row" style="--c:#e86fa6; --g:linear-gradient(90deg, #e86fa6, #9b86e0)" href="publications/cse151b-finetuning-efficiency.pdf" target="_blank" rel="noreferrer" data-pdf="publications/cse151b-finetuning-efficiency.pdf" data-page="1" data-title="The Effects of Throughput Improvements and Robust Learning Rates on LLM Finetuning Efficiency" data-meta="CSE 151B 2026 · report" data-domain="AI / LLM|Machine Learning" title="The Effects of Throughput Improvements and Robust Learning Rates on LLM Finetuning Efficiency"><span class="ic"><i></i></span><span><span class="t">LLM Fine-Tuning</span><span class="d">CSE 151B 2026 · report</span></span><span class="go in" aria-hidden="true">→</span></a>
+          <a class="row" style="--c:#9b86e0; --g:linear-gradient(90deg, #9b86e0, #5b9cf0)" href="publications/dsc148-hantavirus-mortality.pdf" target="_blank" rel="noreferrer" data-pdf="publications/dsc148-hantavirus-mortality.pdf" data-page="1" data-title="Training and Evaluation of Classical Medical Machine Learning Modeling Techniques on Synthetic Hantavirus Clinical Data" data-meta="DSC 148 2026 · paper" data-domain="Machine Learning|Data Science" title="Training and Evaluation of Classical Medical Machine Learning Modeling Techniques on Synthetic Hantavirus Clinical Data"><span class="ic"><i></i></span><span><span class="t">Hantavirus ML</span><span class="d">DSC 148 2026 · paper</span></span><span class="go in" aria-hidden="true">→</span></a>
         </div>
         <h2 class="sec" id="hLinks">Links</h2>
         <div class="list">
@@ -820,6 +827,29 @@ function tintContours(hex) {
   document.documentElement.style.setProperty('--contour', `rgba(${r}, ${g}, ${b}, 0.07)`)
   if (reduced) drawBg(0)
 }
+// One-line summaries shown above a PDF in its focused view, keyed by the PDF path.
+const PDF_SUMMARY = {
+  "publications/cse151b-scalable-oversight.pdf": [
+    "Why AI outputs get harder to supervise: reward hacking, unreviewable code, sycophancy",
+    "Compares doubly-efficient debate with prover-estimator debate, and where each fits",
+    "Proposes a QuALITY study where a non-expert human judges a prover-estimator debate",
+    "Benchmarks it against unassisted humans, experts and the model alone (sandwiching)"
+  ],
+  "publications/cse151b-finetuning-efficiency.pdf": [
+    "Team of 4: lowest TinyStories-33M perplexity from 20 minutes of fine-tuning on a T4",
+    "FP16 and length-sorted, pre-tokenized batches: 2.9× the real tokens of the baseline",
+    "Warmup + cosine LR over the time budget: hurt at 3 minutes, helped at 20",
+    "Perplexity 3.145 → 3.061; loss on the hardest 10% of tokens down 1.7%",
+    "Wrote the LR decay and FP16 changes and ran the baseline comparisons"
+  ],
+  "publications/dsc148-hantavirus-mortality.pdf": [
+    "Predicts death for ~10,000 synthetic Hantavirus patients (10% died), with S. Tadepalli",
+    "Adding climate and World Bank context lifted F2 + MCC from 0.55 to 0.99",
+    "Grid-searched and calibrated logistic regression, random forest, XGBoost, LightGBM",
+    "Chose LightGBM at a 0.12 threshold: beats the baseline (McNemar p = 2 × 10⁻¹²)",
+    "Top SHAP predictors: disease severity, syndrome (HPS vs HFRS), ICU admission"
+  ]
+}
 // Publications open in the focused view with the browser's PDF viewer; without JS the row still links to the journal.
 document.querySelectorAll('a[data-pdf]').forEach((a) => a.addEventListener('click', (e) => {
   if (e.metaKey || e.ctrlKey || e.shiftKey) return
@@ -828,7 +858,7 @@ document.querySelectorAll('a[data-pdf]').forEach((a) => a.addEventListener('clic
   const original = a.getAttribute('href') === pdf ? '' : `<a href="${a.href}" target="_blank" rel="noreferrer">Original ↗</a>`
   openFocus({
     title: esc(title), meta: esc(meta), domains: domain.split('|'),
-    body: () => `<iframe class="pdf-frame" src="${pdf}#page=${page || 1}&navpanes=0&view=FitH" title="${esc(title)} (PDF)"></iframe><div class="body-links">${original}<a href="${pdf}" download>Download PDF</a></div>`,
+    body: () => `${PDF_SUMMARY[pdf] ? `<div class="pdf-sum">${bullets(PDF_SUMMARY[pdf])}</div>` : ''}<iframe class="pdf-frame" src="${pdf}#page=${page || 1}&navpanes=0&view=FitH" title="${esc(title)} (PDF)"></iframe><div class="body-links">${original}<a href="${pdf}" download>Download PDF</a></div>`,
   })
 }))
 
