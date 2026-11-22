@@ -47,6 +47,19 @@
   header { display: flex; justify-content: space-between; align-items: center; gap: var(--s5); }
   h1 { margin: 0; font: var(--type-display); letter-spacing: 0.04em; text-transform: uppercase; }
   .tagline { margin: var(--s2) 0 0; font: var(--type-meta); color: var(--text-muted); }
+  .tagline .uni { padding: 0; border: 0; background: none; font: inherit; color: var(--accent); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+  .tagline .uni:hover { text-decoration-style: solid; }
+  /* UC San Diego card: courses by term, the code coloured by department. */
+  .f-body .dept-key { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); margin: 0 0 var(--s6); font: var(--type-meta); color: var(--text-muted); }
+  .f-body .dept-key span::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: var(--s2); background: var(--c); }
+  .f-body .term + .term { margin-top: var(--s6); }
+  .f-body .courses { list-style: none; margin: var(--s2) 0 0; padding: 0; display: grid; gap: var(--s1); }
+  .f-body .courses li { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; gap: var(--s3); align-items: baseline; padding: var(--s1) 0; border-bottom: 1px solid var(--line); }
+  .f-body .courses li { margin: 0; }
+  .f-body .courses li::before { display: none; }
+  .f-body .courses b { font: var(--type-title); font-size: 12px; color: var(--c); }
+  .f-body .courses em { font: var(--type-meta); font-style: normal; color: var(--text); font-variant-numeric: tabular-nums; }
+  .f-body .courses em.wip { color: var(--text-muted); }
 
   /* Board: card, projects, experiences, links */
   .board { display: grid; grid-template-columns: 270px repeat(3, minmax(0, 1fr)) 220px; gap: var(--s7) var(--s5); align-items: start; }
@@ -166,7 +179,7 @@
     *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; }
     .holo { transform: none !important; }
   }
-</style>
+</style>
 <style>
   /* Focused view, on the same type system and spacing scale as the page */
   .f-body p, .f-body li, .f-body .rv-copy { font: var(--type-body); color: var(--text-muted); }
@@ -216,7 +229,7 @@
   .f-body .proj .f-diagram { margin-top: var(--s4); }
   .f-body .figure-frame { height: 900px; margin-top: var(--s5); background: transparent; }
 </style>
-  <script type="module" crossorigin src="/personal-website/assets/index-ikYEOe-_.js"></script>
+  <script type="module" crossorigin src="/personal-website/assets/index-Cw3B3cFR.js"></script>
   <link rel="stylesheet" crossorigin href="/personal-website/assets/index-DaW7XPq9.css">
 </head>
 <body>
@@ -565,10 +578,40 @@ const diagram = (p) => (p.diagrams || [p.diagram]).map((id) => `<figure class="r
 const projects = (list) => list.map((p) =>
   `<section class="proj"><h3 class="proj-h">${esc(p.name)}</h3>${bullets(p.points)}${p.tabs ? `<div class="rv" data-${p.tabs}-tabs></div>` : diagram(p)}</section>`).join('')
 
+/* ---------- UC San Diego: courses and grades by term (unofficial transcript, June 2026, plus Fall 2026) ---------- */
+const DEPT = [
+  ['Data Science', '#5b9cf0', ['DSC']], ['Computer Science', '#9b86e0', ['CSE']], ['Math', '#7fd4d8', ['MATH']],
+  ['Business & Econ', '#f2c94c', ['MGT', 'ECON']], ['Cognitive Science', '#e86fa6', ['COGS']], ['Writing & Humanities', '#a7b6c6', ['WCWP', 'HISC', 'PHIL']],
+]
+const deptColor = (code) => (DEPT.find(([, , subs]) => subs.includes(code.split(' ')[0])) || [, '#808993'])[1]
+const TERMS = [
+  ['Fall 2026', null, [['CSE 151B', 'Deep Learning'], ['DSC 180A', 'Data Science Project I'], ['MGT 180', 'Business Finance']]],
+  ['Spring 2026', '3.925', [['DSC 102', 'Systems for Scalable Analytics', 'A-'], ['DSC 106', 'Intro to Data Visualization', 'A'], ['DSC 148', 'Introduction to Data Mining', 'A+'], ['DSC 152', 'Applied Statistical Data Analysis', 'A+']]],
+  ['Winter 2026', '4.000', [['CSE 151A', 'Machine Learning: Learning Algorithms', 'A'], ['DSC 100', 'Intro to Data Management', 'A'], ['MGT 103', 'Product Marketing & Management', 'A'], ['PHIL 27', 'Ethics and Society', 'A']]],
+  ['Fall 2025', '4.000', [['DSC 40B', 'Theoretical Foundations of Data Science II', 'A'], ['DSC 80', 'Practice of Data Science', 'A+'], ['MGT 16', 'Personal Ethics at Work', 'A'], ['WCWP 10B', 'The Writing Course B', 'A']]],
+  ['Spring 2025', '4.000', [['DSC 30', 'Data Structures & Algorithms for Data Science', 'A+'], ['DSC 40A', 'Theoretical Foundations of Data Science I', 'A'], ['ECON 3', 'Principles of Macroeconomics', 'A+'], ['MATH 183', 'Statistical Methods', 'A+']]],
+  ['Winter 2025', '4.000', [['DSC 20', 'Programming & Data Structures for Data Science', 'A+'], ['HISC 109', 'Invention of Tropical Disease', 'A'], ['MATH 18', 'Linear Algebra', 'A+'], ['MGT 45', 'Principles of Accounting', 'A']]],
+  ['Fall 2024', '4.000', [['COGS 9', 'Introduction to Data Science', 'A+'], ['DSC 10', 'Principles of Data Science', 'A'], ['MATH 20C', 'Calculus & Analytic Geometry', 'A'], ['WCWP 10A', 'The Writing Course A', 'A']]],
+]
+function openCourses() {
+  const term = ([name, gpa, list]) => `<section class="term"><h3 class="proj-h">${name} · ${gpa ? `term GPA ${gpa}` : 'in progress'}</h3><ul class="courses">${list.map(([code, title, grade]) =>
+    `<li style="--c:${deptColor(code)}"><b>${code}</b><span>${esc(title)}</span>${grade ? `<em>${grade}</em>` : '<em class="wip">in progress</em>'}</li>`).join('')}</ul></section>`
+  openFocus({
+    title: 'UC San Diego',
+    meta: 'B.S. Data Science (ML/AI) · Minor in Business Economics · GPA 3.987 · Provost Honors every quarter',
+    domains: [],
+    body: () => `<div class="dept-key">${DEPT.map(([n, c]) => `<span style="--c:${c}">${n}</span>`).join('')}</div>${TERMS.map(term).join('')}`,
+  })
+}
+
 /* ---------- Experiences ---------- */
 function renderExperience(resume) {
   const e = resume.education
-  if (e) document.getElementById('tagline').textContent = `${e.degree.replace('B.S. Data Science', 'B.S. Data Science (specialization in ML/AI)')}, UC San Diego, ${e.graduation}.`
+  if (e) {
+    const tag = document.getElementById('tagline')
+    tag.innerHTML = `${esc(e.degree.replace('B.S. Data Science', 'B.S. Data Science (specialization in ML/AI)'))}, <button class="uni" type="button">UC San Diego</button>, ${esc(e.graduation)}.`
+    tag.querySelector('.uni').addEventListener('click', openCourses)
+  }
   const jobs = splitLabs(resume.experience || [])
   const find = (key) => jobs.find((j) => key === j.company || key === `${j.company}|${j.role}`)
   const shown = []
@@ -882,6 +925,6 @@ if (!reduced) {
     heroCard.style.setProperty('--o', 0)
   })
 }
-</script>
+</script>
 </body>
 </html>
