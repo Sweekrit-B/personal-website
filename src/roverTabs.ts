@@ -1,4 +1,4 @@
-// Demo only: the Mars Rover card's five tabs. Facts come from the experience list / resume;
+// The Mars Rover card's six tabs. Facts come from the experience list / resume;
 // waypoints are copied from the sim console log in sim-auton-console.png (recorded 02/2026).
 
 declare global {
@@ -6,6 +6,8 @@ declare global {
     renderRoverTabs?: (host: HTMLElement, viewer: HTMLElement | null) => void
   }
 }
+import { H, box, arrow, key, HEAD } from './diagrams'
+
 type ViewerHost = HTMLElement & { _overlay?: (id: string | null) => void }
 
 
@@ -176,7 +178,40 @@ function scienceFigure() {
   <div class="rv-key"><span><i class="k-raw"></i>raw fluorescence</span><span><i class="k-path"></i>smoothed, outliers removed</span></div>`
 }
 
-/* ---------- The five tabs ---------- */
+/* ---------- Autonomy: the state machine's main transitions ---------- */
+// From autonomous_state_machine/states/*.py (yonder ros2_ws). Only the main paths.
+function autonomyFigure() {
+  const X = [20, 185, 350, 515, 680, 845], W = 140 // columns
+  const R = [60, 160, 260] // rows
+  const cx = (c: number) => X[c] + W / 2, cy = (r: number) => R[r] + H / 2
+  const lbl = (x: number, y: number, s: string, a = 'middle') => `<text class="t-muted" x="${x}" y="${y}" text-anchor="${a}">${s}</text>`
+  return `<svg class="ml-fig hv" viewBox="0 0 1000 ${R[2] + H + 12}" role="img" aria-label="The rover's autonomous state machine. Start waits for a GPS goal, then New controller plans the path and Drive follows it. Near the goal, Validating averages the position: if the goal is confirmed the rover stops in Goal; if not, it re-plans. For an AR tag or object mission, Validating hands off to Spin, which looks around; if the target is seen it goes to Go to target, otherwise to Spiral search, which widens outward and then retraces inward. If the spiral sees the target it goes to Go to target; if not, Retry re-plans to the goal. Go to target stops at the target, or spins again if the target is lost.">
+  ${HEAD}
+  ${box(X[0], R[0], W, 'Start', 'idle', 'src')}
+  ${box(X[1], R[0], W, 'New controller', 'plan the path', 'model')}
+  ${box(X[2], R[0], W, 'Drive', 'follow it', 'model')}
+  ${box(X[3], R[0], W, 'Validating', 'average position', 'model')}
+  ${box(X[5], R[0], W, 'Goal', 'stop', 'out')}
+  ${box(X[3], R[1], W, 'Spin', 'look around', 'step')}
+  ${box(X[5], R[1], W, 'Go to target', 'AR tag / object', 'step')}
+  ${box(X[3], R[2], W, 'Spiral search', 'widen, then retrace', 'step')}
+  ${box(X[1], R[2], W, 'Retry', 're-plan to goal', 'step')}
+  ${arrow(`M160 ${cy(0)} H183`)}${arrow(`M325 ${cy(0)} H348`)}${arrow(`M490 ${cy(0)} H513`)}
+  ${arrow(`M655 ${cy(0)} H843`)}${lbl(750, cy(0) - 8, 'confirmed')}
+  ${arrow(`M${cx(3)} ${R[0]} C${cx(3)} 30 ${cx(1)} 30 ${cx(1)} ${R[0] - 2}`)}${lbl((cx(1) + cx(3)) / 2, 30, 'not confirmed · re-plan')}
+  ${arrow(`M${cx(3)} ${R[0] + H} V${R[1] - 2}`)}${lbl(cx(3) + 8, (R[0] + H + R[1]) / 2 + 4, 'search mission', 'start')}
+  ${arrow(`M655 ${cy(1) - 6} H843`)}${lbl(750, cy(1) - 12, 'seen')}
+  ${arrow(`M845 ${cy(1) + 6} H657`)}${lbl(750, cy(1) + 22, 'lost')}
+  ${arrow(`M${cx(5)} ${R[1]} V${R[0] + H + 2}`)}${lbl(cx(5) + 8, (R[0] + H + R[1]) / 2 + 4, 'reached', 'start')}
+  ${arrow(`M${cx(3)} ${R[1] + H} V${R[2] - 2}`)}${lbl(cx(3) + 8, (R[1] + H + R[2]) / 2 + 4, 'not seen', 'start')}
+  ${arrow(`M655 ${cy(2)} L${cx(5) - 20} ${R[1] + H + 2}`)}${lbl(770, 236, 'seen')}
+  ${arrow(`M515 ${cy(2)} H327`)}${lbl(420, cy(2) - 8, 'not found')}
+  ${arrow(`M${cx(1)} ${R[2]} V${R[0] + H + 2}`)}
+</svg>
+${key([['--after', 'idle'], ['--before', 'driving to the goal'], ['--hv-purple', 'search'], ['--hv-teal', 'done']])}`
+}
+
+/* ---------- The six tabs ---------- */
 // `lead` is the result, `points` the story behind it, one line each. Facts only from the resume and experience list.
 export type Tab = { id: string; label: string; lead?: string; points?: string[]; figure: () => string } // text is optional: a tab can be just its figure
 const TABS: Tab[] = [
@@ -190,6 +225,19 @@ const TABS: Tab[] = [
       "Draws straight lines between waypoints instead of stepping cell by cell",
     ],
     figure: navFigure,
+  },
+  {
+    id: 'auton',
+    label: 'Autonomy',
+    lead: 'Made autonomous mode safe to run for the 2027 season.',
+    points: [
+      "Fixed 30+ bugs in the autonomous state machine, each with a regression test",
+      "Added safety stops: a 0.5 s odometry watchdog and a stop on shutdown or crash",
+      "Stopped re-planning on every frame; after 3 failed retries the operator takes over",
+      "Built sim2d, a 2D simulator with a browser view and 20 end-to-end scenarios",
+      "Grew unit tests from 6 files to 38 (179 tests), replacing 23 copy-pasted fakes",
+    ],
+    figure: autonomyFigure,
   },
   {
     id: 'cv',
