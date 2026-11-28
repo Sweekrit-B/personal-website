@@ -1,0 +1,24 @@
+{
+  "updated": "2026-11-28",
+  "season": "Summer 2027",
+  "nodes": {
+    "app":  { "label": "Applications" },
+    "oa":   { "label": "Online assessment", "note": "HackerRank, CodeSignal" },
+    "iv":   { "label": "Interviews", "note": "12 behavioral, 3 technical" },
+    "fr":   { "label": "Final round", "note": "5 onsite, 2 Superday" },
+    "of":   { "label": "Offers" },
+    "rej":  { "label": "Rejected" },
+    "wait": { "label": "Waiting / no reply" },
+    "wd":   { "label": "Withdrew" },
+    "acc":  { "label": "Accepted" },
+    "dec":  { "label": "Declined" },
+    "dd":   { "label": "Deciding" }
+  },
+  "flows": [
+    ["app", "rej", 117], ["app", "wait", 267], ["app", "wd", 2], ["app", "oa", 30], ["app", "iv", 22],
+    ["oa", "rej", 14], ["oa", "wait", 15], ["oa", "iv", 1],
+    ["iv", "rej", 7], ["iv", "wait", 8], ["iv", "fr", 8],
+    ["fr", "rej", 2], ["fr", "wait", 2], ["fr", "wd", 1], ["fr", "of", 3],
+    ["of", "acc", 1], ["of", "dec", 1], ["of", "dd", 1]
+  ]
+}
