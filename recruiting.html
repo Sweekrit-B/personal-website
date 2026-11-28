@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Recruiting · Sweekrit Bhatnagar</title>
+<link rel="icon" type="image/svg+xml" href="/personal-website/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --page-bg: #0b0e12; --text: #e8e6e1; --text-muted: #9aa3ad; --text-subtle: #808993;
+    --line: #1f2731; --accent: #4f8fe0; --offer: #f2c94c; --rejected: #a0524a; --waiting: #5d6670;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--page-bg); color: var(--text); font: 400 14px/1.6 var(--sans);
+    background-image: linear-gradient(rgba(120, 150, 190, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(120, 150, 190, 0.02) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  main { width: min(900px, 100% - 48px); margin: 0 auto; padding: 48px 0 64px; }
+  .top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; font: 500 11px/16px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+  .top a { color: inherit; text-decoration: none; }
+  .top a:hover { color: var(--text); text-decoration: underline; text-underline-offset: 4px; }
+  .top a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  h1 { margin: 32px 0 8px; font: 600 28px/1.1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .summary { margin: 0 0 40px; font: 400 11px/16px var(--mono); letter-spacing: 0.02em; color: var(--text-muted); }
+  .summary b { font-weight: 500; color: var(--text); }
+  figure { margin: 0; border-top: 1px solid var(--line); padding-top: 12px; }
+  figcaption { margin-bottom: 16px; text-align: right; font: 500 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); }
+  /* The chart keeps its type readable on phones by scrolling sideways instead of shrinking. */
+  .scroll { overflow-x: auto; }
+  svg { display: block; width: 100%; height: auto; }
+  .scroll svg { max-width: 900px; min-width: 720px; } /* max 900px = 1:1 with the viewBox, so chart text stays 11px like the rest of the site */
+  /* Smaller charts: a label running into a dashed rule (same as the home page sections), then the chart. */
+  .stats { margin-top: 56px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 40px; }
+  .stats .wide { grid-column: 1 / -1; }
+  .stats h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font: 500 11px/16px var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); }
+  .stats h2::after { content: ''; flex: 1; border-top: 1px dashed #2c3642; }
+  .key { display: flex; gap: 16px; margin: 0 0 16px; font: 400 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .key i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 2px; background: var(--accent); }
+  .key i.soft { opacity: 0.35; }
+  .key i.offer { background: var(--offer); }
+  .scroll.bars svg { min-width: 400px; max-width: 430px; }
+  @media (max-width: 720px) { .stats { grid-template-columns: minmax(0, 1fr); } }
+  /* Chart labels use the site label style: 11px mono caps with tracking. */
+  svg text { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+<main>
+  <nav class="top"><a href="./">← Sweekrit Bhatnagar</a></nav>
+  <h1>Recruiting</h1>
+  <p class="summary" id="summary">Loading…</p>
+  <figure>
+    <figcaption id="updated"></figcaption>
+    <div class="scroll"><svg id="sk" viewBox="0 0 900 560" role="img" aria-labelledby="skTitle skDesc"><title id="skTitle">Applications, round by round</title><desc id="skDesc"></desc></svg></div>
+  </figure>
+  <div class="stats">
+    <section class="wide"><h2>Applications per week</h2><div class="scroll"><svg id="weekly" role="img" aria-label="Applications per week"></svg></div></section>
+    <section><h2>By role</h2><p class="key"><span><i class="soft"></i>Assessment+</span><span><i></i>Interview+</span><span><i class="offer"></i>Offer</span></p><div class="scroll bars"><svg id="byRole" role="img" aria-label="Share of applications reaching an assessment and an interview, by role"></svg></div></section>
+    <section><h2>By company type</h2><p class="key"><span><i class="soft"></i>Assessment+</span><span><i></i>Interview+</span><span><i class="offer"></i>Offer</span></p><div class="scroll bars"><svg id="byCompanyType" role="img" aria-label="Share of applications reaching an assessment and an interview, by company type"></svg></div></section>
+  </div>
+</main>
+<script>
+// Accent follows the Pokémon picked on the home page (passed as ?c=rrggbb by the Konami trigger).
+const c = new URLSearchParams(location.search).get('c')
+if (/^[0-9a-f]{6}$/i.test(c || '')) document.documentElement.style.setProperty('--accent', '#' + c)
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim()
+
+// Where each node sits. Stages step down and right; outcomes stack in one column on the right.
+const LAYOUT = {
+  app: { x: 150, y: 40, kind: 'start' },
+  oa: { x: 290, y: 300, kind: 'stage' },
+  iv: { x: 420, y: 370, kind: 'stage' },
+  fr: { x: 530, y: 436, kind: 'stage' },
+  of: { x: 620, y: 500, kind: 'stage', tone: 'offer' },
+  rej: { x: 690, y: 20, kind: 'end', tone: 'rejected' },
+  wait: { x: 690, y: 130, kind: 'end', tone: 'waiting' },
+  wd: { x: 690, y: 330, kind: 'end', tone: 'muted' },
+  acc: { x: 690, y: 452, kind: 'end', tone: 'offer' },
+  dec: { x: 690, y: 484, kind: 'end', tone: 'offer' },
+  dd: { x: 690, y: 516, kind: 'end', tone: 'offer' },
+}
+
+fetch('lib/recruiting.json').then((r) => r.json()).then((d) => { draw(d); drawStats(d) }).catch(() => {
+  document.getElementById('summary').textContent = 'Could not load the data.'
+})
+
+function draw({ updated, nodes, flows }) {
+  const S = document.getElementById('sk'), NS = 'http://www.w3.org/2000/svg'
+  const K = 0.55, W = 10, h = (v) => Math.max(3, v * K)
+  const tone = { offer: css('--offer'), rejected: css('--rejected'), waiting: css('--waiting'), muted: css('--text-muted') }
+  const N = {}
+  for (const id in LAYOUT) N[id] = { ...LAYOUT[id], ...nodes[id], in: 0, out: 0 }
+  for (const [s, t, v] of flows) { N[s].out += v; N[t].in += v }
+  for (const id in N) {
+    const n = N[id]
+    n.v = Math.max(n.in, n.out)
+    n.c = n.tone ? tone[n.tone] : css('--accent')
+    n.o = n.i = n.y
+    // Self-check: a middle stage must pass on exactly what it receives.
+    if (n.in && n.out) console.assert(n.in === n.out, `recruiting.json: ${id} in ${n.in} ≠ out ${n.out}`)
+  }
+
+  const el = (tag, attrs, parent = S) => {
+    const e = document.createElementNS(NS, tag)
+    for (const k in attrs) e.setAttribute(k, attrs[k])
+    parent.appendChild(e)
+    return e
+  }
+  const ribbons = el('g', {}), marks = el('g', {})
+  for (const [s, t, v] of flows) {
+    const a = N[s], b = N[t], w = h(v), x0 = a.x + W, x1 = b.x, y0 = a.o, y1 = b.i, m = (x0 + x1) / 2
+    const forward = b.kind === 'stage' || b.tone === 'offer'
+    el('path', {
+      d: `M${x0},${y0} C${m},${y0} ${m},${y1} ${x1},${y1} L${x1},${y1 + w} C${m},${y1 + w} ${m},${y0 + w} ${x0},${y0 + w} Z`,
+      fill: forward ? b.c : a.c, opacity: t === 'rej' ? 0.32 : t === 'wait' ? 0.22 : 0.55,
+    }, ribbons)
+    a.o += w; b.i += w
+  }
+
+  const text = (x, y, str, fill, anchor = 'start', size = 11, weight = 400) => {
+    const t = el('text', { x, y, fill, 'text-anchor': anchor, 'font-size': size, 'font-weight': weight }, marks)
+    t.textContent = str
+  }
+  const ink = css('--text')
+  for (const id in N) {
+    const n = N[id], H = h(n.v), col = n.tone === 'offer' ? n.c : ink
+    el('rect', { x: n.x, y: n.y, width: W, height: H, fill: n.c, rx: 1 }, marks)
+    if (n.kind === 'start') {
+      text(n.x - 12, n.y + H / 2 - 2, n.label, col, 'end')
+      text(n.x - 12, n.y + H / 2 + 16, String(n.v), col, 'end', 16, 500)
+    } else if (n.kind === 'stage') {
+      // Labels sit below-left of the node: ribbons arrive from above and leave to the right, so that corner stays clear.
+      text(n.x - 4, n.y + H + 16, `${n.label}  ${n.v}`, col, 'end', 11, 500)
+    } else {
+      text(n.x + W + 10, n.y + H / 2 + 4, n.label, col)
+      text(890, n.y + H / 2 + 4, String(n.v), col, 'end', 11, 500)
+    }
+  }
+
+  const sum = `${N.app.v} applications · ${N.oa.v} assessments · ${N.iv.v} interviews · ${N.fr.v} final rounds · ${N.of.v} offers`
+  document.getElementById('summary').innerHTML = sum.replace(/\d+/g, '<b>$&</b>')
+  document.getElementById('skDesc').textContent = `${sum}. Rejected ${N.rej.v}, waiting or no reply ${N.wait.v}, withdrew ${N.wd.v}. Offers: ${N.acc.v} accepted, ${N.dec.v} declined, ${N.dd.v} deciding.`
+  const d = new Date(updated + 'T00:00:00')
+  document.getElementById('updated').textContent = `Updated ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+}
+
+// Small charts below the flow: applications per week, and how far applications got by role and by company type.
+function drawStats({ weekly, byRole, byCompanyType }) {
+  const NS = 'http://www.w3.org/2000/svg', accent = css('--accent'), offer = css('--offer'), muted = css('--text-muted'), ink = css('--text'), line = css('--line')
+  const el = (svg, tag, attrs, tip) => {
+    const e = document.createElementNS(NS, tag)
+    for (const k in attrs) e.setAttribute(k, attrs[k])
+    if (tip) e.appendChild(document.createElementNS(NS, 'title')).textContent = tip
+    svg.appendChild(e)
+    return e
+  }
+  const text = (svg, x, y, s, fill, anchor = 'start', weight = 400) => { el(svg, 'text', { x, y, fill, 'text-anchor': anchor, 'font-size': 11, 'font-weight': weight }).textContent = s }
+  const fmt = (iso, opts) => new Date(iso + 'T00:00:00').toLocaleDateString('en-US', opts)
+
+  // Applications per week: one bar per week, month names under each month's first week, the busiest week labelled.
+  {
+    const svg = document.getElementById('weekly'), Wd = 900, Ht = 150, top = 20, base = 120
+    svg.setAttribute('viewBox', `0 0 ${Wd} ${Ht}`)
+    const max = Math.max(...weekly.map(([, n]) => n)), step = Wd / weekly.length, bw = step - 4
+    el(svg, 'line', { x1: 0, x2: Wd, y1: base, y2: base, stroke: line })
+    let month = '', lastX = -99
+    weekly.forEach(([wk, n], i) => {
+      const x = i * step + 2, bh = (n / max) * (base - top)
+      const tip = `Week of ${fmt(wk, { month: 'short', day: 'numeric' })}: ${n} application${n === 1 ? '' : 's'}`
+      el(svg, 'rect', { x: 0 + i * step, y: top - 8, width: step, height: base - top + 8, fill: 'transparent' }, tip) // bigger hover target
+      el(svg, 'rect', { x, y: base - bh, width: bw, height: Math.max(bh, 1), rx: 2, fill: accent, opacity: 0.8, 'pointer-events': 'none' })
+      if (n === max) text(svg, x + bw / 2, base - bh - 6, String(n), ink, 'middle', 500)
+      const m = fmt(wk, { month: 'short' })
+      if (m !== month) { month = m; if (x - lastX > 48) { text(svg, x, base + 18, m, muted); lastX = x } } // skip a month label that would collide
+    })
+  }
+
+  // How far applications got, per group: soft bar = reached an assessment, solid = an interview, yellow = an offer (all as a share of applications).
+  for (const [id, rows] of [['byRole', byRole], ['byCompanyType', byCompanyType]]) {
+    // Columns: name + count | bar | three right-aligned percentages (assessment, interview, offer).
+    const svg = document.getElementById(id), Wd = 430, rowH = 36, labelW = 196, barW = 120, cols = [348, 389, 430], barY = 10, barH = 12
+    const sorted = [...rows].sort((a, b) => b[2] - a[2])
+    svg.setAttribute('viewBox', `0 0 ${Wd} ${sorted.length * rowH}`)
+    const pct = (p) => (p > 0 && p < 1 ? '<1%' : `${Math.round(p)}%`)
+    sorted.forEach(([name, n, oa, iv, offers], i) => {
+      const y = i * rowH, of = (offers / n) * 100
+      const tip = `${name}: ${n} applications, ${oa}% reached an assessment, ${iv}% an interview, ${pct(of)} an offer`
+      el(svg, 'rect', { x: 0, y, width: Wd, height: rowH, fill: 'transparent' }, tip)
+      text(svg, 0, y + 14, name, ink)
+      text(svg, 0, y + 28, `${n} apps`, muted)
+      for (const [p, fill, op] of [[100, line, 1], [oa, accent, 0.35], [iv, accent, 1], [of, offer, 1]]) {
+        if (p > 0) el(svg, 'rect', { x: labelW, y: y + barY, width: Math.max((p / 100) * barW, 2), height: barH, rx: 2, fill, opacity: op, 'pointer-events': 'none' })
+      }
+      ;[[oa, muted], [iv, ink], [of, of ? offer : css('--text-subtle')]].forEach(([p, fill], c) => text(svg, cols[c], y + barY + 10, pct(p), fill, 'end', 500))
+    })
+  }
+}
+</script>
+</body>
+</html>
