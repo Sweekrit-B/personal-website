@@ -45,6 +45,7 @@
   .key { display: flex; gap: 16px; margin: -8px 0 12px; font: 400 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
   .key i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 2px; background: var(--accent); }
   .key i.soft { opacity: 0.35; }
+  .key i.offer { background: var(--offer); }
   .scroll.bars svg { min-width: 400px; max-width: 430px; }
   @media (max-width: 720px) { .stats { grid-template-columns: minmax(0, 1fr); } }
   /* Chart labels use the site label style: 11px mono caps with tracking. */
@@ -62,8 +63,8 @@
   </figure>
   <div class="stats">
     <section class="wide"><h2>Applications per week</h2><div class="scroll"><svg id="weekly" role="img" aria-label="Applications per week"></svg></div></section>
-    <section><h2>By role</h2><p class="key"><span><i class="soft"></i>Assessment+</span><span><i></i>Interview+</span></p><div class="scroll bars"><svg id="byRole" role="img" aria-label="Share of applications reaching an assessment and an interview, by role"></svg></div></section>
-    <section><h2>By company type</h2><p class="key"><span><i class="soft"></i>Assessment+</span><span><i></i>Interview+</span></p><div class="scroll bars"><svg id="byCompanyType" role="img" aria-label="Share of applications reaching an assessment and an interview, by company type"></svg></div></section>
+    <section><h2>By role</h2><p class="key"><span><i class="soft"></i>Assessment+</span><span><i></i>Interview+</span><span><i class="offer"></i>Offer</span></p><div class="scroll bars"><svg id="byRole" role="img" aria-label="Share of applications reaching an assessment and an interview, by role"></svg></div></section>
+    <section><h2>By company type</h2><p class="key"><span><i class="soft"></i>Assessment+</span><span><i></i>Interview+</span><span><i class="offer"></i>Offer</span></p><div class="scroll bars"><svg id="byCompanyType" role="img" aria-label="Share of applications reaching an assessment and an interview, by company type"></svg></div></section>
   </div>
 </main>
 <script>
@@ -153,7 +154,7 @@ function draw({ updated, nodes, flows }) {
 
 // Small charts below the flow: applications per week, and how far applications got by role and by company type.
 function drawStats({ weekly, byRole, byCompanyType }) {
-  const NS = 'http://www.w3.org/2000/svg', accent = css('--accent'), muted = css('--text-muted'), ink = css('--text'), line = css('--line')
+  const NS = 'http://www.w3.org/2000/svg', accent = css('--accent'), offer = css('--offer'), muted = css('--text-muted'), ink = css('--text'), line = css('--line')
   const el = (svg, tag, attrs, tip) => {
     const e = document.createElementNS(NS, tag)
     for (const k in attrs) e.setAttribute(k, attrs[k])
@@ -184,18 +185,21 @@ function drawStats({ weekly, byRole, byCompanyType }) {
 
   // How far applications got, per group: a soft bar to the share reaching an assessment, a solid bar to the share reaching an interview.
   for (const [id, rows] of [['byRole', byRole], ['byCompanyType', byCompanyType]]) {
-    const svg = document.getElementById(id), Wd = 430, rowH = 30, labelW = 210, barW = 150
+    const svg = document.getElementById(id), Wd = 430, rowH = 36, labelW = 210, barW = 150
     const sorted = [...rows].sort((a, b) => b[2] - a[2])
     svg.setAttribute('viewBox', `0 0 ${Wd} ${sorted.length * rowH + 4}`)
-    sorted.forEach(([name, n, oa, iv], i) => {
-      const y = i * rowH + 4, tip = `${name}: ${n} applications, ${oa}% reached an assessment, ${iv}% an interview`
+    sorted.forEach(([name, n, oa, iv, offers], i) => {
+      const y = i * rowH + 4, tip = `${name}: ${n} applications, ${oa}% reached an assessment, ${iv}% an interview, ${offers} offer${offers === 1 ? '' : 's'}`
       el(svg, 'rect', { x: 0, y, width: Wd, height: rowH, fill: 'transparent' }, tip)
       text(svg, 0, y + 12, name, ink)
       text(svg, 0, y + 25, `${n} apps`, muted)
       el(svg, 'rect', { x: labelW, y: y + 6, width: barW, height: 14, rx: 2, fill: line, 'pointer-events': 'none' })
       el(svg, 'rect', { x: labelW, y: y + 6, width: Math.max((oa / 100) * barW, 2), height: 14, rx: 2, fill: accent, opacity: 0.35, 'pointer-events': 'none' })
       el(svg, 'rect', { x: labelW, y: y + 6, width: Math.max((iv / 100) * barW, iv ? 2 : 0), height: 14, rx: 2, fill: accent, 'pointer-events': 'none' })
+      // Offers: a yellow cap at the share of applications that became offers (at least 3px so a single offer shows).
+      if (offers) el(svg, 'rect', { x: labelW, y: y + 6, width: Math.max((offers / n) * barW, 3), height: 14, rx: 2, fill: offer, 'pointer-events': 'none' })
       text(svg, Wd, y + 17, `${oa}% · ${iv}%`, ink, 'end', 500)
+      if (offers) text(svg, Wd, y + 28, `${offers} offer${offers > 1 ? 's' : ''}`, offer, 'end', 500)
     })
   }
 }

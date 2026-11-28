@@ -222,31 +222,36 @@
       "SWE",
       235,
       11,
-      5
+      5,
+      1
     ],
     [
       "ML/AI",
       79,
       4,
-      1
+      1,
+      0
     ],
     [
       "Data",
       66,
       12,
-      5
+      5,
+      1
     ],
     [
       "Systems/Infra",
       20,
       5,
+      0,
       0
     ],
     [
       "Consulting/Analyst",
       13,
       69,
-      46
+      46,
+      1
     ]
   ],
   "byCompanyType": [
@@ -254,55 +259,64 @@
       "Software & Internet",
       88,
       11,
-      6
+      6,
+      0
     ],
     [
       "Robotics, Space & Defense",
       67,
       1,
-      1
+      1,
+      0
     ],
     [
       "Big Tech",
       62,
       3,
-      2
+      2,
+      0
     ],
     [
       "Finance & Fintech",
       62,
       29,
-      13
+      13,
+      2
     ],
     [
       "AI & Startups",
       46,
       2,
+      0,
       0
     ],
     [
       "Corporate & Other",
       44,
       14,
-      7
+      7,
+      0
     ],
     [
       "Quant / Trading",
       36,
       19,
-      6
+      6,
+      0
     ],
     [
       "Hardware & Semis",
       23,
       4,
+      0,
       0
     ],
     [
       "Consulting & Services",
       10,
       60,
-      30
+      30,
+      1
     ]
   ]
 }
