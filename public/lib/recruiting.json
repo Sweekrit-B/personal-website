@@ -1,23 +1,308 @@
 {
   "updated": "2026-11-28",
   "nodes": {
-    "app":  { "label": "Applications" },
-    "oa":   { "label": "Online assessment" },
-    "iv":   { "label": "Interviews" },
-    "fr":   { "label": "Final round" },
-    "of":   { "label": "Offers" },
-    "rej":  { "label": "Rejected" },
-    "wait": { "label": "Waiting / no reply" },
-    "wd":   { "label": "Withdrew" },
-    "acc":  { "label": "Accepted" },
-    "dec":  { "label": "Declined" },
-    "dd":   { "label": "Deciding" }
+    "app": {
+      "label": "Applications"
+    },
+    "oa": {
+      "label": "Online assessment"
+    },
+    "iv": {
+      "label": "Interviews"
+    },
+    "fr": {
+      "label": "Final round"
+    },
+    "of": {
+      "label": "Offers"
+    },
+    "rej": {
+      "label": "Rejected"
+    },
+    "wait": {
+      "label": "Waiting / no reply"
+    },
+    "wd": {
+      "label": "Withdrew"
+    },
+    "acc": {
+      "label": "Accepted"
+    },
+    "dec": {
+      "label": "Declined"
+    },
+    "dd": {
+      "label": "Deciding"
+    }
   },
   "flows": [
-    ["app", "rej", 117], ["app", "wait", 267], ["app", "wd", 2], ["app", "oa", 30], ["app", "iv", 22],
-    ["oa", "rej", 14], ["oa", "wait", 15], ["oa", "iv", 1],
-    ["iv", "rej", 7], ["iv", "wait", 8], ["iv", "fr", 8],
-    ["fr", "rej", 2], ["fr", "wait", 2], ["fr", "wd", 1], ["fr", "of", 3],
-    ["of", "acc", 1], ["of", "dec", 1], ["of", "dd", 1]
+    [
+      "app",
+      "rej",
+      117
+    ],
+    [
+      "app",
+      "wait",
+      267
+    ],
+    [
+      "app",
+      "wd",
+      2
+    ],
+    [
+      "app",
+      "oa",
+      30
+    ],
+    [
+      "app",
+      "iv",
+      22
+    ],
+    [
+      "oa",
+      "rej",
+      14
+    ],
+    [
+      "oa",
+      "wait",
+      15
+    ],
+    [
+      "oa",
+      "iv",
+      1
+    ],
+    [
+      "iv",
+      "rej",
+      7
+    ],
+    [
+      "iv",
+      "wait",
+      8
+    ],
+    [
+      "iv",
+      "fr",
+      8
+    ],
+    [
+      "fr",
+      "rej",
+      2
+    ],
+    [
+      "fr",
+      "wait",
+      2
+    ],
+    [
+      "fr",
+      "wd",
+      1
+    ],
+    [
+      "fr",
+      "of",
+      3
+    ],
+    [
+      "of",
+      "acc",
+      1
+    ],
+    [
+      "of",
+      "dec",
+      1
+    ],
+    [
+      "of",
+      "dd",
+      1
+    ]
+  ],
+  "weekly": [
+    [
+      "2026-06-29",
+      8
+    ],
+    [
+      "2026-07-06",
+      17
+    ],
+    [
+      "2026-07-13",
+      8
+    ],
+    [
+      "2026-07-20",
+      10
+    ],
+    [
+      "2026-07-27",
+      3
+    ],
+    [
+      "2026-08-03",
+      26
+    ],
+    [
+      "2026-08-10",
+      10
+    ],
+    [
+      "2026-08-17",
+      27
+    ],
+    [
+      "2026-08-24",
+      24
+    ],
+    [
+      "2026-08-31",
+      32
+    ],
+    [
+      "2026-09-07",
+      46
+    ],
+    [
+      "2026-09-14",
+      40
+    ],
+    [
+      "2026-09-21",
+      39
+    ],
+    [
+      "2026-09-28",
+      35
+    ],
+    [
+      "2026-10-05",
+      20
+    ],
+    [
+      "2026-10-12",
+      21
+    ],
+    [
+      "2026-10-19",
+      15
+    ],
+    [
+      "2026-10-26",
+      20
+    ],
+    [
+      "2026-11-02",
+      11
+    ],
+    [
+      "2026-11-09",
+      18
+    ],
+    [
+      "2026-11-16",
+      6
+    ],
+    [
+      "2026-11-23",
+      1
+    ]
+  ],
+  "byRole": [
+    [
+      "SWE",
+      235,
+      11,
+      5
+    ],
+    [
+      "ML/AI",
+      79,
+      4,
+      1
+    ],
+    [
+      "Data",
+      66,
+      12,
+      5
+    ],
+    [
+      "Systems/Infra",
+      20,
+      5,
+      0
+    ],
+    [
+      "Consulting/Analyst",
+      13,
+      69,
+      46
+    ]
+  ],
+  "byCompanyType": [
+    [
+      "Software & Internet",
+      88,
+      11,
+      6
+    ],
+    [
+      "Robotics, Space & Defense",
+      67,
+      1,
+      1
+    ],
+    [
+      "Big Tech",
+      62,
+      3,
+      2
+    ],
+    [
+      "Finance & Fintech",
+      62,
+      29,
+      13
+    ],
+    [
+      "AI & Startups",
+      46,
+      2,
+      0
+    ],
+    [
+      "Corporate & Other",
+      44,
+      14,
+      7
+    ],
+    [
+      "Quant / Trading",
+      36,
+      19,
+      6
+    ],
+    [
+      "Hardware & Semis",
+      23,
+      4,
+      0
+    ],
+    [
+      "Consulting & Services",
+      10,
+      60,
+      30
+    ]
   ]
 }

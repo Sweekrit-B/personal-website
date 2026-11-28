@@ -35,7 +35,18 @@
   figcaption { margin-bottom: 16px; text-align: right; font: 500 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); }
   /* The chart keeps its type readable on phones by scrolling sideways instead of shrinking. */
   .scroll { overflow-x: auto; }
-  svg { display: block; width: 100%; max-width: 900px; min-width: 720px; height: auto; } /* max 900px = 1:1 with the viewBox, so chart text stays 11px like the rest of the site */
+  svg { display: block; width: 100%; height: auto; }
+  .scroll svg { max-width: 900px; min-width: 720px; } /* max 900px = 1:1 with the viewBox, so chart text stays 11px like the rest of the site */
+  /* Smaller charts: a label running into a dashed rule (same as the home page sections), then the chart. */
+  .stats { margin-top: 56px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 40px; }
+  .stats .wide { grid-column: 1 / -1; }
+  .stats h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font: 500 11px/16px var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); }
+  .stats h2::after { content: ''; flex: 1; border-top: 1px dashed #2c3642; }
+  .key { display: flex; gap: 16px; margin: -8px 0 12px; font: 400 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .key i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 2px; background: var(--accent); }
+  .key i.soft { opacity: 0.35; }
+  .scroll.bars svg { min-width: 400px; max-width: 430px; }
+  @media (max-width: 720px) { .stats { grid-template-columns: minmax(0, 1fr); } }
   /* Chart labels use the site label style: 11px mono caps with tracking. */
   svg text { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
 </style>
@@ -49,6 +60,11 @@
     <figcaption id="updated"></figcaption>
     <div class="scroll"><svg id="sk" viewBox="0 0 900 560" role="img" aria-labelledby="skTitle skDesc"><title id="skTitle">Applications, round by round</title><desc id="skDesc"></desc></svg></div>
   </figure>
+  <div class="stats">
+    <section class="wide"><h2>Applications per week</h2><div class="scroll"><svg id="weekly" role="img" aria-label="Applications per week"></svg></div></section>
+    <section><h2>By role</h2><p class="key"><span><i class="soft"></i>Assessment+</span><span><i></i>Interview+</span></p><div class="scroll bars"><svg id="byRole" role="img" aria-label="Share of applications reaching an assessment and an interview, by role"></svg></div></section>
+    <section><h2>By company type</h2><p class="key"><span><i class="soft"></i>Assessment+</span><span><i></i>Interview+</span></p><div class="scroll bars"><svg id="byCompanyType" role="img" aria-label="Share of applications reaching an assessment and an interview, by company type"></svg></div></section>
+  </div>
 </main>
 <script>
 // Accent follows the Pokémon picked on the home page (passed as ?c=rrggbb by the Konami trigger).
@@ -71,7 +87,7 @@ const LAYOUT = {
   dd: { x: 690, y: 516, kind: 'end', tone: 'offer' },
 }
 
-fetch('lib/recruiting.json').then((r) => r.json()).then(draw).catch(() => {
+fetch('lib/recruiting.json').then((r) => r.json()).then((d) => { draw(d); drawStats(d) }).catch(() => {
   document.getElementById('summary').textContent = 'Could not load the data.'
 })
 
@@ -133,6 +149,55 @@ function draw({ updated, nodes, flows }) {
   document.getElementById('skDesc').textContent = `${sum}. Rejected ${N.rej.v}, waiting or no reply ${N.wait.v}, withdrew ${N.wd.v}. Offers: ${N.acc.v} accepted, ${N.dec.v} declined, ${N.dd.v} deciding.`
   const d = new Date(updated + 'T00:00:00')
   document.getElementById('updated').textContent = `Updated ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+}
+
+// Small charts below the flow: applications per week, and how far applications got by role and by company type.
+function drawStats({ weekly, byRole, byCompanyType }) {
+  const NS = 'http://www.w3.org/2000/svg', accent = css('--accent'), muted = css('--text-muted'), ink = css('--text'), line = css('--line')
+  const el = (svg, tag, attrs, tip) => {
+    const e = document.createElementNS(NS, tag)
+    for (const k in attrs) e.setAttribute(k, attrs[k])
+    if (tip) e.appendChild(document.createElementNS(NS, 'title')).textContent = tip
+    svg.appendChild(e)
+    return e
+  }
+  const text = (svg, x, y, s, fill, anchor = 'start', weight = 400) => { el(svg, 'text', { x, y, fill, 'text-anchor': anchor, 'font-size': 11, 'font-weight': weight }).textContent = s }
+  const fmt = (iso, opts) => new Date(iso + 'T00:00:00').toLocaleDateString('en-US', opts)
+
+  // Applications per week: one bar per week, month names under each month's first week, the busiest week labelled.
+  {
+    const svg = document.getElementById('weekly'), Wd = 900, Ht = 150, top = 20, base = 120
+    svg.setAttribute('viewBox', `0 0 ${Wd} ${Ht}`)
+    const max = Math.max(...weekly.map(([, n]) => n)), step = Wd / weekly.length, bw = step - 4
+    el(svg, 'line', { x1: 0, x2: Wd, y1: base, y2: base, stroke: line })
+    let month = '', lastX = -99
+    weekly.forEach(([wk, n], i) => {
+      const x = i * step + 2, bh = (n / max) * (base - top)
+      const tip = `Week of ${fmt(wk, { month: 'short', day: 'numeric' })}: ${n} application${n === 1 ? '' : 's'}`
+      el(svg, 'rect', { x: 0 + i * step, y: top - 8, width: step, height: base - top + 8, fill: 'transparent' }, tip) // bigger hover target
+      el(svg, 'rect', { x, y: base - bh, width: bw, height: Math.max(bh, 1), rx: 2, fill: accent, opacity: 0.8, 'pointer-events': 'none' })
+      if (n === max) text(svg, x + bw / 2, base - bh - 6, String(n), ink, 'middle', 500)
+      const m = fmt(wk, { month: 'short' })
+      if (m !== month) { month = m; if (x - lastX > 48) { text(svg, x, base + 18, m, muted); lastX = x } } // skip a month label that would collide
+    })
+  }
+
+  // How far applications got, per group: a soft bar to the share reaching an assessment, a solid bar to the share reaching an interview.
+  for (const [id, rows] of [['byRole', byRole], ['byCompanyType', byCompanyType]]) {
+    const svg = document.getElementById(id), Wd = 430, rowH = 30, labelW = 210, barW = 150
+    const sorted = [...rows].sort((a, b) => b[2] - a[2])
+    svg.setAttribute('viewBox', `0 0 ${Wd} ${sorted.length * rowH + 4}`)
+    sorted.forEach(([name, n, oa, iv], i) => {
+      const y = i * rowH + 4, tip = `${name}: ${n} applications, ${oa}% reached an assessment, ${iv}% an interview`
+      el(svg, 'rect', { x: 0, y, width: Wd, height: rowH, fill: 'transparent' }, tip)
+      text(svg, 0, y + 12, name, ink)
+      text(svg, 0, y + 25, `${n} apps`, muted)
+      el(svg, 'rect', { x: labelW, y: y + 6, width: barW, height: 14, rx: 2, fill: line, 'pointer-events': 'none' })
+      el(svg, 'rect', { x: labelW, y: y + 6, width: Math.max((oa / 100) * barW, 2), height: 14, rx: 2, fill: accent, opacity: 0.35, 'pointer-events': 'none' })
+      el(svg, 'rect', { x: labelW, y: y + 6, width: Math.max((iv / 100) * barW, iv ? 2 : 0), height: 14, rx: 2, fill: accent, 'pointer-events': 'none' })
+      text(svg, Wd, y + 17, `${oa}% · ${iv}%`, ink, 'end', 500)
+    })
+  }
 }
 </script>
 </body>
