@@ -23,20 +23,21 @@
     background-image: linear-gradient(rgba(120, 150, 190, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(120, 150, 190, 0.02) 1px, transparent 1px);
     background-size: 24px 24px;
   }
-  main { width: min(1040px, 100% - 48px); margin: 0 auto; padding: 48px 0 64px; }
+  main { width: min(900px, 100% - 48px); margin: 0 auto; padding: 48px 0 64px; }
   .top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; font: 500 11px/16px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
   .top a { color: inherit; text-decoration: none; }
   .top a:hover { color: var(--text); text-decoration: underline; text-underline-offset: 4px; }
   .top a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   h1 { margin: 32px 0 8px; font: 600 28px/1.1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; }
-  .summary { margin: 0 0 40px; font: 400 13px/1.6 var(--mono); color: var(--text-muted); }
+  .summary { margin: 0 0 40px; font: 400 11px/16px var(--mono); letter-spacing: 0.02em; color: var(--text-muted); }
   .summary b { font-weight: 500; color: var(--text); }
   figure { margin: 0; border-top: 1px solid var(--line); padding-top: 12px; }
   figcaption { margin-bottom: 16px; text-align: right; font: 500 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); }
   /* The chart keeps its type readable on phones by scrolling sideways instead of shrinking. */
   .scroll { overflow-x: auto; }
-  svg { display: block; width: 100%; min-width: 720px; height: auto; }
-  svg text { font-family: var(--mono); }
+  svg { display: block; width: 100%; max-width: 900px; min-width: 720px; height: auto; } /* max 900px = 1:1 with the viewBox, so chart text stays 11px like the rest of the site */
+  /* Chart labels use the site label style: 11px mono caps with tracking. */
+  svg text { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
 </style>
 </head>
 <body>
@@ -107,7 +108,7 @@ function draw({ updated, nodes, flows }) {
     a.o += w; b.i += w
   }
 
-  const text = (x, y, str, fill, anchor = 'start', size = 13, weight = 400) => {
+  const text = (x, y, str, fill, anchor = 'start', size = 11, weight = 400) => {
     const t = el('text', { x, y, fill, 'text-anchor': anchor, 'font-size': size, 'font-weight': weight }, marks)
     t.textContent = str
   }
@@ -117,13 +118,13 @@ function draw({ updated, nodes, flows }) {
     el('rect', { x: n.x, y: n.y, width: W, height: H, fill: n.c, rx: 1 }, marks)
     if (n.kind === 'start') {
       text(n.x - 12, n.y + H / 2 - 2, n.label, col, 'end')
-      text(n.x - 12, n.y + H / 2 + 18, String(n.v), col, 'end', 20, 500)
+      text(n.x - 12, n.y + H / 2 + 16, String(n.v), col, 'end', 16, 500)
     } else if (n.kind === 'stage') {
       // Labels sit below-left of the node: ribbons arrive from above and leave to the right, so that corner stays clear.
-      text(n.x + W, n.y + H + 18, `${n.label}  ${n.v}`, col, 'end', 13, 500)
+      text(n.x - 4, n.y + H + 16, `${n.label}  ${n.v}`, col, 'end', 11, 500)
     } else {
-      text(n.x + W + 10, n.y + H / 2 + 5, n.label, col)
-      text(890, n.y + H / 2 + 5, String(n.v), col, 'end', 13, 500)
+      text(n.x + W + 10, n.y + H / 2 + 4, n.label, col)
+      text(890, n.y + H / 2 + 4, String(n.v), col, 'end', 11, 500)
     }
   }
 
