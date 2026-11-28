@@ -1,6 +1,5 @@
 {
   "updated": "2026-11-28",
-  "season": "Summer 2027",
   "nodes": {
     "app":  { "label": "Applications" },
     "oa":   { "label": "Online assessment" },

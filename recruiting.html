@@ -32,7 +32,7 @@
   .summary { margin: 0 0 40px; font: 400 13px/1.6 var(--mono); color: var(--text-muted); }
   .summary b { font-weight: 500; color: var(--text); }
   figure { margin: 0; border-top: 1px solid var(--line); padding-top: 12px; }
-  figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin-bottom: 16px; font: 500 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); }
+  figcaption { margin-bottom: 16px; text-align: right; font: 500 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); }
   /* The chart keeps its type readable on phones by scrolling sideways instead of shrinking. */
   .scroll { overflow-x: auto; }
   svg { display: block; width: 100%; min-width: 720px; height: auto; }
@@ -45,7 +45,7 @@
   <h1>Recruiting</h1>
   <p class="summary" id="summary">Loading…</p>
   <figure>
-    <figcaption><span id="cap">Fig. R1 — applications, round by round</span><span id="season"></span></figcaption>
+    <figcaption id="updated"></figcaption>
     <div class="scroll"><svg id="sk" viewBox="0 0 900 560" role="img" aria-labelledby="skTitle skDesc"><title id="skTitle">Applications, round by round</title><desc id="skDesc"></desc></svg></div>
   </figure>
 </main>
@@ -74,7 +74,7 @@ fetch('lib/recruiting.json').then((r) => r.json()).then(draw).catch(() => {
   document.getElementById('summary').textContent = 'Could not load the data.'
 })
 
-function draw({ updated, season, nodes, flows }) {
+function draw({ updated, nodes, flows }) {
   const S = document.getElementById('sk'), NS = 'http://www.w3.org/2000/svg'
   const K = 0.55, W = 10, h = (v) => Math.max(3, v * K)
   const tone = { offer: css('--offer'), rejected: css('--rejected'), waiting: css('--waiting'), muted: css('--text-muted') }
@@ -131,7 +131,7 @@ function draw({ updated, season, nodes, flows }) {
   document.getElementById('summary').innerHTML = sum.replace(/\d+/g, '<b>$&</b>')
   document.getElementById('skDesc').textContent = `${sum}. Rejected ${N.rej.v}, waiting or no reply ${N.wait.v}, withdrew ${N.wd.v}. Offers: ${N.acc.v} accepted, ${N.dec.v} declined, ${N.dd.v} deciding.`
   const d = new Date(updated + 'T00:00:00')
-  document.getElementById('season').textContent = `${season} · updated ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+  document.getElementById('updated').textContent = `Updated ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
 }
 </script>
 </body>
