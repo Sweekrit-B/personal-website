@@ -121,7 +121,6 @@ function draw({ updated, season, nodes, flows }) {
     } else if (n.kind === 'stage') {
       // Labels sit below-left of the node: ribbons arrive from above and leave to the right, so that corner stays clear.
       text(n.x + W, n.y + H + 18, `${n.label}  ${n.v}`, col, 'end', 13, 500)
-      if (n.note) text(n.x + W, n.y + H + 34, n.note, css('--text-muted'), 'end', 11)
     } else {
       text(n.x + W + 10, n.y + H / 2 + 5, n.label, col)
       text(890, n.y + H / 2 + 5, String(n.v), col, 'end', 13, 500)

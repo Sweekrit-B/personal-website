@@ -45,7 +45,7 @@
 
   .page { position: relative; z-index: 1; width: min(max(80%, 1400px), 100% - 2 * var(--s6)); margin: 0 auto; padding: var(--s7) 0; min-height: 100vh; display: grid; grid-template-rows: auto 1fr; gap: var(--s7); }
   /* Hint for the Konami code that opens recruiting.html: near-invisible until hovered. */
-  .konami { margin: calc(-1 * var(--s5)) 0 0; text-align: center; font: var(--type-meta); letter-spacing: 0.3em; color: var(--text-subtle); opacity: 0.25; transition: opacity var(--dur-base) var(--ease-out); user-select: none; }
+  .konami { margin: calc(-1 * var(--s5)) -0.3em 0 0; text-align: right; /* -0.3em cancels the trailing letter-spacing so it lines up with the right edge */ font: var(--type-meta); letter-spacing: 0.3em; color: var(--text-subtle); opacity: 0.25; transition: opacity var(--dur-base) var(--ease-out); user-select: none; }
   .konami:hover { opacity: 0.7; }
   header { display: flex; justify-content: space-between; align-items: center; gap: var(--s5); }
   h1 { margin: 0; font: var(--type-display); letter-spacing: 0.04em; text-transform: uppercase; }

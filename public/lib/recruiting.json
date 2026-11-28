@@ -3,9 +3,9 @@
   "season": "Summer 2027",
   "nodes": {
     "app":  { "label": "Applications" },
-    "oa":   { "label": "Online assessment", "note": "HackerRank, CodeSignal" },
-    "iv":   { "label": "Interviews", "note": "12 behavioral, 3 technical" },
-    "fr":   { "label": "Final round", "note": "5 onsite, 2 Superday" },
+    "oa":   { "label": "Online assessment" },
+    "iv":   { "label": "Interviews" },
+    "fr":   { "label": "Final round" },
     "of":   { "label": "Offers" },
     "rej":  { "label": "Rejected" },
     "wait": { "label": "Waiting / no reply" },
