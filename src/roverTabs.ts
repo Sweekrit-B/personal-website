@@ -1,5 +1,5 @@
 // The Mars Rover card's six tabs. Facts come from the experience list / resume;
-// waypoints are copied from the sim console log in sim-auton-console.png (recorded 02/2026).
+// waypoints are copied from the sim console log (recorded 02/2026).
 
 declare global {
   interface Window {
@@ -12,7 +12,7 @@ type ViewerHost = HTMLElement & { _overlay?: (id: string | null) => void }
 
 
 // Planner output from the sim console: relative waypoints [forward, lateral].
-export const LOGGED_PATHS: [number, number][][] = [
+const LOGGED_PATHS: [number, number][][] = [
   [[0, 0.5], [1, -0.75], [2.25, -1], [3.75, -1]],
   [[0, 0.5], [1, 1.5], [2.25, 1.75], [3.75, 1.75]],
 ]

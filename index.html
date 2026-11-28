@@ -147,6 +147,8 @@
   @starting-style { dialog[open] { opacity: 0; transform: translateY(12px) scale(0.98); } }
   dialog::backdrop { background: rgba(5, 7, 10, 0.55); transition: background-color 0.3s, display 0.3s allow-discrete, overlay 0.3s allow-discrete; }
   @starting-style { dialog[open]::backdrop { background: rgba(5, 7, 10, 0); } }
+  dialog:modal { overscroll-behavior: contain; }
+  dialog::backdrop { overflow: hidden; overscroll-behavior: contain; } /* keep scroll in the dialog from chaining to the page */
   .f-head { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; gap: var(--s4); align-items: start; padding: var(--s5) var(--s6) var(--s4); background: var(--surface); border-bottom: 1px solid var(--line); }
   .f-head h2 { margin: 0; font: 600 18px/24px var(--mono); letter-spacing: 0.04em; text-transform: uppercase; }
   .f-meta { margin: var(--s2) 0 0; font: var(--type-meta); color: var(--text-muted); }
@@ -294,7 +296,7 @@
     </main>
   </div>
 
-  <dialog id="focus" aria-labelledby="fTitle">
+  <dialog id="focus" aria-labelledby="fTitle" closedby="any">
     <div class="f-head">
       <div><h2 id="fTitle"></h2><p class="f-meta" id="fMeta"></p><div class="f-tags" id="fTags"></div></div>
       <button class="f-close" type="button" id="fClose">Close</button>
@@ -319,7 +321,6 @@ const MONTH = { January: 'Jan', February: 'Feb', March: 'Mar', April: 'Apr', May
 const shortDate = (s) => (s ? s.replace(/^(\w+)/, (m) => MONTH[m] || m) : '')
 const FIGURES = { 'Fruit Fly Connectome RNN': 'figures/fly-rnn/fly-rnn.html' }
 const bullets = (arr) => (arr && arr.length ? `<ul>${arr.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>` : '')
-const firstSentence = (s) => (s || '').split(/(?<=\.)\s/)[0].replace(/\.$/, '')
 const stack = (skills) => (skills && skills.length ? `<ul class="skill-tags" aria-label="Skills">${skills.map((k) => `<li>${esc(k)}</li>`).join('')}</ul>` : '')
 
 /* ---------- Focused view ---------- */
@@ -369,11 +370,12 @@ function fitFigure(f) {
   size()
 }
 document.getElementById('fClose').onclick = () => dlg.close()
-dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close() }) // click on the backdrop
+// closedby="any" handles backdrop clicks; Safari lacks it, so keep the manual check there.
+if (!('closedBy' in HTMLDialogElement.prototype)) dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close() })
 dlg.addEventListener('close', () => {
   if (dlg.open) return // the close event is queued; ignore it if another item was opened meanwhile
   fBody.querySelectorAll('[data-rover]').forEach((el) => el._dispose?.())
-  fBody.innerHTML = ''
+  fBody.replaceChildren()
 })
 
 function addItem(list, html, focus) {

@@ -32,7 +32,6 @@
 .rv-nav .g { stroke: var(--line); stroke-width: 0.6; }
 .rv-nav .g1, .rv-sci .g1 { stroke: var(--line-strong); stroke-width: 1; }
 .rv-nav .obst { fill: #3a2018; stroke: #5a3424; }
-.rv-nav .stair { fill: none; stroke: var(--text-subtle); stroke-width: 1.4; stroke-dasharray: 4 4; }
 .rv-nav .path { fill: none; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 600; stroke-dashoffset: 600; animation: rv-draw 1.4s var(--ease-out) forwards; }
 .rv-nav .path-a { stroke: var(--after); }
 .rv-nav .path-bfs { stroke: var(--before); stroke-width: 2.4; stroke-dasharray: 1400; stroke-dashoffset: 1400; animation-duration: 1.4s; }
@@ -77,9 +76,7 @@
 .is-bfs figcaption b { color: var(--before); }
 .is-theta figcaption b { color: var(--after); }
 .rv-navpanel figcaption span { font-size: 13px; color: var(--text-muted); }
-.rv-nav .path-b { stroke: var(--after-soft); opacity: 0.6; stroke-width: 2; animation-delay: 0.3s; }
 .rv-nav .wp { fill: var(--page-bg); stroke: var(--after); stroke-width: 2; }
-.rv-nav .wp-b { stroke: var(--after-soft); opacity: 0.6; }
 .rv-nav .rover { fill: var(--surface-2); stroke: var(--text-muted); }
 .rv-fig .t-muted { fill: var(--text-muted); font-size: 11px; }
 .rv-fig .t-axis { fill: var(--text-subtle); font-size: 11px; letter-spacing: 0.06em; }
@@ -92,8 +89,6 @@
 .rv-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 400 13px/1.4 var(--sans); color: var(--text-muted); }
 .rv-key span { display: inline-flex; align-items: center; gap: 8px; }
 .rv-key i { display: inline-block; width: 18px; height: 0; border-top: 3px solid var(--after); }
-.rv-key .k-b { border-top-color: var(--after-soft); opacity: 0.6; border-top-width: 2px; }
-.rv-key .k-stair { border-top: 1.5px dashed var(--text-subtle); }
 .rv-key .k-grad { border-top-color: var(--before); }
 .rv-key .k-raw { border-top: 1.5px solid var(--text-subtle); }
 /* Perception figure: a dark panel in both themes, the SVG at its natural 600px width so its labels stay page-sized */
@@ -114,8 +109,8 @@
 .gallery img { width: 100%; display: block; border: 1px solid var(--line); background: #fff; }
 .gallery figcaption { margin-top: 6px; color: var(--text-subtle); font-size: 13px; }
 .body-links { display: flex; gap: 18px; margin-top: 18px; flex-wrap: wrap; }
-.body-links a { text-decoration: none; font: 500 var(--fs-small)/1 var(--mono); border-bottom: 1px solid var(--line-strong); padding-bottom: 4px; }
-.body-links a:hover { border-color: var(--accent); }
+.body-links a { font: 500 var(--fs-small)/1 var(--mono); text-decoration: underline 1px var(--line-strong); text-underline-offset: 5px; }
+.body-links a:hover { text-decoration-color: var(--accent); }
 @media (max-width: 860px) { .rv-navpair { grid-template-columns: 1fr; } }
 /* ML From Scratch: model ladder, MLP and memory figures */
 .ml-ladder { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }

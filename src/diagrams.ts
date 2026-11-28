@@ -642,7 +642,7 @@ function llmftFigure() {
 ${key([['--after', 'training data'], ['--hv-purple', 'processing'], ['--before', 'model'], ['--hv-teal', 'result']])}`
 }
 
-const DIAGRAMS: Record<string, () => string> = { hanta: hantaFigure, hotel: hotelFigure, power: powerFigure, aletheia: aletheiaFigure, tally: tallyFigure, paper: paperFigure, airline: airlineFigure, todo: todoFigure, bio: bioFigure, calendar: calendarFigure, masld: masldFigure, promoter: promoterFigure, caiman: caimanFigure, telomere: telomereFigure, gaModels: gaModelsFigure, gaDiiid: gaDiiidFigure, llmft: llmftFigure }
+const DIAGRAMS: Record<string, () => string> = { hanta: hantaFigure, hotel: hotelFigure, power: powerFigure, aletheia: aletheiaFigure, tally: tallyFigure, paper: paperFigure, airline: airlineFigure, todo: todoFigure, bio: bioFigure, calendar: calendarFigure, masld: masldFigure, promoter: promoterFigure, caiman: caimanFigure, telomere: telomereFigure, gaDiiid: gaDiiidFigure, llmft: llmftFigure }
 
 window.mountDiagram = (el) => {
   el.innerHTML = DIAGRAMS[el.dataset.diagram ?? '']?.() ?? ''

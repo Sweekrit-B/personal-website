@@ -81,7 +81,7 @@ const at = (p) => k.iso(p, P);
 const S = (paths, style) => k.solidSvg(paths, style);
 const L = (d, style) => k.lineSvg(d, style);
 const D = (points, style) => k.dotsSvg(points, style);
-const byDepth = (items, key = (v) => v) => [...items].sort((a, b) => k.depthOf(key(a), P) - k.depthOf(key(b), P));
+const byDepth = (items, key = (v) => v) => items.toSorted((a, b) => k.depthOf(key(a), P) - k.depthOf(key(b), P));
 
 // Lateral fader settings, 0..1. Start: a shared structural prior plus small independent noise per side
 // (the notebook's init: -3 + structured_bias + randn * 0.1), so each pair sits almost level. End: illustrative,

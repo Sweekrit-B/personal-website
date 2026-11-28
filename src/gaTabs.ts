@@ -143,7 +143,7 @@ function resultsFigure() {
     key([['--before', 'model'], ['--hv-teal', 'best in its group']])
 }
 
-export const GA_TABS: Tab[] = [
+const GA_TABS: Tab[] = [
   { id: 'overview', label: 'Overview', figure: gaModelsFigure },
   { id: 'ridge', label: 'Ridge', figure: ridgeFigure },
   { id: 'forest', label: 'Random forest', figure: forestFigure },
