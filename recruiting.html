@@ -40,9 +40,9 @@
   /* Smaller charts: a label running into a dashed rule (same as the home page sections), then the chart. */
   .stats { margin-top: 56px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 40px; }
   .stats .wide { grid-column: 1 / -1; }
-  .stats h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font: 500 11px/16px var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); }
+  .stats h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font: 500 11px/16px var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); }
   .stats h2::after { content: ''; flex: 1; border-top: 1px dashed #2c3642; }
-  .key { display: flex; gap: 16px; margin: -8px 0 12px; font: 400 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .key { display: flex; gap: 16px; margin: 0 0 16px; font: 400 11px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
   .key i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 2px; background: var(--accent); }
   .key i.soft { opacity: 0.35; }
   .key i.offer { background: var(--offer); }
@@ -183,23 +183,23 @@ function drawStats({ weekly, byRole, byCompanyType }) {
     })
   }
 
-  // How far applications got, per group: a soft bar to the share reaching an assessment, a solid bar to the share reaching an interview.
+  // How far applications got, per group: soft bar = reached an assessment, solid = an interview, yellow = an offer (all as a share of applications).
   for (const [id, rows] of [['byRole', byRole], ['byCompanyType', byCompanyType]]) {
-    const svg = document.getElementById(id), Wd = 430, rowH = 36, labelW = 210, barW = 150
+    // Columns: name + count | bar | three right-aligned percentages (assessment, interview, offer).
+    const svg = document.getElementById(id), Wd = 430, rowH = 36, labelW = 196, barW = 120, cols = [348, 389, 430], barY = 10, barH = 12
     const sorted = [...rows].sort((a, b) => b[2] - a[2])
-    svg.setAttribute('viewBox', `0 0 ${Wd} ${sorted.length * rowH + 4}`)
+    svg.setAttribute('viewBox', `0 0 ${Wd} ${sorted.length * rowH}`)
+    const pct = (p) => (p > 0 && p < 1 ? '<1%' : `${Math.round(p)}%`)
     sorted.forEach(([name, n, oa, iv, offers], i) => {
-      const y = i * rowH + 4, tip = `${name}: ${n} applications, ${oa}% reached an assessment, ${iv}% an interview, ${offers} offer${offers === 1 ? '' : 's'}`
+      const y = i * rowH, of = (offers / n) * 100
+      const tip = `${name}: ${n} applications, ${oa}% reached an assessment, ${iv}% an interview, ${pct(of)} an offer`
       el(svg, 'rect', { x: 0, y, width: Wd, height: rowH, fill: 'transparent' }, tip)
-      text(svg, 0, y + 12, name, ink)
-      text(svg, 0, y + 25, `${n} apps`, muted)
-      el(svg, 'rect', { x: labelW, y: y + 6, width: barW, height: 14, rx: 2, fill: line, 'pointer-events': 'none' })
-      el(svg, 'rect', { x: labelW, y: y + 6, width: Math.max((oa / 100) * barW, 2), height: 14, rx: 2, fill: accent, opacity: 0.35, 'pointer-events': 'none' })
-      el(svg, 'rect', { x: labelW, y: y + 6, width: Math.max((iv / 100) * barW, iv ? 2 : 0), height: 14, rx: 2, fill: accent, 'pointer-events': 'none' })
-      // Offers: a yellow cap at the share of applications that became offers (at least 3px so a single offer shows).
-      if (offers) el(svg, 'rect', { x: labelW, y: y + 6, width: Math.max((offers / n) * barW, 3), height: 14, rx: 2, fill: offer, 'pointer-events': 'none' })
-      text(svg, Wd, y + 17, `${oa}% · ${iv}%`, ink, 'end', 500)
-      if (offers) text(svg, Wd, y + 28, `${offers} offer${offers > 1 ? 's' : ''}`, offer, 'end', 500)
+      text(svg, 0, y + 14, name, ink)
+      text(svg, 0, y + 28, `${n} apps`, muted)
+      for (const [p, fill, op] of [[100, line, 1], [oa, accent, 0.35], [iv, accent, 1], [of, offer, 1]]) {
+        if (p > 0) el(svg, 'rect', { x: labelW, y: y + barY, width: Math.max((p / 100) * barW, 2), height: barH, rx: 2, fill, opacity: op, 'pointer-events': 'none' })
+      }
+      ;[[oa, muted], [iv, ink], [of, of ? offer : css('--text-subtle')]].forEach(([p, fill], c) => text(svg, cols[c], y + barY + 10, pct(p), fill, 'end', 500))
     })
   }
 }
